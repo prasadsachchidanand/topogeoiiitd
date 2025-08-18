@@ -120,20 +120,20 @@
 
         // Load navbar component
         async function loadNavbar() {
-            try {
-                const response = await fetch('/components/navbar.html');
-                const navbarHtml = await response.text();
-                document.getElementById('navbar-container').innerHTML = navbarHtml;
-                initializeNavbar();
-            } catch (error) {
-                console.error('Error loading navbar:', error);
-                document.getElementById('navbar-container').innerHTML = `
-                    <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
-                        <div class="container mx-auto px-4 py-3">
-                            <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
-                        </div>
-                    </nav>
-                `;
+                try {
+                    const response = await fetch('./components/navbar.html');
+                    const navbarHtml = await response.text();
+                    document.getElementById('navbar-container').innerHTML = navbarHtml;
+                    initializeNavbar();
+                } catch (error) {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = `
+            <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+                <div class="container mx-auto px-4 py-3">
+                    <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
+                </div>
+            </nav>
+        `;
             }
         }
 
@@ -154,15 +154,19 @@
 
         // Load footer component
         async function loadFooter() {
-            try {
-                const response = await fetch('/components/footer.html');
-                const footerHtml = await response.text();
-                document.getElementById('footer-container').innerHTML = footerHtml;
-            } catch (error) {
-                console.error('Error loading footer:', error);
-                document.getElementById('footer-container').innerHTML = `
-                Footer
-                `;
+                try {
+                    const response = await fetch('./components/footer.html');
+                    const footerHtml = await response.text();
+                    document.getElementById('footer-container').innerHTML = footerHtml;
+                } catch (error) {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = `
+            <footer class="bg-gray-800 text-white py-6">
+                <div class="container mx-auto px-4 text-center">
+                    <p>&copy; 2024 Topology and Geometry Seminar - IIIT Delhi</p>
+                </div>
+            </footer>
+        `;
             }
         }
 
@@ -178,7 +182,7 @@
         // Fetch and render the next upcoming talk
         async function fetchAndRenderTalks() {
             try {
-                const response = await fetch('/data/talks.json');
+                const response = await fetch('./data/talks.json');
                 const talksData = await response.json();
                 const currentDate = new Date();
 
