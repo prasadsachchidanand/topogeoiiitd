@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topology and Geometry Seminar - IIIT Delhi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50 font-sans min-h-full flex flex-col">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Hero Section - Added top padding to account for fixed navbar -->
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Topology and Geometry Seminar</h1>
+            <p class="text-xl md:text-2xl mb-8">IIIT Delhi</p>
+            <a href="/#upcoming"
+                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">Join Mailing Group</a>
+        </div>
+    </header>
+
+    <!-- Main Content - flex-grow to push footer down -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+
+        <!-- Upcoming Talks -->
+        <section id="upcoming" class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">Next Upcoming Talk</h2>
+            <div id="upcoming-talks" class="space-y-8"></div>
+        </section>
+
+        <!-- Organizers -->
+        <section id="organizers" class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">Organizers</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden">
+                        <div class="w-full h-full bg-blue-100 flex items-center justify-center text-blue-800">
+                            <i class="fas fa-user text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold">Aritra Bhowmick</h3>
+                    <p class="text-gray-600 mb-4">KSoM, Kerala</p>
+                    <p class="text-gray-700">Email: <a href="mailto:abhowmick@gmail.com"
+                            class="text-blue-600 hover:underline">abhowmick@gmail.com</a></p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden">
+                        <div class="w-full h-full bg-blue-100 flex items-center justify-center text-blue-800">
+                            <i class="fas fa-user text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold">Sachchidanand Prasad</h3>
+                    <p class="text-gray-600 mb-4">IIIT Delhi</p>
+                    <p class="text-gray-700">Email: <a href="mailto:sachchidanand@iiitd.ac.in"
+                            class="text-blue-600 hover:underline">sachchidanand@iiitd.ac.in</a></p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden">
+                        <div class="w-full h-full bg-blue-100 flex items-center justify-center text-blue-800">
+                            <i class="fas fa-user text-3xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold">Sandip Samanta</h3>
+                    <p class="text-gray-600 mb-4">IISER Kolkata</p>
+                    <p class="text-gray-700">Email: <a href="mailto:ss18ip021@iiserkol.ac.in"
+                            class="text-blue-600 hover:underline">ss18ip021@iiserkol.ac.in</a></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer - stays at bottom -->
+    <div id="footer-container" class="mt-auto"></div>
+
+    <script>
+        // Timezone helper functions
+        function formatTimeWithLocal(date, time) {
+            try {
+                const istDateTime = new Date(`${date}T${time.replace(' IST', '')}+05:30`);
+
+                if (isNaN(istDateTime.getTime())) {
+                    return `${time} (Invalid date)`;
+                }
+
+                const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const localTime = istDateTime.toLocaleTimeString('en-US', {
+                    timeZone: userTimezone,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZoneName: 'short'
+                });
+
+                const userOffset = new Date().getTimezoneOffset();
+                const istOffset = -330; // IST is UTC+5:30 = -330 minutes
+
+                if (userOffset === istOffset) {
+                    return time;
+                }
+
+                return `${time} (${localTime} local)`;
+
+            } catch (error) {
+                console.error('Error formatting time:', error);
+                return time;
+            }
+        }
+
+        function createTimezoneAwareDate(date, time) {
+            try {
+                return new Date(`${date}T${time.replace(' IST', '')}+05:30`);
+            } catch (error) {
+                console.error('Error creating date:', error);
+                return new Date();
+            }
+        }
+
+        // Load navbar component
+        async function loadNavbar() {
+            try {
+                const response = await fetch('/components/navbar.html');
+                const navbarHtml = await response.text();
+                document.getElementById('navbar-container').innerHTML = navbarHtml;
+                initializeNavbar();
+            } catch (error) {
+                console.error('Error loading navbar:', error);
+                document.getElementById('navbar-container').innerHTML = `
+                    <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+                        <div class="container mx-auto px-4 py-3">
+                            <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
+                        </div>
+                    </nav>
+                `;
+            }
+        }
+
+        // Initialize navbar functionality
+        function initializeNavbar() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            if (mobileMenuBtn && mobileNav) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isExpanded = mobileNav.classList.toggle('hidden');
+                    mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                });
+            } else {
+                console.error('Mobile menu elements not found:', { mobileMenuBtn, mobileNav });
+            }
+        }
+
+        // Load footer component
+        async function loadFooter() {
+            try {
+                const response = await fetch('/components/footer.html');
+                const footerHtml = await response.text();
+                document.getElementById('footer-container').innerHTML = footerHtml;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+                document.getElementById('footer-container').innerHTML = `
+                Footer
+                `;
+            }
+        }
+
+        // Render MathJax after content is loaded
+        function renderMathJax() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch(function (err) {
+                    console.error('MathJax typeset failed: ' + err.message);
+                });
+            }
+        }
+
+        // Fetch and render the next upcoming talk
+        async function fetchAndRenderTalks() {
+            try {
+                const response = await fetch('/data/talks.json');
+                const talksData = await response.json();
+                const currentDate = new Date();
+
+                const upcomingTalks = talksData.filter(talk => {
+                    const talkDateTime = createTimezoneAwareDate(talk.date, talk.time);
+                    return talkDateTime >= currentDate;
+                }).sort((a, b) => createTimezoneAwareDate(a.date, a.time) - createTimezoneAwareDate(b.date, b.time));
+
+                const nextTalk = upcomingTalks.length > 0 ? upcomingTalks[0] : null;
+
+                // Render the next talk
+                document.getElementById('upcoming-talks').innerHTML = nextTalk ? `
+                    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row justify-between gap-4">
+                            <div class="max-w-full md:max-w-[65%]">
+                                <h3 class="text-xl font-bold text-blue-700">${nextTalk.title}</h3>
+                                <p class="text-gray-600 mb-2">${nextTalk.series}${nextTalk.part ? ` - ${nextTalk.part}` : ''}</p>
+                                <p class="text-gray-700 mb-2 flex items-center"><i class="far fa-calendar-alt mr-2"></i>${createTimezoneAwareDate(nextTalk.date, nextTalk.time).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                                <p class="text-gray-700 mb-4 flex items-center"><i class="far fa-clock mr-2"></i>${formatTimeWithLocal(nextTalk.date, nextTalk.time)}</p>
+                                ${nextTalk.abstract ? `<p class="text-gray-700 mb-4"><strong>Abstract:</strong> ${nextTalk.abstract}</p>` : ''}
+                                <a href="${nextTalk.seriesLink.toLowerCase().replace(/\s+/g, '-')}/" class="text-blue-600 hover:underline">View Series Details</a>
+                            </div>
+                            <div class="w-full md:w-1/3">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h4 class="font-bold mb-2 text-blue-800">Zoom Meeting</h4>
+                                    <p class="mb-2"><span class="font-medium text-gray-700">Link:</span> <a href="${nextTalk.zoomLink || '#'}" class="text-blue-600 hover:underline" target="_blank">${nextTalk.zoomLink || 'TBA'}</a></p>
+                                    <p class="mb-2"><span class="font-medium text-gray-700">Meeting ID:</span> ${nextTalk.meetingId || 'TBA'}</p>
+                                    <p><span class="font-medium text-gray-700">Passcode:</span> ${nextTalk.passcode || 'TBA'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ` : '<p class="text-gray-600">No upcoming talks scheduled at this time. Check back later!</p>';
+
+                renderMathJax();
+            } catch (error) {
+                console.error('Error fetching talks:', error);
+                document.getElementById('upcoming-talks').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadNavbar();
+            await loadFooter();
+            await fetchAndRenderTalks();
+        });
+    </script>
+
+    <!-- MathJax Configuration -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            loader: {
+                load: ['[tex]/mathtools']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ],
+                tags: 'ams',
+                displayMath: [
+                    ['$$', '$$'],
+                    ['\\[', '\\]']
+                ],
+                packages: { '[+]': ['mathtools'] }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Geometry and Scalar Curvature Rigidity - Topology and Geometry
+        Seminar - IIIT Delhi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .talk-card .content {
+            max-width: 65%;
+        }
+
+        @media (max-width: 768px) {
+            .talk-card .content {
+                max-width: 100%;
+            }
+
+            .talk-card .zoom-details {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">Spin Geometry and Scalar Curvature Rigidity</h1>
+            <p class="text-xl md:text-2xl mb-8">From Dirac Operators to Rigidity Theorems</p>
+            <div class="bg-white text-blue-900 inline-block px-6 py-3 rounded-lg shadow-lg">
+                <p class="font-semibold" id="speaker-name">Loading...</p>
+                <p class="text-lg" id="speaker-affiliation">Loading...</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <!-- Series Overview -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">About the Series</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <p id="series-description" class="text-gray-700 mb-4">Loading...</p>
+                <p class="text-gray-700">
+                    The course is designed for researchers, graduate students, and advanced undergraduates with
+                    basic prior knowledge of differential geometry, Riemannian geometry, and some familiarity with
+                    bundle theory and elliptic operators.
+                </p>
+            </div>
+        </section>
+
+        <!-- Schedule -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">Schedule</h2>
+            <div id="series-schedule" class="space-y-8">Loading...</div>
+        </section>
+
+        <!-- References -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">References</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-3 text-blue-700">Books</h3>
+                <ul id="books-list" class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                    Loading...
+                </ul>
+                <h3 class="text-lg font-semibold mb-3 text-blue-700">Papers</h3>
+                <ul id="papers-list" class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                    Loading...
+                </ul>
+                <h3 class="text-lg font-semibold mb-3 text-blue-700">Lecture Notes</h3>
+                <ul id="notes-list" class="list-disc list-inside text-gray-700 space-y-2">
+                    Loading...
+                </ul>
+            </div>
+        </section>
+
+        <!-- Speaker Bio -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">About the Speaker</h2>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden">
+                    <div class="w-full h-full bg-blue-100 flex items-center justify-center text-blue-800">
+                        <i class="fas fa-user text-3xl"></i>
+                    </div>
+                </div>
+                <h3 id="speaker-bio-name" class="text-xl font-bold">Loading...</h3>
+                <p id="speaker-bio-affiliation" class="text-gray-600 mb-4">Loading...</p>
+                <p id="speaker-bio-description" class="text-gray-700 text-justify">Loading...</p>
+                <p class="mt-2 text-gray-700">Email: <a id="speaker-email" href="#"
+                        class="text-blue-600 hover:underline">Loading...</a></p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer - stays at bottom -->
+    <div id="footer-container" class="mt-auto"></div>
+
+    <script>
+        // Load navbar component
+        async function loadNavbar() {
+            try {
+                const response = await fetch('/components/navbar.html');
+                const navbarHtml = await response.text();
+                document.getElementById('navbar-container').innerHTML = navbarHtml;
+                initializeNavbar();
+            } catch (error) {
+                console.error('Error loading navbar:', error);
+                // Fallback: create a simple navbar if external file fails
+                document.getElementById('navbar-container').innerHTML = `
+                <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+                    <div class="container mx-auto px-4 py-3">
+                        <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
+                    </div>
+                </nav>
+            `;
+            }
+        }
+
+        // Initialize navbar functionality
+        function initializeNavbar() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            if (mobileMenuBtn && mobileNav) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isExpanded = mobileNav.classList.toggle('hidden');
+                    mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                });
+            } else {
+                console.error('Mobile menu elements not found:', { mobileMenuBtn, mobileNav });
+            }
+        }
+
+        // load footer component
+        async function loadFooter() {
+            try {
+                const response = await fetch('/components/footer.html');
+                const footerHtml = await response.text();
+                document.getElementById('footer-container').innerHTML = footerHtml;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+                // Fallback: create a simple footer if external file fails
+                document.getElementById('footer-container').innerHTML = `
+                <footer class="bg-blue-900 text-white py-8 mt-auto">
+                    <div class="container mx-auto px-4">
+                        <div class="flex flex-col md:flex-row justify-between">
+                            <div class="mb-6 md:mb-0">
+                                <h2 class="text-xl font-bold mb-2">Topology and Geometry Seminar</h2>
+                                <p>IIIT Delhi</p>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Contact</h3>
+                                <p>Email: <a href="mailto:seminar@math.iiitd.ac.in"
+                                        class="text-blue-200 hover:underline">seminar@math.iiitd.ac.in</a></p>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-blue-800 text-center text-sm text-blue-200">
+                            <p>© 2025 Topology and Geometry Seminar, IIIT Delhi. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+            }
+        }
+
+        // Fetch and render series talks
+        async function fetchAndRenderSeries() {
+            try {
+                const response = await fetch('/data/lukas.json');
+                const talksData = await response.json();
+
+                // Filter talks for this series and sort by date
+                const spinTalks = talksData.filter(talk =>
+                    talk.series === 'Spin Geometry and Scalar Curvature Rigidity'
+                ).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                if (spinTalks.length === 0) {
+                    throw new Error('No spin geometry talks found');
+                }
+
+                // Get speaker info from first talk
+                const firstTalk = spinTalks[0];
+                const speakerName = firstTalk.speaker;
+                const speakerAffiliation = firstTalk.affiliation;
+                const speakerAbout = firstTalk.about || "Loading speaker information...";
+
+                // Update hero section
+                document.getElementById('speaker-name').textContent = `Speaker: ${speakerName}`;
+                document.getElementById('speaker-affiliation').textContent = `${speakerAffiliation}`;
+
+                // Update series description
+                document.getElementById('series-description').textContent = firstTalk.description || 'This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.';
+
+                // Update speaker bio section
+                document.getElementById('speaker-bio-name').textContent = speakerName;
+                document.getElementById('speaker-bio-affiliation').textContent = speakerAffiliation;
+                document.getElementById('speaker-bio-description').textContent = speakerAbout;
+
+                // Extract email from speaker name or use placeholder
+                const emailElement = document.getElementById('speaker-email');
+                const speakerFirstName = speakerName.toLowerCase().split(' ')[0];
+                emailElement.href = `mailto:${speakerFirstName}@math.uni-augsburg.de`;
+                emailElement.textContent = `${speakerFirstName}@math.uni-augsburg.de`;
+
+                // Update references from the JSON data
+                const booksElement = document.getElementById('books-list');
+                const papersElement = document.getElementById('papers-list');
+                const notesElement = document.getElementById('notes-list');
+
+                // Collect all references from all talks
+                const allReferences = spinTalks.reduce((acc, talk) => {
+                    if (talk.references) {
+                        acc.push(...talk.references);
+                    }
+                    return acc;
+                }, []);
+
+                // Remove duplicates and categorize
+                const uniqueReferences = allReferences.filter((ref, index, self) =>
+                    index === self.findIndex(r => r.citation === ref.citation)
+                );
+
+                const books = uniqueReferences.filter(ref => ref.type === 'book');
+                const papers = uniqueReferences.filter(ref => ref.type === 'paper');
+                const scripts = uniqueReferences.filter(ref => ref.type === 'script');
+
+                booksElement.innerHTML = books.length ? books.map(ref =>
+                    `<li>${ref.citation}</li>`
+                ).join('') : '<li>No books listed</li>';
+
+                papersElement.innerHTML = papers.length ? papers.map(ref =>
+                    `<li>${ref.citation}</li>`
+                ).join('') : '<li>No papers listed</li>';
+
+                notesElement.innerHTML = scripts.length ? scripts.map(ref =>
+                    ref.url ? `<li><a href="${ref.url}" class="text-blue-600 hover:underline" target="_blank">${ref.citation}</a></li>`
+                        : `<li>${ref.citation}</li>`
+                ).join('') : '<li>No lecture notes listed</li>';
+
+                // Render schedule
+                document.getElementById('series-schedule').innerHTML = spinTalks.length ? spinTalks.map(talk => `
+                    <div class="talk-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row justify-between gap-4">
+                            <div class="content">
+                                <h3 class="text-xl font-bold text-blue-700">${talk.title}</h3>
+                                ${talk.part ? `<p class="text-gray-600 mb-2">${talk.part} of the series</p>` : ''}
+                                <p class="text-gray-700 mb-2 flex items-center">
+                                    <i class="far fa-calendar-alt mr-2"></i>
+                                    ${talk.date ? new Date(talk.date).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                }) : 'Date TBA'}
+                                </p>
+                                <p class="text-gray-700 mb-4 flex items-center">
+                                    <i class="far fa-clock mr-2"></i>
+                                    ${talk.time || 'Time TBA'}
+                                </p>
+                                ${talk.abstract ? `<p class="text-gray-700 mb-4"><strong>Abstract:</strong> ${talk.abstract}</p>` : ''}
+                            </div>
+                            <div class="zoom-details w-full md:w-1/3">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h4 class="font-bold mb-2 text-blue-800">Zoom Meeting</h4>
+                                    <p class="mb-2">
+                                        <span class="font-medium text-gray-700">Link:</span> 
+                                        <a href="${talk.zoomLink || '#'}" 
+                                           class="text-blue-600 hover:underline" 
+                                           target="_blank">
+                                           ${talk.zoomLink ? 'Join Meeting' : 'TBA'}
+                                        </a>
+                                    </p>
+                                    <p class="mb-2">
+                                        <span class="font-medium text-gray-700">Meeting ID:</span> 
+                                        ${talk.meetingId || 'TBA'}
+                                    </p>
+                                    <p>
+                                        <span class="font-medium text-gray-700">Passcode:</span> 
+                                        ${talk.passcode || 'TBA'}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-gray-600">No talks scheduled for this series.</p>';
+
+            } catch (error) {
+                console.error('Error fetching talks:', error);
+
+                // Show error messages
+                document.getElementById('speaker-name').textContent = 'Error loading speaker data';
+                document.getElementById('speaker-affiliation').textContent = 'Error loading speaker data';
+                document.getElementById('series-description').textContent = 'Error loading series description. Please try again later.';
+                document.getElementById('series-schedule').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
+                document.getElementById('speaker-bio-name').textContent = 'Error loading speaker data';
+                document.getElementById('speaker-bio-affiliation').textContent = '';
+                document.getElementById('speaker-bio-description').textContent = 'Error loading speaker bio. Please try again later.';
+                document.getElementById('speaker-email').textContent = 'Error loading email';
+                document.getElementById('books-list').innerHTML = '<li class="text-red-600">Error loading references. Please try again later.</li>';
+                document.getElementById('papers-list').innerHTML = '<li class="text-red-600">Error loading references. Please try again later.</li>';
+                document.getElementById('notes-list').innerHTML = '<li class="text-red-600">Error loading references. Please try again later.</li>';
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadNavbar();
+            await loadFooter();
+            await fetchAndRenderSeries();
+        });
+    </script>
+</body>
+</html>

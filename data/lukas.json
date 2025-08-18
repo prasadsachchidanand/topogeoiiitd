@@ -1,0 +1,140 @@
+[
+    {
+        "id": "LS-1",
+        "title": "Dirac bundles and Dirac operators",
+        "speaker": "Lukas Schönlinner",
+        "date": "2025-12-03",
+        "time": "",
+        "series": "Spin Geometry and Scalar Curvature Rigidity",
+        "affiliation": "University of Augsburg",
+        "seriesDates": ["", "", "", ""],
+        "seriesLink": "/series/spin-geometry-and-scalar-curvature-rigidity/",
+        "zoomLink": "",
+        "meetingId": "",
+        "passcode": "",
+        "description": "This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.",
+        "part": "Part 1",
+        "recording": "",
+        "notes": "",
+        "abstract": "",
+        "about": "PhD student of Bernhard Hanke at the University of Augsburg. Research interests: scalar curvature geometry and spin geometry.",
+        "references": [
+            {
+                "type": "book",
+                "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+            },
+            {
+                "type": "script",
+                "citation": "Christian Bär: Spin geometry (2011)",
+                "url": "https://www.math.uni-potsdam.de/professuren/geometrie/lehre/lehrmaterialien/"
+            },
+            {
+                "type": "script",
+                "citation": "Bernhard Hanke: Short script on spin geometry (attached)"
+            }
+        ]
+    },
+    {
+        "id": "LS-2",
+        "title": "Spin manifolds",
+        "speaker": "Lukas Schönlinner",
+        "date": "2025-12-10",
+        "time": "",
+        "series": "Spin Geometry and Scalar Curvature Rigidity",
+        "affiliation": "University of Augsburg",
+        "seriesDates": ["", "", "", ""],
+        "seriesLink": "/series/spin-geometry-and-scalar-curvature-rigidity/",
+        "zoomLink": "",
+        "meetingId": "",
+        "passcode": "",
+        "description": "This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.",
+        "part": "Part 2",
+        "recording": "",
+        "notes": "",
+        "abstract": "",
+        "about": "PhD student of Bernhard Hanke at the University of Augsburg. Research interests: scalar curvature geometry and spin geometry.",
+        "references": [
+            {
+                "type": "book",
+                "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+            },
+            {
+                "type": "script",
+                "citation": "Christian Bär: Spin geometry (2011)",
+                "url": "https://www.math.uni-potsdam.de/professuren/geometrie/lehre/lehrmaterialien/"
+            },
+            {
+                "type": "script",
+                "citation": "Bernhard Hanke: Short script on spin geometry (attached)"
+            }
+        ]
+    },
+    {
+        "id": "LS-3",
+        "title": "Llarull's theorem and generalizations",
+        "speaker": "Lukas Schönlinner",
+        "date": "2025-12-17",
+        "time": "",
+        "series": "Spin Geometry and Scalar Curvature Rigidity",
+        "affiliation": "University of Augsburg",
+        "seriesDates": ["", "", "", ""],
+        "seriesLink": "/series/spin-geometry-and-scalar-curvature-rigidity/",
+        "zoomLink": "",
+        "meetingId": "",
+        "passcode": "",
+        "description": "This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.",
+        "part": "Part 3",
+        "recording": "",
+        "notes": "",
+        "abstract": "",
+        "about": "PhD student of Bernhard Hanke at the University of Augsburg. Research interests: scalar curvature geometry and spin geometry.",
+        "references": [
+            {
+                "type": "paper",
+                "citation": "Marcelo Llarull, Sharp estimates and the Dirac operator, Math. Ann. 310 (1998), no. 1, 55–71."
+            },
+            {
+                "type": "paper",
+                "citation": "Simone Cecchini, Bernhard Hanke, and Thomas Schick, Lipschitz rigidity for scalar curvature, arXiv:2206.11796."
+            },
+            {
+                "type": "book",
+                "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+            }
+        ]
+    },
+    {
+        "id": "LS-4",
+        "title": "Scalar curvature rigidity for manifolds with cone singularities",
+        "speaker": "Lukas Schönlinner",
+        "date": "2025-12-24",
+        "time": "",
+        "series": "Spin Geometry and Scalar Curvature Rigidity",
+        "affiliation": "University of Augsburg",
+        "seriesDates": ["", "", "", ""],
+        "seriesLink": "/series/spin-geometry-and-scalar-curvature-rigidity/",
+        "zoomLink": "",
+        "meetingId": "",
+        "passcode": "",
+        "description": "This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.",
+        "part": "Part 4",
+        "recording": "",
+        "notes": "",
+        "abstract": "",
+        "about": "PhD student of Bernhard Hanke at the University of Augsburg. Research interests: scalar curvature geometry and spin geometry.",
+        "references": [
+            {
+                "type": "paper",
+                "citation": "Simone Cecchini, Bernhard Hanke, Thomas Schick, Lukas Schönlinner: Abstract cone operators and Lipschitz rigidity for scalar curvature on singular manifolds, arXiv:2505.14054."
+            },
+            {
+                "type": "paper",
+                "citation": "Simone Cecchini, Bernhard Hanke, and Thomas Schick, Lipschitz rigidity for scalar curvature, arXiv:2206.11796."
+            },
+            {
+                "type": "book",
+                "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+            }
+        ]
+    }
+]

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaTeX to JSON Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #007cba;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #005a87;
+        }
+
+        .output {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .copy-btn {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>LaTeX to JSON Converter</h1>
+    <p><strong>Instructions:</strong> Paste your raw LaTeX code below (exactly as it is in your .tex file)</p>
+
+    <textarea id="latexInput" placeholder="Paste your LaTeX here...
+Example:
+\begin{itemize}
+    \item \textbf{Applications}:
+    \begin{itemize}
+        \item Classification of Hurewicz fibrations
+    \end{itemize}
+\end{itemize}"></textarea>
+
+    <button onclick="convertLatex()">Convert to JSON</button>
+
+    <div class="output">
+        <h3>JSON Output: <button class="copy-btn" onclick="copyToClipboard('jsonOutput')">Copy</button></h3>
+        <pre id="jsonOutput"></pre>
+    </div>
+
+    <div class="output">
+        <h3>Preview (how it will look): <button class="copy-btn" onclick="copyToClipboard('htmlPreview')">Copy
+                HTML</button></h3>
+        <div id="htmlPreview"></div>
+    </div>
+
+    <script>
+        function convertLatex() {
+            const input = document.getElementById('latexInput').value;
+
+            if (!input.trim()) {
+                alert('Please paste your LaTeX code first!');
+                return;
+            }
+
+            // Convert LaTeX to HTML
+            let html = input;
+
+            // Handle nested itemize environments
+            // First, replace all \begin{itemize} with <ul>
+            html = html.replace(/\\begin\{itemize\}/g, '<ul class="list-disc list-inside space-y-2 ml-4">');
+            html = html.replace(/\\end\{itemize\}/g, '</ul>');
+
+            // Handle \item
+            html = html.replace(/\\item\s*/g, '<li>');
+
+            // Handle \textbf{...}
+            html = html.replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>');
+
+            // Remove citations
+            html = html.replace(/\\cite\{[^}]+\}/g, '');
+
+            // Close li tags properly
+            html = html.replace(/(<li>[^<]*?)(?=<li>|<\/ul>|$)/g, '$1</li>');
+
+            // Clean up whitespace
+            html = html.replace(/\s+/g, ' ').trim();
+
+            // Escape for JSON
+            const jsonReady = html.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+
+            // Display results
+            document.getElementById('jsonOutput').textContent = `"${jsonReady}"`;
+            document.getElementById('htmlPreview').innerHTML = html;
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = elementId === 'htmlPreview' ? element.innerHTML : element.textContent;
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Copied to clipboard!');
+            });
+        }
+
+        // Example usage when page loads
+        window.onload = function () {
+            document.getElementById('latexInput').value = `\\begin{itemize}
+    \\item \\textbf{Applications}:
+    \\begin{itemize}
+        \\item Classification of Hurewicz fibrations over circle \\cite{Allaud1966, May1975}.
+        \\item The collection of homotopy classes of (homotopy associative) $H$-space multiplications \\cite{Curjel1968, Sawashita1976}.
+        \\item The class of homotopy equivalences and homeomorphisms \\cite{Zabrodsky1982}.
+    \\end{itemize}
+    
+    \\item \\textbf{Open Questions}:
+    \\begin{itemize}
+        \\item Characterization of finitely generated or presented $\\E(X)$.
+        \\item Computational: Calculate $\\E(X)$ for $X=\\mathbb{H}P^n$, $n>2$; simply connected rank $2$ $H$-spaces; compact Lie group, or Kahler manifold etc.
+        \\item Relation between $\\E_\\#(X), \\E_*(X)$ and $\\E(X)$ for reasonable space $X$.
+        \\item Realization problem: which groups can be realized as $\\E(X)$ for some $X$.
+    \\end{itemize}
+\\end{itemize}`;
+        };
+    </script>
+</body>
+</html>

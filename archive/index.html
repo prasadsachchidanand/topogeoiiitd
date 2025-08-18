@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive - Topology and Geometry Seminar - IIIT Delhi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans min-h-full flex flex-col">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Hero Section - Added top padding to account for fixed navbar -->
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Talk Archive</h1>
+            <p class="text-xl md:text-2xl mb-8">Explore past talks from the Topology and Geometry Seminar</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <!-- Archive -->
+        <section class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-blue-800 border-b-2 border-blue-200 pb-2">Past Talks</h2>
+                <div>
+                    <label for="year-filter" class="text-gray-700 font-medium mr-2">Filter by Year:</label>
+                    <select id="year-filter"
+                        class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">All</option>
+                    </select>
+                </div>
+            </div>
+            <div id="archive-talks" class="space-y-4"></div>
+            <!-- Pagination -->
+            <div class="mt-8 flex justify-center items-center space-x-2">
+                <button id="prev-page"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                    disabled>Previous</button>
+                <div id="page-numbers" class="flex space-x-2"></div>
+                <button id="next-page"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                    disabled>Next</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer - stays at bottom -->
+    <div id="footer-container" class="mt-auto"></div>
+
+    <script>
+        // Load navbar component
+        async function loadNavbar() {
+            try {
+                const response = await fetch('/components/navbar.html');
+                const navbarHtml = await response.text();
+                document.getElementById('navbar-container').innerHTML = navbarHtml;
+                initializeNavbar();
+            } catch (error) {
+                console.error('Error loading navbar:', error);
+                // Fallback: create a simple navbar if external file fails
+                document.getElementById('navbar-container').innerHTML = `
+                    <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+                        <div class="container mx-auto px-4 py-3">
+                            <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
+                        </div>
+                    </nav>
+                `;
+            }
+        }
+
+        // Initialize navbar functionality
+        function initializeNavbar() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            if (mobileMenuBtn && mobileNav) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isExpanded = mobileNav.classList.toggle('hidden');
+                    mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                });
+            } else {
+                console.error('Mobile menu elements not found:', { mobileMenuBtn, mobileNav });
+            }
+        }
+
+        // Load footer component
+        async function loadFooter() {
+            try {
+                const response = await fetch('/components/footer.html');
+                const footerHtml = await response.text();
+                document.getElementById('footer-container').innerHTML = footerHtml;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+                // Fallback: create a simple footer if external file fails
+                document.getElementById('footer-container').innerHTML = `
+                <footer class="bg-blue-900 text-white py-8 mt-auto">
+                    <div class="container mx-auto px-4">
+                        <div class="flex flex-col md:flex-row justify-between">
+                            <div class="mb-6 md:mb-0">
+                                <h2 class="text-xl font-bold mb-2">Topology and Geometry Seminar</h2>
+                                <p>IIIT Delhi</p>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Contact</h3>
+                                <p>Email: <a href="mailto:seminar@math.iiitd.ac.in"
+                                        class="text-blue-200 hover:underline">seminar@math.iiitd.ac.in</a></p>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-blue-800 text-center text-sm text-blue-200">
+                            <p>© 2025 Topology and Geometry Seminar, IIIT Delhi. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+            }
+        }
+
+        // Render MathJax after content is loaded
+        function renderMathJax() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch(function (err) {
+                    console.error('MathJax typeset failed: ' + err.message);
+                });
+            }
+        }
+    
+        // Pagination settings
+        const talksPerPage = 3;
+        let currentPage = 1;
+        let allTalks = [];
+        let filteredTalks = [];
+
+        // Fetch and render archived talks
+        async function fetchAndRenderArchive() {
+            try {
+                const response = await fetch('/data/talks.json');
+                const talksData = await response.json();
+                const currentDate = new Date();
+                allTalks = talksData
+                    .filter(talk => {
+                        try {
+                            const talkDateTime = new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`);
+                            return !isNaN(talkDateTime.getTime()) && talkDateTime < currentDate;
+                        } catch {
+                            console.warn(`Skipping talk ID ${talk.id} due to invalid date: ${talk.date}`);
+                            return false;
+                        }
+                    })
+                    .sort((a, b) => new Date(b.date) - new Date(a.date));  // Sort by ID to maintain part order
+
+                filteredTalks = [...allTalks];
+
+                // Populate year dropdown
+                const years = [...new Set(allTalks.map(talk => new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getFullYear()))].sort((a, b) => b - a);
+                const yearFilter = document.getElementById('year-filter');
+                years.forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearFilter.appendChild(option);
+                });
+
+                // Add event listener for year filter
+                yearFilter.addEventListener('change', () => {
+                    const selectedYear = yearFilter.value;
+                    filteredTalks = selectedYear === 'all' ? [...allTalks] : allTalks.filter(talk => new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getFullYear() == selectedYear);
+                    currentPage = 1; // Reset to first page on filter change
+                    renderTalks();
+                });
+
+                // Initial render
+                renderTalks();
+            } catch (error) {
+                console.error('Error fetching talks:', error);
+                document.getElementById('archive-talks').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
+            }
+        }
+
+        // Render talks for the current page
+        function renderTalks() {
+            // Group talks by series
+            const groupedTalks = {};
+            filteredTalks.forEach(talk => {
+                const series = talk.series || 'Others';
+                if (!groupedTalks[series]) {
+                    groupedTalks[series] = [];
+                }
+                groupedTalks[series].push(talk);
+            });
+
+            // Sort series by most recent talk date
+            const sortedSeries = Object.keys(groupedTalks).sort((a, b) => {
+                const latestDateA = Math.max(...groupedTalks[a].map(talk => new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getTime()));
+                const latestDateB = Math.max(...groupedTalks[b].map(talk => new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getTime()));
+                return latestDateB - latestDateA; // Descending order
+            });
+
+            // Paginate series
+            const startIndex = (currentPage - 1) * talksPerPage;
+            const endIndex = startIndex + talksPerPage;
+            const seriesToShow = sortedSeries.slice(startIndex, endIndex);
+
+            // Render accordion
+            let accordionHTML = '';
+            seriesToShow.forEach(series => {
+                const talks = groupedTalks[series];
+                if (talks.length === 0) return;
+
+                accordionHTML += `
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="w-full text-left p-4 bg-blue-100 text-blue-800 font-semibold flex justify-between items-center hover:bg-blue-200 focus:outline-none transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i').classList.toggle('fa-chevron-down'); this.querySelector('i').classList.toggle('fa-chevron-up');">
+                            ${series} (${talks.length} talks)
+                            <i class="fas fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div class="space-y-8 p-4 hidden" id="${series.toLowerCase().replace(/\s+/g, '-')}-talks">
+                            ${talks.map(talk => `
+                                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                                    <h3 class="text-xl font-bold text-blue-700">${talk.title}</h3>
+                                    <p class="text-gray-600 mb-2">${talk.series}${talk.part ? ` - ${talk.part}` : ''}</p>
+                                    <p class="text-gray-700 mb-2 flex items-center"><i class="far fa-calendar-alt mr-2"></i>${new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                                    <p class="text-gray-700 mb-4 flex items-center"><i class="far fa-clock mr-2"></i>${talk.time}</p>
+                                    ${talk.abstract ? `<p class="text-gray-700 mb-4"><strong>Abstract:</strong> ${talk.abstract}</p>` : ''}
+                                    <div class="flex space-x-4">
+                                        <a href="/series/${talk.series.toLowerCase().replace(/\s+/g, '-')}/" class="text-blue-600 hover:underline transition-colors">View Series Details</a>
+                                        ${talk.recording ? `<a href="${talk.recording}" class="text-blue-600 hover:underline transition-colors" target = "_blank"><i class="fas fa-video mr-1"></i>Watch Recording</a>` : ''}
+                                        ${talk.notes ? `<a href="${talk.notes}" class="text-blue-600 hover:underline transition-colors" target = "_blank"><i class="fas fa-file-pdf mr-1"></i>View Notes</a>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('archive-talks').innerHTML = accordionHTML || '<p class="text-gray-600">No past talks available for this year.</p>';
+
+            // Render Mathjax
+            renderMathJax();
+
+            // Render pagination
+            renderPagination(sortedSeries.length);
+        }
+
+        // Render pagination controls
+        function renderPagination(totalSeries) {
+            const totalPages = Math.ceil(totalSeries / talksPerPage);
+            const prevButton = document.getElementById('prev-page');
+            const nextButton = document.getElementById('next-page');
+            const pageNumbers = document.getElementById('page-numbers');
+
+            // Update buttons
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === totalPages || totalPages === 0;
+
+            // Generate page numbers
+            pageNumbers.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.className = `px-4 py-2 rounded-lg transition-colors ${currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`;
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    renderTalks();
+                });
+                pageNumbers.appendChild(button);
+            }
+
+            // Event listeners for prev/next buttons
+            prevButton.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTalks();
+                }
+            };
+            nextButton.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTalks();
+                }
+            };
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadNavbar();
+            await loadFooter();
+            await fetchAndRenderArchive();
+        });
+    </script>
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/mathtools']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ],
+                tags: 'ams',
+                displayMath: [
+                    ['$$', '$$'],
+                    ['\\[', '\\]']
+                ],
+                packages: { '[+]': ['mathtools'] }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    
+    <!-- MathJax Script -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

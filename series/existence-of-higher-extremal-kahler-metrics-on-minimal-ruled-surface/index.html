@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface - Topology and Geometry Seminar - IIIT
+        Delhi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .talk-card .content {
+            max-width: 65%;
+        }
+
+        @media (max-width: 768px) {
+            .talk-card .content {
+                max-width: 100%;
+            }
+
+            .talk-card .zoom-details {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Existence of Higher Extremal Kähler Metrics on a Minimal
+                Ruled Surface</h1>
+            <div class="bg-white text-blue-900 inline-block px-6 py-3 rounded-lg shadow-lg">
+                <p class="font-semibold" id="speaker-name">Loading...</p>
+                <p class="text-lg" id="speaker-affiliation">Loading...</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <!-- Series Overview -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">About the Series</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <p id="series-description" class="text-gray-700 mb-4">Loading...</p>
+                <p class="text-gray-700">
+                    The talks are designed for researchers, graduate students, and advanced undergraduates with a
+                    background in differential geometry or complex geometry. A basic understanding of Kähler manifolds
+                    would be helpful.
+                </p>
+            </div>
+        </section>
+
+        <!-- Schedule -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">Schedule</h2>
+            <div id="series-schedule" class="space-y-8">Loading...</div>
+        </section>
+
+        <!-- References -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">References</h2>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <ul id="references-list" class="list-disc list-inside text-gray-700 space-y-3">
+                    Loading...
+                </ul>
+            </div>
+        </section>
+
+        <!-- Speaker Bio -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">About the Speaker</h2>
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden">
+                    <img id="speaker-photo" class="w-full h-full object-cover hidden" alt="Speaker Photo">
+                    <div id="speaker-photo-placeholder"
+                        class="w-full h-full bg-blue-100 flex items-center justify-center text-blue-800">
+                        <i class="fas fa-user text-3xl"></i>
+                    </div>
+                </div>
+                <h3 id="speaker-bio-name" class="text-xl font-bold">
+                    <a id="speaker-name-link" href="#"
+                        class="hover:text-blue-600 transition-colors duration-200">Loading...</a>
+                </h3>
+                <p id="speaker-bio-affiliation" class="text-gray-600 mb-4">Loading...</p>
+                <p id="speaker-bio-description" class="text-gray-700 text-justify mb-4">Loading...</p>
+
+                <!-- Contact Information -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope mr-2 text-blue-600"></i>
+                        <span>Email: <a id="speaker-email" href="#"
+                                class="text-blue-600 hover:underline">Loading...</a></span>
+                    </div>
+                    <div id="speaker-personal-page-container" class="flex items-center hidden">
+                        <i class="fas fa-globe mr-2 text-blue-600"></i>
+                        <span>Personal Page: <a id="speaker-personal-page" href="#" target="_blank"
+                                class="text-blue-600 hover:underline">Visit Page</a></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer - stays at bottom -->
+    <div id="footer-container" class="mt-auto"></div>
+
+    <script>
+        // Load navbar component
+        async function loadNavbar() {
+            try {
+                const response = await fetch('/components/navbar.html');
+                const navbarHtml = await response.text();
+                document.getElementById('navbar-container').innerHTML = navbarHtml;
+                initializeNavbar();
+            } catch (error) {
+                console.error('Error loading navbar:', error);
+                // Fallback: create a simple navbar if external file fails
+                document.getElementById('navbar-container').innerHTML = `
+                <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+                    <div class="container mx-auto px-4 py-3">
+                        <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
+                    </div>
+                </nav>
+            `;
+            }
+        }
+
+        // Initialize navbar functionality
+        function initializeNavbar() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            if (mobileMenuBtn && mobileNav) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isExpanded = mobileNav.classList.toggle('hidden');
+                    mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                });
+            } else {
+                console.error('Mobile menu elements not found:', { mobileMenuBtn, mobileNav });
+            }
+        }
+
+        // Load footer component
+        async function loadFooter() {
+            try {
+                const response = await fetch('/components/footer.html');
+                const footerHtml = await response.text();
+                document.getElementById('footer-container').innerHTML = footerHtml;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+                // Fallback: create a simple footer if external file fails
+                document.getElementById('footer-container').innerHTML = `
+                <footer class="bg-blue-900 text-white py-8 mt-auto">
+                    <div class="container mx-auto px-4">
+                        <div class="flex flex-col md:flex-row justify-between">
+                            <div class="mb-6 md:mb-0">
+                                <h2 class="text-xl font-bold mb-2">Topology and Geometry Seminar</h2>
+                                <p>IIIT Delhi</p>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Contact</h3>
+                                <p>Email: <a href="mailto:seminar@math.iiitd.ac.in"
+                                        class="text-blue-200 hover:underline">seminar@math.iiitd.ac.in</a></p>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-blue-800 text-center text-sm text-blue-200">
+                            <p>© 2025 Topology and Geometry Seminar, IIIT Delhi. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+            }
+        }
+
+        // Render MathJax after content is loaded
+        function renderMathJax() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch(function (err) {
+                    console.error('MathJax typeset failed: ' + err.message);
+                });
+            }
+        }
+
+        // Fetch and render series data
+        async function fetchAndRenderSeries() {
+            try {
+                const response = await fetch('/data/rajas.json');
+                const talksArray = await response.json();
+
+                // Filter talks for this series and sort by date
+                const kahlerTalks = talksArray.filter(talk => talk.series === 'Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface')
+                    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                if (kahlerTalks.length === 0) {
+                    throw new Error('No Kähler metrics talks found');
+                }
+
+                // Get speaker info from first talk
+                const firstTalk = kahlerTalks[0];
+                const speakerName = firstTalk.speaker;
+                const speakerAffiliation = firstTalk.affiliation;
+                const speakerAbout = firstTalk.about || "Loading speaker information...";
+
+                // Update hero section
+                document.getElementById('speaker-name').textContent = `Speaker: ${speakerName}`;
+                document.getElementById('speaker-affiliation').textContent = `${speakerAffiliation}`;
+
+                // Update series description
+                document.getElementById('series-description').textContent = firstTalk.description || 'This series explores higher extremal Kähler metrics on compact Kähler manifolds.';
+
+                // Update speaker bio section
+                const speakerNameLink = document.getElementById('speaker-name-link');
+                speakerNameLink.textContent = speakerName;
+
+                document.getElementById('speaker-bio-affiliation').textContent = speakerAffiliation;
+                document.getElementById('speaker-bio-description').textContent = speakerAbout;
+
+                // Update email
+                const emailElement = document.getElementById('speaker-email');
+                emailElement.href = 'mailto:rajassompurkar@gmail.com';
+                emailElement.textContent = 'rajassompurkar@gmail.com';
+
+                // Update personal page link if available
+                const personalPageUrl = firstTalk.personalPage || firstTalk.homepage || firstTalk.website;
+                if (personalPageUrl) {
+                    const personalPageContainer = document.getElementById('speaker-personal-page-container');
+                    const personalPageElement = document.getElementById('speaker-personal-page');
+                    const speakerNameLink = document.getElementById('speaker-name-link');
+
+                    personalPageElement.href = personalPageUrl;
+                    personalPageContainer.classList.remove('hidden');
+
+                    // Also make the speaker name clickable
+                    speakerNameLink.href = personalPageUrl;
+                    speakerNameLink.target = '_blank';
+                } else {
+                    // Remove link functionality if no personal page
+                    const speakerNameLink = document.getElementById('speaker-name-link');
+                    speakerNameLink.removeAttribute('href');
+                    speakerNameLink.classList.add('cursor-default');
+                }
+
+                // Update references for Kähler geometry
+                const referencesList = document.getElementById('references-list');
+                referencesList.innerHTML = `
+                    <li><strong>An Introduction to Extremal Kähler Metrics</strong> by Gábor Székelyhidi</li>
+                    <li><strong>Complex Geometry: An Introduction</strong> by Daniel Huybrechts</li>
+                    <li><strong>Kähler Geometry</strong> by Andrei Moroianu</li>
+                    <li><strong>Scalar Curvature and the Einstein Constraint Equations</strong> by Michael T. Anderson</li>
+                `;
+
+                // Render schedule/talks
+                const scheduleContainer = document.getElementById('series-schedule');
+                scheduleContainer.innerHTML = kahlerTalks.map(talk => `
+                    <div class="talk-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                        <div class="flex flex-col md:flex-row justify-between gap-4">
+                            <div class="content">
+                                <h3 class="text-xl font-bold text-blue-700">${talk.title}</h3>
+                                ${talk.part ? `<p class="text-gray-600 mb-2">${talk.part} of the series</p>` : ''}
+                                <p class="text-gray-700 mb-2 flex items-center">
+                                    <i class="far fa-calendar-alt mr-2"></i>
+                                    ${new Date(talk.date).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                })}
+                                </p>
+                                <p class="text-gray-700 mb-4 flex items-center">
+                                    <i class="far fa-clock mr-2"></i>
+                                    ${talk.time}
+                                </p>
+                                ${talk.abstract ? `<p class="text-gray-700 mb-4"><strong>Plan:</strong> ${talk.abstract}</p>` : ''}
+                            </div>
+                            <div class="zoom-details w-full md:w-1/3">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h4 class="font-bold mb-2 text-blue-800">Zoom Meeting</h4>
+                                    <p class="mb-2">
+                                        <span class="font-medium text-gray-700">Link:</span> 
+                                        <a href="${talk.zoomLink || '#'}" 
+                                           class="text-blue-600 hover:underline" 
+                                           target="_blank">
+                                           ${talk.zoomLink ? 'Join Meeting' : 'TBA'}
+                                        </a>
+                                    </p>
+                                    <p class="mb-2">
+                                        <span class="font-medium text-gray-700">Meeting ID:</span> 
+                                        ${talk.meetingId || 'TBA'}
+                                    </p>
+                                    <p>
+                                        <span class="font-medium text-gray-700">Passcode:</span> 
+                                        ${talk.passcode || 'TBA'}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                renderMathJax();
+
+            } catch (error) {
+                console.error('Error loading talks data:', error);
+
+                // Show error messages
+                document.getElementById('speaker-name').textContent = 'Error loading speaker data';
+                document.getElementById('speaker-affiliation').textContent = 'Error loading speaker data';
+                document.getElementById('series-description').textContent = 'Error loading series description. Please try again later.';
+                document.getElementById('series-schedule').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
+                document.getElementById('speaker-bio-name').textContent = 'Error loading speaker data';
+                document.getElementById('speaker-bio-affiliation').textContent = '';
+                document.getElementById('speaker-bio-description').textContent = 'Error loading speaker bio. Please try again later.';
+                document.getElementById('speaker-email').textContent = 'Error loading email';
+                document.getElementById('references-list').innerHTML = '<li class="text-red-600">Error loading references. Please try again later.</li>';
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadNavbar();
+            await loadFooter();
+            await fetchAndRenderSeries();
+        });
+    </script>
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/mathtools']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ],
+                tags: 'ams',
+                displayMath: [
+                    ['$$', '$$'],
+                    ['\\[', '\\]']
+                ],
+                packages: { '[+]': ['mathtools'] }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <!-- MathJax Script -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

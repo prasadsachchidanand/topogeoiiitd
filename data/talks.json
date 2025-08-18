@@ -1,0 +1,633 @@
+[
+  {
+    "id": "RSS-1",
+    "title": "Overview of Some Concepts Related to Compact Kähler Manifolds (Prerequisites)",
+    "speaker": "Rajas Sandeep Sompurkar",
+    "personalPage": "https://sites.google.com/view/rajassompurkar/home",
+    "date": "2025-08-20",
+    "time": "14:30 IST",
+    "series": "Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface",
+    "affiliation": "IISER Pune",
+    "seriesDates": [
+      "20 Aug",
+      "27 Aug",
+      "3 Sep"
+    ],
+    "seriesLink": "/series/existence-of-higher-extremal-kahler-metrics-on-minimal-ruled-surface/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "Based on the Research Paper: Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface - Rajas Sandeep Sompurkar (Bull. Sci. Math., 2023)",
+    "part": "Part 1",
+    "recording": "",
+    "notes": "",
+    "abstract": "In this introductory talk we will briefly review the theory of complex manifolds and almost complex structures with a few standard examples. We will then introduce the notion of a Kähler manifold and see the relevance and importance of this notion. Things like the Chern connection on a compact Kähler manifold and the resultant notion of curvature will be explained briefly with the relevant mathematical expressions. Most notably we will discuss about the Ricci and scalar curvatures and the related notion of the first Chern class of a compact Kähler manifold. The notation and conventions for the rest of the series of talks will be set in this talk.",
+    "about": "Rajas Sandeep Sompurkar completed his Ph.D. in Kähler Geometry and Geometric Analysis in November 2024 at the Indian Institute of Science (IISc), Bengaluru, under the guidance of Prof. Vamsi Pritham Pingali and Prof. Ved V. Datar. Since February 2025, he has been working as a Postdoctoral Fellow at the Indian Institute of Science Education and Research (IISER) Pune, mentored by Prof. Diganta Borah. His research focuses on canonical Kähler metrics on compact Kähler manifolds—such as Calabi’s extremal Kähler metrics, constant scalar curvature Kähler (cscK) metrics, and Kähler-Einstein metrics—and the associated Kähler geometric partial differential equations (PDEs) that naturally arise from the study of these metrics. For instance, the study of Kähler-Einstein metrics is directly linked to the complex Monge-Ampère equation."
+  },
+  {
+    "id": "RSS-2",
+    "title": "Overview of Some Concepts Related to Holomorphic Line Bundles (Prerequisites)",
+    "speaker": "Rajas Sandeep Sompurkar",
+    "personalPage": "https://sites.google.com/view/rajassompurkar/home",
+    "date": "2025-08-27",
+    "time": "14:30 IST",
+    "series": "Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface",
+    "seriesDates": [
+      "20 Aug",
+      "27 Aug",
+      "3 Sep"
+    ],
+    "seriesLink": "/series/existence-of-higher-extremal-kahler-metrics-on-minimal-ruled-surface/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "Based on the Research Paper: Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface - Rajas Sandeep Sompurkar (Bull. Sci. Math., 2023)",
+    "part": "Part 2",
+    "recording": "",
+    "notes": "",
+    "abstract": "In this talk we will see the definition of a holomorphic vector bundle on a compact Kähler manifold and we will also see some of the properties of it. For the purpose of this series of talks we would be mostly interested in holomorphic line bundles (which are just rank one holomorphic vector bundles), but we will still see some standard examples like the holomorphic tangent and cotangent bundles and most importantly for us the canonical and anticanonical line bundles associated to any compact Kähler manifold. The notions of Ricci and scalar curvature for a compact Kähler manifold introduced in the previous talk will be reformulated here in terms of the curvature of the anticanonical line bundle."
+  },
+  {
+    "id": "RSS-3",
+    "title": "Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface (Final Main Talk)",
+    "speaker": "Rajas Sandeep Sompurkar",
+    "personalPage": "https://sites.google.com/view/rajassompurkar/home",
+    "date": "2025-09-03",
+    "time": "14:30 IST",
+    "series": "Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface",
+    "seriesDates": [
+      "20 Aug",
+      "27 Aug",
+      "3 Sep"
+    ],
+    "seriesLink": "/series/existence-of-higher-extremal-kahler-metrics-on-minimal-ruled-surface/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "Based on the Research Paper: Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface - Rajas Sandeep Sompurkar (Bull. Sci. Math., 2023)",
+    "part": "Part 3",
+    "recording": "",
+    "notes": "",
+    "abstract": "In this final talk our goal is to state the main results of the above mentioned research work. We will discuss about the various notions of canonical Kähler metrics on a compact Kähler manifold. These are roughly speaking Kähler metrics that satisfy some special curvature properties, and the three well-known and well-studied notions of canonical Kähler metrics are Kähler-Einstein metrics, constant scalar curvature Kähler (cscK) metrics and Calabi’s extremal Kähler metrics. We will define motivated by analogy the notions of higher cscK and higher extremal Kähler metrics introduced by Pingali, which are the main objects of study in our research work. We will give a brief description of the momentum construction method of Hwang-Singer which is used in our problem of finding explicit examples of higher extremal Kähler metrics. We will set this problem in its correct context and provide the relevant references for the same."
+  },
+  {
+    "id": "OC-1",
+    "title": "Poisson manifolds and Hamiltonian systems",
+    "speaker": "Oscar Cosserat",
+    "date": "2025-09-10",
+    "time": "17:00 IST",
+    "series": "Invariant theory of Hamiltonian mechanics and related numerical analysis",
+    "affiliation": "Göttingen Mathematisches Institut",
+    "seriesDates": [
+      "10 Sep",
+      "17 Sep",
+      "24 Sep"
+    ],
+    "seriesLink": "/series/invariant-theory-of-hamiltonian-mechanics-and-related-numerical-analysis/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This course explores the fascinating interplay between Poisson geometry, Hamiltonian mechanics, and numerical integration methods. We will develop tools to construct numerical integrators for Hamiltonian dynamical systems on Poisson manifolds.",
+    "part": "Part 1",
+    "recording": "",
+    "notes": "",
+    "abstract": "We define Poisson manifolds and review the notions we need for this lecture : Hamiltonian vector fields, first integrals, Casimir functions, symplectic foliation... The end of this first lecture is devoted to explain why traditional numerical tools do not straightforwardly apply to Hamiltonian systems on Poisson manifolds.",
+    "about": "Oscar Cosserat is a postdoctoral researcher at the Göttingen Mathematisches Institut, in Germany. He received his PhD in 2023 from the University of La Rochelle, France. His research focuses on the interplay between theoretical mechanics, numerical analysis and differential geometry."
+  },
+  {
+    "id": "OC-2",
+    "title": "Symplectic groupoids and Hamilton-Jacobi equation",
+    "speaker": "Oscar Cosserat",
+    "date": "2025-09-17",
+    "time": "17:00 IST",
+    "series": "Invariant theory of Hamiltonian mechanics and related numerical analysis",
+    "affiliation": "Göttingen Mathematisches Institut",
+    "seriesDates": [
+      "10 Sep",
+      "17 Sep",
+      "24 Sep"
+    ],
+    "seriesLink": "/series/invariant-theory-of-hamiltonian-mechanics-and-related-numerical-analysis/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This course explores the fascinating interplay between Poisson geometry, Hamiltonian mechanics, and numerical integration methods. We will develop tools to construct numerical integrators for Hamiltonian dynamical systems on Poisson manifolds.",
+    "part": "Part 2",
+    "recording": "",
+    "notes": "",
+    "abstract": "We start by defining groupoids and relate them to Poisson manifolds through the concept of symplectic groupoid. Geometrical tools such as Lagrangian bisections will be defined and explained. In the last part of this session, we introduce so-called \"bi-realisations\". Those are local forms of symplectic groupoids. On bi-realisations, we will explain how a Hamilton-Jacobi allows to approximate Hamiltonian dynamics on Poisson manifolds."
+  },
+  {
+    "id": "OC-3",
+    "title": "Hamiltonian Poisson integrator",
+    "speaker": "Oscar Cosserat",
+    "date": "2025-09-24",
+    "time": "17:00 IST",
+    "series": "Invariant theory of Hamiltonian mechanics and related numerical analysis",
+    "affiliation": "Göttingen Mathematisches Institut",
+    "seriesDates": [
+      "10 Sep",
+      "17 Sep",
+      "24 Sep"
+    ],
+    "seriesLink": "/series/invariant-theory-of-hamiltonian-mechanics-and-related-numerical-analysis/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This course explores the fascinating interplay between Poisson geometry, Hamiltonian mechanics, and numerical integration methods. We will develop tools to construct numerical integrators for Hamiltonian dynamical systems on Poisson manifolds.",
+    "part": "Part 3",
+    "recording": "",
+    "notes": "",
+    "abstract": "To finish, we will introduce pre-Lie algebras to solve Hamilton-Jacobi equation at arbitrary order and obtain Poisson integrators discretising Hamiltonian dynamics in that way. Geometric properties will be gathered and explained. This last session contains numerical simulations on concrete examples such as Lotka-Volterra systems and rigid body dynamics. To conclude, we will conclude and give several research perspectives."
+  },
+  {
+    "id": "SS-1",
+    "title": "Foundations and Basic Examples",
+    "speaker": "Sandip Samanta",
+    "affiliation": "IISER Kolkata",
+    "mail": "ss18ip021@iiserkol.ac.in",
+    "date": "2025-10-01",
+    "time": "17:00 IST",
+    "series": "On The Groups of Self-Homotopy Equivalences",
+    "seriesDates": [
+      "01 Oct",
+      "08 Oct",
+      "15 Oct",
+      "22 Oct"
+    ],
+    "seriesLink": "/series/on-the-groups-of-self-homotopy-equivalences",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups, highlighting ongoing challenges and directions in algebraic topology.",
+    "part": "Part 1",
+    "recording": "",
+    "notes": "",
+    "references": [
+      {
+        "type": "book",
+        "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+      },
+      {
+        "type": "script",
+        "citation": "Christian Bär: Spin geometry (2011)",
+        "url": "https://www.math.uni-potsdam.de/professuren/geometrie/lehre/lehrmaterialien/"
+      },
+      {
+        "type": "script",
+        "citation": "Bernhard Hanke: Short script on spin geometry (attached)"
+      }
+    ],
+    "abstract": "We provide an overview of the group of self-homotopy equivalences, $\\mathcal{E}(X) = \\{[f] \\mid f: X \\simeq X\\}$, focusing on key subgroups such as those acting trivially on homotopy or cohomology groups. We summarize the known structures of $\\mathcal{E}(X)$ for spaces like spheres and low-dimensional complexes. The discussion includes exact sequences relating $\\mathcal{E}(X)$ for products and wedge sums. Finally, we explore various generalizations obtained by considering free-, fiber-, equivariant-, and $H$-homotopy equivalences, highlighting their algebraic and geometric significance through classical results.",
+    "about": "Sandip Samanta is in the final stages of his PhD under the supervision of Prof. Somnath Basu at IISER Kolkata. His primary research interests are in algebraic topology, with a particular focus on homotopy theory. He also has keen interests in differential geometry and various aspects of combinatorics."
+  },
+  {
+    "id": "SS-2",
+    "title": "Some Computation",
+    "speaker": "Sandip Samanta",
+    "date": "2025-10-08",
+    "time": "17:00 IST",
+    "series": "On The Groups of Self-Homotopy Equivalences",
+    "seriesDates": [
+      "01 Oct",
+      "08 Oct",
+      "15 Oct",
+      "22 Oct"
+    ],
+    "seriesLink": "/series/on-the-groups-of-self-homotopy-equivalences",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups, highlighting ongoing challenges and directions in algebraic topology.",
+    "part": "Part 2",
+    "recording": "",
+    "notes": "",
+    "abstract": "We survey explicit computations of the group of self-homotopy equivalences $\\mathcal{E}(X)$ for key spaces in homotopy theory. This includes results for pseudo-projective planes, with emphasis on lens spaces, as well as for Moore spaces $M(G, n)$ and twisted Eilenberg-MacLane spaces. We also discuss the structure of $\\mathcal{E}(X)$ for real, complex, and quaternionic projective spaces. Additionally, we present computations of $\\mathcal{E}_H(X)$ for rank one $H$-spaces, specifically $S^1$, $S^3$, $S^7$, $\\mathbb{R}P^3$, $\\mathbb{R}P^7$, and for certain higher-dimensional examples such as $S^3\\times S^7$, $S^3\\times S^3$, $S^7\\times S^7$, $SU(3)$, and $Sp(2)$. These cases illustrate the diversity and depth of self-equivalence groups across notable spaces in topology.",
+    "about": "Sandip Samanta is in the final stages of his PhD under the supervision of Prof. Somnath Basu at IISER Kolkata. His primary research interests are in algebraic topology, with a particular focus on homotopy theory. He also has keen interests in differential geometry and various aspects of combinatorics."
+  },
+  {
+    "id": "SS-3",
+    "title": "Algebraic Connection and Localization",
+    "speaker": "Sandip Samanta",
+    "date": "2025-10-15",
+    "time": "17:00 IST",
+    "series": "On The Groups of Self-Homotopy Equivalences",
+    "seriesDates": [
+      "01 Oct",
+      "08 Oct",
+      "15 Oct",
+      "22 Oct"
+    ],
+    "seriesLink": "/series/on-the-groups-of-self-homotopy-equivalences",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups, highlighting ongoing challenges and directions in algebraic topology.",
+    "part": "Part 3",
+    "recording": "",
+    "notes": "",
+    "abstract": "Here we will briefly see the ingredients of rational homotopy theory, like rationalization of spaces, Sullivan (minimal) models, LS category, etc, and compute some basic examples . Finally, we will relate these to our case of self-homotopy equivalences, like how $\\mathcal{E}(X)$ and $\\mathcal{E}(X_\\mathcal{P})$ are related, and some other results.",
+    "about": "Sandip Samanta is in the final stages of his PhD under the supervision of Prof. Somnath Basu at IISER Kolkata. His primary research interests are in algebraic topology, with a particular focus on homotopy theory. He also has keen interests in differential geometry and various aspects of combinatorics."
+  },
+  {
+    "id": "SS-4",
+    "title": "Applications and Open Problems",
+    "speaker": "Sandip Samanta",
+    "date": "2025-10-22",
+    "time": "17:00 IST",
+    "series": "On The Groups of Self-Homotopy Equivalences",
+    "seriesDates": [
+      "01 Oct",
+      "08 Oct",
+      "15 Oct",
+      "22 Oct"
+    ],
+    "seriesLink": "/series/on-the-groups-of-self-homotopy-equivalences",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups, highlighting ongoing challenges and directions in algebraic topology.",
+    "part": "Part 4",
+    "recording": "",
+    "notes": "",
+    "abstract": "We highlight significant applications of the study of self-homotopy equivalence groups, including the classification of Hurewicz fibrations over the circle, the structure of homotopy classes of (homotopy associative) $H$-space multiplications, and connections between self-homotopy equivalences and homeomorphisms. The survey concludes with open questions concerning the characterization and computation of $\\mathcal{E}(X)$—such as determining conditions for finite generation or presentation, explicit calculations for spaces like $\\mathbb{H}P^n$ (with $n>2$), simply connected rank $2$ $H$-spaces, compact Lie groups, and Kähler manifolds—along with the exploration of relationships between key subgroups and the realization problem for groups arising as self-homotopy equivalence groups.",
+    "about": "Sandip Samanta is in the final stages of his PhD under the supervision of Prof. Somnath Basu at IISER Kolkata. His primary research interests are in algebraic topology, with a particular focus on homotopy theory. He also has keen interests in differential geometry and various aspects of combinatorics."
+  },
+  {
+    "id": "SR-1",
+    "title": "Motivation. Groups as metric spaces",
+    "speaker": "Sergio Romero Alba",
+    "date": "2025-10-29",
+    "time": "17:00 IST",
+    "series": "Topological and Homological Tools for the Study of Spaces from Infinitely Far Away",
+    "affiliation": "Georg-August-Universität Göttingen & University of Málaga",
+    "seriesDates": [
+      "29 Oct",
+      "5 Nov",
+      "12 Nov",
+      "19 Nov",
+      "26 Nov"
+    ],
+    "seriesLink": "/series/coarse-cohomology",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This course provides an illustrative introduction to coarse geometry and progresses toward presenting currently open research problems related to the computation of large scale invariants, particularly through the framework of topological bornological spaces. From Coarse Geometry to Cohomology and Stone Spaces.",
+    "part": "Part 1",
+    "recording": "",
+    "notes": "",
+    "abstract": "We review, through examples, the foundational philosophy of Geometric Group Theory, where each group G with a finite generating set S is associated with a metric space (G, dS), translating algebraic properties of the group into geometric features of the space. Although this assignment initially depends on the choice of S, such dependence vanishes when viewing (G, dS) \"from infinitely far away\". This motivates the introduction of coarse structures.",
+    "about": "Sergio Romero Alba is affiliated with Georg-August-Universität Göttingen and University of Málaga. His research focuses on coarse geometry, homological algebra, and the study of spaces from infinitely far away using topological and homological tools. He works on coarse cohomology and its applications to geometric group theory and topological bornological spaces."
+  },
+  {
+    "id": "SR-2",
+    "title": "Coarse cohomology and the coarse category. Basic properties",
+    "speaker": "Sergio Romero Alba",
+    "date": "2025-11-05",
+    "time": "17:00 IST",
+    "series": "Topological and Homological Tools for the Study of Spaces from Infinitely Far Away",
+    "affiliation": "Georg-August-Universität Göttingen & University of Málaga",
+    "seriesDates": [
+      "29 Oct",
+      "5 Nov",
+      "12 Nov",
+      "19 Nov",
+      "26 Nov"
+    ],
+    "seriesLink": "/series/coarse-cohomology",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This course provides an illustrative introduction to coarse geometry and progresses toward presenting currently open research problems related to the computation of large scale invariants, particularly through the framework of topological bornological spaces. From Coarse Geometry to Cohomology and Stone Spaces.",
+    "part": "Part 2",
+    "recording": "",
+    "notes": "",
+    "abstract": "The coarse cohomology HX*(X) of a space X is introduced as a functor from the coarse category, and its coarse invariance is discussed. We then particularize to metric spaces and study a few examples."
+  },
+  {
+    "id": "SR-3",
+    "title": "Ideals of contractible DGAs. The Roe product in coarse cohomology",
+    "speaker": "Sergio Romero Alba",
+    "date": "2025-11-12",
+    "time": "17:00 IST",
+    "series": "Topological and Homological Tools for the Study of Spaces from Infinitely Far Away",
+    "affiliation": "Georg-August-Universität Göttingen & University of Málaga",
+    "seriesDates": [
+      "29 Oct",
+      "5 Nov",
+      "12 Nov",
+      "19 Nov",
+      "26 Nov"
+    ],
+    "seriesLink": "/series/coarse-cohomology",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This course provides an illustrative introduction to coarse geometry and progresses toward presenting currently open research problems related to the computation of large scale invariants, particularly through the framework of topological bornological spaces. From Coarse Geometry to Cohomology and Stone Spaces.",
+    "part": "Part 3",
+    "recording": "",
+    "notes": "",
+    "abstract": "We refine the structure of HX*(X), enhancing it to an algebra by endowing it with a product. Much like the cup product allows for a finer distinction between topological spaces, it is natural to seek products in coarse cohomology that sharpen the information it provides. We will introduce the Roe product in coarse cohomology."
+  },
+  {
+    "id": "SR-4",
+    "title": "Topological bornological spaces and their cohomology",
+    "speaker": "Sergio Romero Alba",
+    "date": "2025-11-19",
+    "time": "17:00 IST",
+    "series": "Topological and Homological Tools for the Study of Spaces from Infinitely Far Away",
+    "affiliation": "Georg-August-Universität Göttingen & University of Málaga",
+    "seriesDates": [
+      "29 Oct",
+      "5 Nov",
+      "12 Nov",
+      "19 Nov",
+      "26 Nov"
+    ],
+    "seriesLink": "/series/coarse-cohomology",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This course provides an illustrative introduction to coarse geometry and progresses toward presenting currently open research problems related to the computation of large scale invariants, particularly through the framework of topological bornological spaces. From Coarse Geometry to Cohomology and Stone Spaces.",
+    "part": "Part 4",
+    "recording": "",
+    "notes": "",
+    "abstract": "The category TopBorn of topological bornological spaces is defined. We propose an invariant HB* on these spaces, which we call bornological cohomology, and show that it can be determined from the Alexander–Spanier cohomology at infinity. We compute several examples and enrich HB* with a product."
+  },
+  {
+    "id": "SR-5",
+    "title": "Low degree cohomology, extension spaces and boundaries at infinity. Open problems",
+    "speaker": "Sergio Romero Alba",
+    "date": "2025-11-26",
+    "time": "17:00 IST",
+    "series": "Topological and Homological Tools for the Study of Spaces from Infinitely Far Away",
+    "affiliation": "Georg-August-Universität Göttingen & University of Málaga",
+    "seriesDates": [
+      "29 Oct",
+      "5 Nov",
+      "12 Nov",
+      "19 Nov",
+      "26 Nov"
+    ],
+    "seriesLink": "/series/coarse-cohomology",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This course provides an illustrative introduction to coarse geometry and progresses toward presenting currently open research problems related to the computation of large scale invariants, particularly through the framework of topological bornological spaces. From Coarse Geometry to Cohomology and Stone Spaces.",
+    "part": "Part 5",
+    "recording": "",
+    "notes": "",
+    "abstract": "We ask whether, for a topological bornological space X, there exists a connection between HB1(X) and the \"components at infinity of X\". This leads us to consider rays in X, connected components at infinity, and compactifications of X. We study extensions whose boundaries at infinity are Stone spaces and conclude with open research questions."
+  },
+  {
+    "id": "LS-1",
+    "title": "Dirac bundles and Dirac operators",
+    "speaker": "Lukas Schönlinner",
+    "date": "2025-12-03",
+    "time": "",
+    "series": "Spin Geometry and Scalar Curvature Rigidity",
+    "affiliation": "University of Augsburg",
+    "seriesDates": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "seriesLink": "/series/spin-geometry-and-scalar-curvature-rigidity/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.",
+    "part": "Part 1",
+    "recording": "",
+    "notes": "",
+    "abstract": "",
+    "about": "PhD student of Bernhard Hanke at the University of Augsburg. Research interests: scalar curvature geometry and spin geometry.",
+    "references": [
+      {
+        "type": "book",
+        "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+      },
+      {
+        "type": "script",
+        "citation": "Christian Bär: Spin geometry (2011)",
+        "url": "https://www.math.uni-potsdam.de/professuren/geometrie/lehre/lehrmaterialien/"
+      },
+      {
+        "type": "script",
+        "citation": "Bernhard Hanke: Short script on spin geometry (attached)"
+      }
+    ]
+  },
+  {
+    "id": "LS-2",
+    "title": "Spin manifolds",
+    "speaker": "Lukas Schönlinner",
+    "date": "2025-12-10",
+    "time": "",
+    "series": "Spin Geometry and Scalar Curvature Rigidity",
+    "affiliation": "University of Augsburg",
+    "seriesDates": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "seriesLink": "/series/spin-geometry-and-scalar-curvature-rigidity/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.",
+    "part": "Part 2",
+    "recording": "",
+    "notes": "",
+    "abstract": "",
+    "about": "PhD student of Bernhard Hanke at the University of Augsburg. Research interests: scalar curvature geometry and spin geometry.",
+    "references": [
+      {
+        "type": "book",
+        "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+      },
+      {
+        "type": "script",
+        "citation": "Christian Bär: Spin geometry (2011)",
+        "url": "https://www.math.uni-potsdam.de/professuren/geometrie/lehre/lehrmaterialien/"
+      },
+      {
+        "type": "script",
+        "citation": "Bernhard Hanke: Short script on spin geometry (attached)"
+      }
+    ]
+  },
+  {
+    "id": "LS-3",
+    "title": "Llarull's theorem and generalizations",
+    "speaker": "Lukas Schönlinner",
+    "date": "2025-12-17",
+    "time": "",
+    "series": "Spin Geometry and Scalar Curvature Rigidity",
+    "affiliation": "University of Augsburg",
+    "seriesDates": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "seriesLink": "/series/spin-geometry-and-scalar-curvature-rigidity/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.",
+    "part": "Part 3",
+    "recording": "",
+    "notes": "",
+    "abstract": "",
+    "about": "PhD student of Bernhard Hanke at the University of Augsburg. Research interests: scalar curvature geometry and spin geometry.",
+    "references": [
+      {
+        "type": "paper",
+        "citation": "Marcelo Llarull, Sharp estimates and the Dirac operator, Math. Ann. 310 (1998), no. 1, 55–71."
+      },
+      {
+        "type": "paper",
+        "citation": "Simone Cecchini, Bernhard Hanke, and Thomas Schick, Lipschitz rigidity for scalar curvature, arXiv:2206.11796."
+      },
+      {
+        "type": "book",
+        "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+      }
+    ]
+  },
+  {
+    "id": "LS-4",
+    "title": "Scalar curvature rigidity for manifolds with cone singularities",
+    "speaker": "Lukas Schönlinner",
+    "date": "2025-12-24",
+    "time": "",
+    "series": "Spin Geometry and Scalar Curvature Rigidity",
+    "affiliation": "University of Augsburg",
+    "seriesDates": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "seriesLink": "/series/spin-geometry-and-scalar-curvature-rigidity/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This lecture series explores the deep connections between spin geometry and scalar curvature rigidity phenomena. We will develop the foundational tools of Dirac operators and their applications to understanding geometric constraints on Riemannian manifolds.",
+    "part": "Part 4",
+    "recording": "",
+    "notes": "",
+    "abstract": "",
+    "about": "PhD student of Bernhard Hanke at the University of Augsburg. Research interests: scalar curvature geometry and spin geometry.",
+    "references": [
+      {
+        "type": "paper",
+        "citation": "Simone Cecchini, Bernhard Hanke, Thomas Schick, Lukas Schönlinner: Abstract cone operators and Lipschitz rigidity for scalar curvature on singular manifolds, arXiv:2505.14054."
+      },
+      {
+        "type": "paper",
+        "citation": "Simone Cecchini, Bernhard Hanke, and Thomas Schick, Lipschitz rigidity for scalar curvature, arXiv:2206.11796."
+      },
+      {
+        "type": "book",
+        "citation": "John Roe: Elliptic operators, topology and asymptotic methods"
+      }
+    ]
+  },
+  {
+    "id": "AB-1",
+    "title": "Finsler Geometry: Introduction",
+    "speaker": "Aritra Bhowmick",
+    "date": "2026-08-13",
+    "time": "17:00 IST",
+    "series": "Finsler Geometry",
+    "affiliation": "KSoM, Kerala",
+    "seriesDates": [
+      "13 Aug",
+      "20 Aug",
+      "27 Aug",
+      "3 Sep"
+    ],
+    "seriesLink": "/series/finsler-geometry/",
+    "zoomLink": "https://zoom.us/xxxxxx",
+    "meetingId": "123 456 7890",
+    "passcode": "geometry",
+    "description": "This series of talks will cover fundamental concepts and recent developments in Finsler Geometry, a generalization of Riemannian geometry where the norm is not necessarily quadratic.",
+    "part": "Part 1",
+    "recording": "https://www.youtube.com/watch?v=ov0ud5nfjQM&pp=ygUQZmluc2xlciBnZW9tZXRyeQ%3D%3D",
+    "notes": "https://math.aalto.fi/~fdahl/finsler/finsler.pdf",
+    "abstract": "This introductory talk presents the basics of Finsler Geometry, a generalization of Riemannian geometry where the metric is defined by a Finsler norm. We will explore the historical context, fundamental definitions, and key differences from Riemannian geometry, setting the stage for the series. Let $M$ be a manifold and $\\mathbb{R}$ is set of real numbers."
+  },
+  {
+    "id": "AB-2",
+    "title": "Finsler Geometry: Fundamental Concepts",
+    "speaker": "Aritra Bhowmick",
+    "date": "2026-08-20",
+    "time": "17:00 IST",
+    "series": "Finsler Geometry",
+    "seriesDates": [
+      "13 Aug",
+      "20 Aug",
+      "27 Aug",
+      "3 Sep"
+    ],
+    "seriesLink": "/series/finsler-geometry/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This series of talks will cover fundamental concepts and recent developments in Finsler Geometry, a generalization of Riemannian geometry where the norm is not necessarily quadratic.",
+    "part": "Part 2",
+    "recording": "",
+    "notes": "",
+    "abstract": "This session delves into the core concepts of Finsler Geometry, including the Finsler metric, geodesic equations, and curvature. We will discuss how these concepts extend classical notions and their significance in geometric analysis."
+  },
+  {
+    "id": "AB-3",
+    "title": "Finsler Geometry: Advanced Topics",
+    "speaker": "Aritra Bhowmick",
+    "date": "2026-08-27",
+    "time": "17:00 IST",
+    "series": "Finsler Geometry",
+    "seriesDates": [
+      "13 Aug",
+      "20 Aug",
+      "27 Aug",
+      "3 Sep"
+    ],
+    "seriesLink": "/series/finsler-geometry/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This series of talks will cover fundamental concepts and recent developments in Finsler Geometry, a generalization of Riemannian geometry where the norm is not necessarily quadratic.",
+    "part": "Part 3",
+    "recording": "",
+    "notes": "",
+    "abstract": "This talk explores advanced topics in Finsler Geometry, such as Chern connections, flag curvature, and their implications for geometric structures. We will also cover recent research trends and open problems in the field."
+  },
+  {
+    "id": "AB-4",
+    "title": "Finsler Geometry: Applications",
+    "speaker": "Aritra Bhowmick",
+    "date": "2026-09-03",
+    "time": "17:00 IST",
+    "series": "Finsler Geometry",
+    "seriesDates": [
+      "13 Aug",
+      "20 Aug",
+      "27 Aug",
+      "3 Sep"
+    ],
+    "seriesLink": "/series/finsler-geometry/",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "description": "This series of talks will cover fundamental concepts and recent developments in Finsler Geometry, a generalization of Riemannian geometry where the norm is not necessarily quadratic.",
+    "part": "Part 4",
+    "recording": "",
+    "notes": "",
+    "abstract": "The final talk discusses applications of Finsler Geometry in physics, optimization, and control theory. We will explore practical examples and case studies, highlighting the interdisciplinary impact of Finslerian methods."
+  }
+]

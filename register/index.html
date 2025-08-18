@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar on Topology and Geometry - Subscribe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        .description {
+            margin-bottom: 35px;
+            font-size: 1.05em;
+            color: #555;
+            text-align: left;
+        }
+
+        .subscription-form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-align: left;
+        }
+
+        input[type="email"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="email"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .info-section {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .info-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .info-section li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .info-section li::before {
+            content: '•';
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .contact-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .subscription-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Seminar on Topology and Geometry</h1>
+        <p class="subtitle">Join our global research community</p>
+
+        <div class="description">
+            <p>Stay updated with cutting-edge research in topology and geometry. Our seminar features leading
+                researchers from around the world presenting their latest work, fostering collaboration and advancing
+                mathematical knowledge.</p>
+        </div>
+
+        <div class="subscription-form">
+            <h3 style="margin-bottom: 20px; color: #2c3e50;">Subscribe to Our Mailing List</h3>
+            <form id="subscriptionForm">
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="affiliation">Institution/Affiliation</label>
+                    <input type="text" id="affiliation" name="affiliation"
+                        placeholder="University, Research Institute, etc.">
+                </div>
+
+                <div class="form-group">
+                    <label for="research-area">Primary Research Area</label>
+                    <select id="research-area" name="research-area">
+                        <option value="">Select area (optional)</option>
+                        <option value="algebraic-topology">Algebraic Topology</option>
+                        <option value="differential-geometry">Differential Geometry</option>
+                        <option value="algebraic-geometry">Algebraic Geometry</option>
+                        <option value="geometric-topology">Geometric Topology</option>
+                        <option value="riemannian-geometry">Riemannian Geometry</option>
+                        <option value="complex-geometry">Complex Geometry</option>
+                        <option value="symplectic-geometry">Symplectic Geometry</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Subscribe to Seminar</button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <strong>Thank you!</strong> Your subscription has been confirmed and you'll receive a confirmation email
+                shortly.
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                <strong>Error:</strong> <span id="errorText">Something went wrong. Please try again.</span>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>What You'll Receive</h3>
+            <ul>
+                <li>A confirmation email welcoming you to the seminar</li>
+                <li>Seminar announcements with speaker information and abstracts</li>
+                <li>Zoom/streaming links for online participation</li>
+                <li>Occasional updates on related conferences and workshops</li>
+                <li>Opportunities to suggest speakers and topics</li>
+            </ul>
+        </div>
+
+        <div class="contact-info">
+            <p><strong>Organizer:</strong> [Your Name]<br>
+                <strong>Email:</strong> [your.email@institution.edu]<br>
+                <strong>Institution:</strong> [Your Institution]
+            </p>
+
+            <p style="margin-top: 15px; font-size: 0.9em;">
+                Your email will only be used for seminar-related communications. You can unsubscribe at any time.
+            </p>
+        </div>
+    </div>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Initialize EmailJS
+        emailjs.init({
+            publicKey: "3yb8-ROo2xsg0EMQk", // Replace with your EmailJS public key
+        });
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkqTGXWRLZndTo23GnI70i7wBeW065hBM",
+            authDomain: "topologygeometrymailinggroup.firebaseapp.com",
+            projectId: "topologygeometrymailinggroup",
+            storageBucket: "topologygeometrymailinggroup.firebasestorage.app",
+            messagingSenderId: "32360372692",
+            appId: "1:32360372692:web:1f1d2376c98e1d628b5e41",
+            measurementId: "G-6YXJDVB41N"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Handle form submission
+        document.getElementById('subscriptionForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Show loading state
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Subscribing...';
+            submitBtn.disabled = true;
+
+            // Hide previous messages
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+
+            try {
+                // Get form data
+                const formData = new FormData(this);
+                const data = {
+                    email: formData.get('email').toLowerCase().trim(),
+                    name: formData.get('name').trim(),
+                    affiliation: formData.get('affiliation').trim(),
+                    researchArea: formData.get('research-area'),
+                    subscribedAt: serverTimestamp(),
+                    status: 'active'
+                };
+
+                // Add to Firestore first
+                const docRef = await addDoc(collection(db, 'subscribers'), data);
+                console.log('Subscriber added with ID: ', docRef.id);
+
+                // Send confirmation email via EmailJS
+                const templateParams = {
+                    to_name: data.name,
+                    to_email: data.email,
+                    user_name: data.name,
+                    user_email: data.email,
+                    user_affiliation: data.affiliation || 'Not specified',
+                    user_research_area: data.researchArea ?
+                        data.researchArea.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) :
+                        'Not specified',
+                    subscription_date: new Date().toLocaleDateString(),
+                    organizer_email: 'sachchidanand.prasad1729@gmail.com'  // Add this line
+                };
+
+                await emailjs.send(
+                    'TopoGeoSeminar',     // Replace with your EmailJS service ID
+                    'template_t02fy3l',    // Replace with your EmailJS template ID
+                    templateParams
+                );
+
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+
+                // Reset form
+                this.reset();
+
+            } catch (error) {
+                console.error('Error:', error);
+
+                // Show error message
+                const errorMsg = document.getElementById('errorMessage');
+                const errorText = document.getElementById('errorText');
+
+                if (error.message && error.message.includes('EmailJS')) {
+                    errorText.textContent = 'Your subscription was saved, but we couldn\'t send a confirmation email. You\'re still subscribed!';
+                } else {
+                    errorText.textContent = `Error: ${error.message}`;
+                }
+
+                errorMsg.style.display = 'block';
+                errorMsg.scrollIntoView({ behavior: 'smooth' });
+            } finally {
+                // Reset button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

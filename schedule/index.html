@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule - Topology and Geometry Seminar - IIIT Delhi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans min-h-full flex flex-col">
+    <!-- Include Navbar -->
+    <div id="navbar-container"></div>
+
+    <!-- Hero Section - Added top padding to account for fixed navbar -->
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Seminar Schedule</h1>
+            <p class="text-xl mb-8">View all upcoming talks and add them to your calendar</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <!-- Schedule -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">Upcoming Talks</h2>
+            <div id="schedule-talks" class="space-y-4">
+                <div class="text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-blue-500 text-2xl mb-2"></i>
+                    <p class="text-gray-600">Loading talks...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer - stays at bottom -->
+    <div id="footer-container" class="mt-auto"></div>
+
+    <script>
+        // Load navbar component
+        async function loadNavbar() {
+            try {
+                const response = await fetch('/components/navbar.html');
+                const navbarHtml = await response.text();
+                document.getElementById('navbar-container').innerHTML = navbarHtml;
+                initializeNavbar(); // Initialize navbar after loading
+            } catch (error) {
+                console.error('Error loading navbar:', error);
+                document.getElementById('navbar-container').innerHTML = `
+                    <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+                        <div class="container mx-auto px-4 py-3">
+                            <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
+                        </div>
+                    </nav>
+                `;
+            }
+        }
+
+        // Initialize navbar functionality
+        function initializeNavbar() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            if (mobileMenuBtn && mobileNav) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isExpanded = mobileNav.classList.toggle('hidden');
+                    mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                });
+            } else {
+                console.error('Mobile menu elements not found:', { mobileMenuBtn, mobileNav });
+            }
+        }
+
+        // Load footer component
+        async function loadFooter() {
+            try {
+                const response = await fetch('/components/footer.html');
+                const footerHtml = await response.text();
+                document.getElementById('footer-container').innerHTML = footerHtml;
+            } catch (error) {
+                console.error('Error loading footer:', error);
+                document.getElementById('footer-container').innerHTML = `
+                <footer class="bg-blue-900 text-white py-8 mt-auto">
+                    <div class="container mx-auto px-4">
+                        <div class="flex flex-col md:flex-row justify-between">
+                            <div class="mb-6 md:mb-0">
+                                <h2 class="text-xl font-bold mb-2">Topology and Geometry Seminar</h2>
+                                <p>IIIT Delhi</p>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">Contact</h3>
+                                <p>Email: <a href="mailto:seminar@math.iiitd.ac.in" class="text-blue-200 hover:underline">seminar@math.iiitd.ac.in</a></p>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-blue-800 text-center text-sm text-blue-200">
+                            <p>© 2025 Topology and Geometry Seminar, IIIT Delhi. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            `;
+            }
+        }
+
+        // Render MathJax after content is loaded
+        function renderMathJax() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch(function (err) {
+                    console.error('MathJax typeset failed: ' + err.message);
+                });
+            }
+        }
+        
+        // Global variables to store talks data
+        let allTalks = [];
+        let upcomingTalks = [];
+        let groupedTalks = {};
+
+        // Function to parse time and create proper date object
+        function parseDateTime(dateStr, timeStr) {
+            try {
+                console.log('Parsing date:', dateStr, 'time:', timeStr);
+
+                // Clean up the time string
+                const cleanTime = timeStr.replace(/\s*IST\s*/i, '').trim();
+                let hour = 17; // Default to 5 PM
+                let minute = 0;
+
+                // Parse time with more flexible regex
+                const timeMatch = cleanTime.match(/(\d{1,2}):?(\d{2})?\s*(AM|PM)?/i);
+                if (timeMatch) {
+                    hour = parseInt(timeMatch[1]);
+                    minute = timeMatch[2] ? parseInt(timeMatch[2]) : 0;
+                    const period = timeMatch[3];
+
+                    if (period) {
+                        if (period.toUpperCase() === 'PM' && hour !== 12) {
+                            hour += 12;
+                        } else if (period.toUpperCase() === 'AM' && hour === 12) {
+                            hour = 0;
+                        }
+                    } else if (hour < 12) {
+                        // If no AM/PM specified and hour is less than 12, assume PM for typical seminar times
+                        hour += 12;
+                    }
+                }
+
+                // Parse date - handle different formats
+                let date;
+                if (dateStr.includes('/')) {
+                    // Format: MM/DD/YYYY or DD/MM/YYYY
+                    const parts = dateStr.split('/');
+                    if (parts.length === 3) {
+                        // Assume MM/DD/YYYY format
+                        date = new Date(parseInt(parts[2]), parseInt(parts[0]) - 1, parseInt(parts[1]));
+                    }
+                } else if (dateStr.includes('-')) {
+                    // Format: YYYY-MM-DD
+                    date = new Date(dateStr);
+                } else {
+                    // Try to parse as is
+                    date = new Date(dateStr);
+                }
+
+                // Set the time
+                date.setHours(hour, minute, 0, 0);
+
+                console.log('Parsed date:', date);
+                return date;
+            } catch (error) {
+                console.error('Error parsing date/time:', dateStr, timeStr, error);
+                return new Date();
+            }
+        }
+
+        // Function to format date for display
+        function formatDisplayDate(date) {
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        // Function to format date for ICS (UTC format)
+        function formatICSDate(date) {
+            // Convert to UTC and format for ICS
+            const utcDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+            return utcDate.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+        }
+
+        // Function to generate Google Calendar URL
+        function generateGoogleCalendarURL(talk) {
+            try {
+                const startDate = parseDateTime(talk.date, talk.time);
+                const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour duration
+
+                // Format dates for Google Calendar (in local time)
+                const formatGoogleDate = (date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const hour = String(date.getHours()).padStart(2, '0');
+                    const minute = String(date.getMinutes()).padStart(2, '0');
+                    const second = String(date.getSeconds()).padStart(2, '0');
+                    return `${year}${month}${day}T${hour}${minute}${second}`;
+                };
+
+                const startFormatted = formatGoogleDate(startDate);
+                const endFormatted = formatGoogleDate(endDate);
+
+                const title = encodeURIComponent(`${talk.title} - ${talk.series}`);
+                const details = encodeURIComponent(`Speaker: ${talk.speaker || 'TBA'}\n\n${talk.abstract || 'No abstract available.'}\n\nZoom Details:\nLink: ${talk.zoomLink || 'TBA'}\nMeeting ID: ${talk.meetingId || 'TBA'}\nPasscode: ${talk.passcode || 'TBA'}`);
+                const location = encodeURIComponent(talk.zoomLink ? `Zoom Meeting - ${talk.zoomLink}` : 'Online Meeting');
+
+                const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startFormatted}/${endFormatted}&details=${details}&location=${location}&ctz=Asia/Kolkata`;
+
+                console.log('Generated Google Calendar URL:', url);
+                return url;
+            } catch (error) {
+                console.error('Error generating Google Calendar URL:', error);
+                return '#';
+            }
+        }
+
+        // Function to generate ICS file
+        function generateICS(talk) {
+            try {
+                const startDate = parseDateTime(talk.date, talk.time);
+                const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+
+                const formatICSDateTime = (date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const hour = String(date.getHours()).padStart(2, '0');
+                    const minute = String(date.getMinutes()).padStart(2, '0');
+                    const second = String(date.getSeconds()).padStart(2, '0');
+                    return `${year}${month}${day}T${hour}${minute}${second}`;
+                };
+
+                const escapeICSText = (text) => {
+                    if (!text) return '';
+                    return text.replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n');
+                };
+
+                const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Topology and Geometry Seminar//IIIT Delhi//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VTIMEZONE
+TZID:Asia/Kolkata
+BEGIN:STANDARD
+DTSTART:20070101T000000
+TZNAME:IST
+TZOFFSETFROM:+0530
+TZOFFSETTO:+0530
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:${talk.id || Date.now()}@topologygeometryseminar.iiitd.ac.in
+DTSTART;TZID=Asia/Kolkata:${formatICSDateTime(startDate)}
+DTEND;TZID=Asia/Kolkata:${formatICSDateTime(endDate)}
+SUMMARY:${escapeICSText(talk.title)} - ${escapeICSText(talk.series)}
+DESCRIPTION:Speaker: ${escapeICSText(talk.speaker || 'TBA')}\\n\\n${escapeICSText(talk.abstract || 'No abstract available.')}\\n\\nZoom Details:\\nLink: ${escapeICSText(talk.zoomLink || 'TBA')}\\nMeeting ID: ${escapeICSText(talk.meetingId || 'TBA')}\\nPasscode: ${escapeICSText(talk.passcode || 'TBA')}
+LOCATION:${escapeICSText(talk.zoomLink ? `Zoom Meeting - ${talk.zoomLink}` : 'Online Meeting')}
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR`;
+
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${talk.title.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '_')}.ics`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+                console.log('ICS file generated successfully');
+            } catch (error) {
+                console.error('Error generating ICS file:', error);
+                alert('Error generating calendar file. Please try again.');
+            }
+        }
+
+        // Show calendar options dropdown
+        function showCalendarOptions(talk, buttonElement) {
+            console.log('Showing calendar options for talk:', talk);
+
+            // Remove any existing dropdown
+            const existingDropdown = document.querySelector('.calendar-dropdown');
+            if (existingDropdown) {
+                existingDropdown.remove();
+            }
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'calendar-dropdown absolute bg-white border border-gray-200 rounded-lg shadow-lg z-50 mt-2 min-w-48';
+            dropdown.innerHTML = `
+                <button class="google-btn w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center transition-colors border-b border-gray-100">
+                    <i class="fab fa-google text-red-500 mr-3"></i>
+                    Google Calendar
+                </button>
+                <button class="ics-btn w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center transition-colors">
+                    <i class="fas fa-calendar-alt text-blue-500 mr-3"></i>
+                    Apple Calendar / Outlook
+                </button>
+            `;
+
+            // Position the dropdown relative to the button
+            const container = buttonElement.closest('.bg-white');
+            if (container) {
+                container.style.position = 'relative';
+                container.appendChild(dropdown);
+
+                dropdown.style.position = 'absolute';
+                dropdown.style.top = `${buttonElement.offsetTop + buttonElement.offsetHeight + 5}px`;
+                dropdown.style.right = '20px';
+            } else {
+                // Fallback positioning
+                document.body.appendChild(dropdown);
+                const rect = buttonElement.getBoundingClientRect();
+                dropdown.style.position = 'fixed';
+                dropdown.style.top = `${rect.bottom + 5}px`;
+                dropdown.style.left = `${rect.left}px`;
+            }
+
+            // Add event listeners
+            dropdown.querySelector('.google-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Google Calendar button clicked');
+                const url = generateGoogleCalendarURL(talk);
+                if (url && url !== '#') {
+                    window.open(url, '_blank');
+                } else {
+                    alert('Error generating Google Calendar link. Please try again.');
+                }
+                dropdown.remove();
+            });
+
+            dropdown.querySelector('.ics-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('ICS button clicked');
+                generateICS(talk);
+                dropdown.remove();
+            });
+
+            // Close dropdown when clicking outside
+            setTimeout(() => {
+                const closeDropdown = (e) => {
+                    if (!dropdown.contains(e.target) && e.target !== buttonElement) {
+                        dropdown.remove();
+                        document.removeEventListener('click', closeDropdown);
+                    }
+                };
+                document.addEventListener('click', closeDropdown);
+            }, 100);
+        }
+
+        // Fetch and render upcoming talks
+        async function fetchAndRenderSchedule() {
+            try {
+                const response = await fetch('/data/talks.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                allTalks = await response.json();
+                console.log('Loaded talks:', allTalks);
+
+                const currentDate = new Date();
+                console.log('Current date:', currentDate);
+
+                // Filter upcoming talks
+                upcomingTalks = allTalks
+                    .filter(talk => {
+                        try {
+                            const talkDate = parseDateTime(talk.date, talk.time);
+                            const isUpcoming = talkDate >= currentDate;
+                            console.log(`Talk "${talk.title}" on ${talk.date} ${talk.time} -> ${talkDate} (upcoming: ${isUpcoming})`);
+                            return isUpcoming;
+                        } catch (error) {
+                            console.warn(`Skipping talk ID ${talk.id} due to invalid date: ${talk.date}`, error);
+                            return false;
+                        }
+                    })
+                    .sort((a, b) => parseDateTime(a.date, a.time) - parseDateTime(b.date, b.time));
+
+                console.log('Upcoming talks:', upcomingTalks);
+
+                // Group talks by series
+                groupedTalks = {};
+                upcomingTalks.forEach(talk => {
+                    const series = talk.series || 'Others';
+                    if (!groupedTalks[series]) {
+                        groupedTalks[series] = [];
+                    }
+                    groupedTalks[series].push(talk);
+                });
+
+                console.log('Grouped talks:', groupedTalks);
+
+                // Render accordion
+                let accordionHTML = '';
+                for (const [series, talks] of Object.entries(groupedTalks)) {
+                    if (talks.length === 0) continue;
+
+                    const seriesId = series.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                    accordionHTML += `
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="accordion-btn w-full text-left p-4 bg-blue-100 text-blue-800 font-semibold flex justify-between items-center hover:bg-blue-200 focus:outline-none transition-colors" data-target="${seriesId}-talks">
+                                ${series} (${talks.length} talks)
+                                <i class="fas fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div class="accordion-content space-y-8 p-4 hidden" id="${seriesId}-talks">
+                                ${talks.map((talk, index) => `
+                                    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                                        <div class="flex flex-col md:flex-row justify-between gap-4">
+                                            <div class="max-w-full md:max-w-[65%]">
+                                                <h3 class="text-xl font-bold text-blue-700">${talk.title}</h3>
+                                                <p class="text-gray-600 mb-2">${talk.speaker ? `Speaker: ${talk.speaker}` : ''}</p>
+                                                <p class="text-gray-600 mb-2">${talk.series}${talk.part ? ` - ${talk.part}` : ''}</p>
+                                                <p class="text-gray-700 mb-2 flex items-center">
+                                                    <i class="far fa-calendar-alt mr-2"></i>
+                                                    ${formatDisplayDate(parseDateTime(talk.date, talk.time))}
+                                                </p>
+                                                <p class="text-gray-700 mb-4 flex items-center">
+                                                    <i class="far fa-clock mr-2"></i>
+                                                    ${talk.time}
+                                                </p>
+                                                ${talk.abstract ? `<p class="text-gray-700 mb-4"><strong>Abstract:</strong> ${talk.abstract}</p>` : ''}
+                                                ${talk.seriesLink && talk.seriesLink !== '#' ? `<a href="${talk.seriesLink}" class="text-blue-600 hover:underline transition-colors">View Series Details</a>` : ''}
+                                            </div>
+                                            <div class="w-full md:w-1/3">
+                                                <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                                                    <h4 class="font-bold mb-2 text-blue-800">Zoom Meeting</h4>
+                                                    ${talk.zoomLink ? `<p class="mb-2"><span class="font-medium text-gray-700">Link:</span> <a href="${talk.zoomLink}" class="text-blue-600 hover:underline transition-colors break-all" target="_blank">${talk.zoomLink}</a></p>` : '<p class="mb-2"><span class="font-medium text-gray-700">Link:</span> TBA</p>'}
+                                                    <p class="mb-2"><span class="font-medium text-gray-700">Meeting ID:</span> ${talk.meetingId || 'TBA'}</p>
+                                                    <p><span class="font-medium text-gray-700">Passcode:</span> ${talk.passcode || 'TBA'}</p>
+                                                </div>
+                                                <button class="calendar-btn w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none transition-colors flex items-center justify-center" data-talk-id="${talk.id}">
+                                                    <i class="fas fa-calendar-plus mr-2"></i>
+                                                    Add to Calendar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const talksContainer = document.getElementById('schedule-talks');
+                if (accordionHTML) {
+                    talksContainer.innerHTML = accordionHTML;
+
+                    // Add event listeners for accordion buttons
+                    document.querySelectorAll('.accordion-btn').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const targetId = this.getAttribute('data-target');
+                            const content = document.getElementById(targetId);
+                            const icon = this.querySelector('i');
+
+                            content.classList.toggle('hidden');
+                            icon.classList.toggle('fa-chevron-down');
+                            icon.classList.toggle('fa-chevron-up');
+                        });
+                    });
+
+                    // Add event listeners for calendar buttons
+                    document.querySelectorAll('.calendar-btn').forEach(button => {
+                        button.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            const talkId = this.getAttribute('data-talk-id');
+                            console.log('Calendar button clicked for talk ID:', talkId);
+
+                            // Try to find the talk by ID (handle both string and number IDs)
+                            let talk = allTalks.find(t => t.id == talkId || t.id === parseInt(talkId));
+
+                            if (talk) {
+                                console.log('Found talk:', talk);
+                                showCalendarOptions(talk, this);
+                            } else {
+                                console.error('Talk not found for ID:', talkId);
+                                console.log('Available talks:', allTalks.map(t => ({ id: t.id, title: t.title })));
+                                alert('Error: Talk not found. Please try again.');
+                            }
+                        });
+                    });
+                } else {
+                    talksContainer.innerHTML = '<p class="text-gray-600 text-center py-8">No upcoming talks scheduled at this time. Check back later!</p>';
+                }
+
+                renderMathJax();
+
+            } catch (error) {
+                console.error('Error fetching talks:', error);
+                document.getElementById('schedule-talks').innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-2xl mb-2"></i>
+                        <p class="text-red-600">Error loading talks. Please try again later.</p>
+                        <p class="text-gray-500 text-sm mt-2">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('DOM loaded, initializing...');
+            await loadNavbar();
+            await loadFooter();
+            await fetchAndRenderSchedule();
+        });
+    </script>
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/mathtools']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ],
+                tags: 'ams',
+                displayMath: [
+                    ['$$', '$$'],
+                    ['\\[', '\\]']
+                ],
+                packages: { '[+]': ['mathtools'] }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    
+    <!-- MathJax Script -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</body>
+</html>
