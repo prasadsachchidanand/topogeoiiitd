@@ -4,8 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archive - Topology and Geometry Seminar - IIIT Delhi</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo.png">
+    <link rel="apple-touch-icon" href="/assets/logo.png">
+    <link rel="shortcut icon" href="/assets/logo.png">
+
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .talk-card .content {
+            max-width: 65%;
+        }
+
+        @media (max-width: 768px) {
+            .talk-card .content {
+                max-width: 100%;
+            }
+
+            .talk-card .zoom-details {
+                margin-top: 1rem;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans min-h-full flex flex-col">
     <!-- Include Navbar -->
@@ -21,27 +44,33 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8 flex-grow">
-        <!-- Archive -->
-        <section class="mb-12">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-bold text-blue-800 border-b-2 border-blue-200 pb-2">Past Talks</h2>
-                <div>
-                    <label for="year-filter" class="text-gray-700 font-medium mr-2">Filter by Year:</label>
-                    <select id="year-filter"
-                        class="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="all">All</option>
-                    </select>
+        <!-- Filter Section -->
+        <section class="mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <h2 class="text-2xl font-bold text-blue-800">Filter Past Talks</h2>
+                    <div class="flex items-center">
+                        <label for="year-filter" class="text-gray-700 font-medium mr-3">Filter by Year:</label>
+                        <select id="year-filter"
+                            class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="all">All Years</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div id="archive-talks" class="space-y-4"></div>
+        </section>
+
+        <!-- Archive -->
+        <section class="mb-12">
+            <div id="archive-talks" class="space-y-6"></div>
             <!-- Pagination -->
             <div class="mt-8 flex justify-center items-center space-x-2">
                 <button id="prev-page"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors font-medium"
                     disabled>Previous</button>
                 <div id="page-numbers" class="flex space-x-2"></div>
                 <button id="next-page"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors font-medium"
                     disabled>Next</button>
             </div>
         </section>
@@ -126,7 +155,7 @@
                 });
             }
         }
-    
+
         // Pagination settings
         const talksPerPage = 3;
         let currentPage = 1;
@@ -149,7 +178,7 @@
                             return false;
                         }
                     })
-                    .sort((a, b) => new Date(b.date) - new Date(a.date));  // Sort by ID to maintain part order
+                    .sort((a, b) => new Date(b.date) - new Date(a.date));  // Sort by date descending
 
                 filteredTalks = [...allTalks];
 
@@ -175,7 +204,7 @@
                 renderTalks();
             } catch (error) {
                 console.error('Error fetching talks:', error);
-                document.getElementById('archive-talks').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
+                document.getElementById('archive-talks').innerHTML = '<div class="bg-white rounded-lg shadow-md p-6"><p class="text-red-600 text-center">Error loading talks. Please try again later.</p></div>';
             }
         }
 
@@ -210,23 +239,96 @@
                 if (talks.length === 0) return;
 
                 accordionHTML += `
-                    <div class="border border-gray-200 rounded-lg">
-                        <button class="w-full text-left p-4 bg-blue-100 text-blue-800 font-semibold flex justify-between items-center hover:bg-blue-200 focus:outline-none transition-colors" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i').classList.toggle('fa-chevron-down'); this.querySelector('i').classList.toggle('fa-chevron-up');">
-                            ${series} (${talks.length} talks)
-                            <i class="fas fa-chevron-down transition-transform"></i>
+                    <div class="bg-white rounded-lg shadow-md border border-gray-200">
+                        <button class="w-full text-left p-6 bg-blue-50 text-blue-800 font-bold text-lg flex justify-between items-center hover:bg-blue-100 focus:outline-none transition-colors rounded-t-lg" onclick="toggleSeries(this)">
+                            ${series} 
+                            <div class="flex items-center gap-3">
+                                <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">${talks.length} talk${talks.length > 1 ? 's' : ''}</span>
+                                <i class="fas fa-chevron-down transition-transform text-blue-600"></i>
+                            </div>
                         </button>
-                        <div class="space-y-8 p-4 hidden" id="${series.toLowerCase().replace(/\s+/g, '-')}-talks">
+                        <div class="hidden" id="${series.toLowerCase().replace(/\s+/g, '-')}-talks">
                             ${talks.map(talk => `
-                                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
-                                    <h3 class="text-xl font-bold text-blue-700">${talk.title}</h3>
-                                    <p class="text-gray-600 mb-2">${talk.series}${talk.part ? ` - ${talk.part}` : ''}</p>
-                                    <p class="text-gray-700 mb-2 flex items-center"><i class="far fa-calendar-alt mr-2"></i>${new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                                    <p class="text-gray-700 mb-4 flex items-center"><i class="far fa-clock mr-2"></i>${talk.time}</p>
-                                    ${talk.abstract ? `<p class="text-gray-700 mb-4"><strong>Abstract:</strong> ${talk.abstract}</p>` : ''}
-                                    <div class="flex space-x-4">
-                                        <a href="/series/${talk.series.toLowerCase().replace(/\s+/g, '-')}/" class="text-blue-600 hover:underline transition-colors">View Series Details</a>
-                                        ${talk.recording ? `<a href="${talk.recording}" class="text-blue-600 hover:underline transition-colors" target = "_blank"><i class="fas fa-video mr-1"></i>Watch Recording</a>` : ''}
-                                        ${talk.notes ? `<a href="${talk.notes}" class="text-blue-600 hover:underline transition-colors" target = "_blank"><i class="fas fa-file-pdf mr-1"></i>View Notes</a>` : ''}
+                                <div class="talk-card border-t border-gray-200 p-6">
+                                    <div class="flex flex-col md:flex-row justify-between gap-6">
+                                        <div class="content">
+                                            <h3 class="text-xl font-bold text-blue-700 mb-2">${talk.title}</h3>
+                                            ${talk.part ? `<p class="text-gray-600 mb-3 font-medium">${talk.part} of the series</p>` : ''}
+                                            
+                                            <div class="flex flex-wrap gap-4 mb-4 text-gray-700">
+                                                <p class="flex items-center">
+                                                    <i class="far fa-calendar-alt mr-2 text-blue-600"></i>
+                                                    ${new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                                                </p>
+                                                <p class="flex items-center">
+                                                    <i class="far fa-clock mr-2 text-blue-600"></i>
+                                                    ${talk.time}
+                                                </p>
+                                            </div>
+
+                                            ${talk.speaker ? `
+                                                <div class="mb-4 p-3 bg-gray-50 rounded-lg">
+                                                    <p class="font-medium text-gray-800">
+                                                        <i class="fas fa-user mr-2 text-blue-600"></i>
+                                                        Speaker: ${talk.speaker}${talk.affiliation ? `, ${talk.affiliation}` : ''}
+                                                    </p>
+                                                </div>
+                                            ` : ''}
+                                            
+                                            ${talk.abstract ? `<div class="mb-4"><p class="text-gray-700 text-justify"><strong class="text-gray-800">Abstract:</strong> ${talk.abstract}</p></div>` : ''}
+
+                                            <!-- Post-Lecture Resources -->
+                                            ${(talk.recording || talk.notes) ? `
+                                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                                    <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                                                        <i class="fas fa-folder-open mr-2 text-blue-600"></i>
+                                                        Post-Lecture Resources:
+                                                    </h4>
+                                                    <div class="flex flex-wrap gap-3">
+                                                        ${talk.recording ? `
+                                                            <a href="${talk.recording}" 
+                                                               class="inline-flex items-center px-4 py-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors font-medium" 
+                                                               target="_blank">
+                                                                <i class="fas fa-video mr-2"></i>
+                                                                Watch Recording
+                                                            </a>
+                                                        ` : ''}
+                                                        ${talk.notes ? `
+                                                            <a href="${talk.notes}" 
+                                                               class="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors font-medium" 
+                                                               target="_blank">
+                                                                <i class="fas fa-file-alt mr-2"></i>
+                                                                Lecture Notes
+                                                            </a>
+                                                        ` : ''}
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                        
+                                        <div class="w-full md:w-1/3">
+                                            <div class="bg-blue-50 p-4 rounded-lg">
+                                                <h4 class="font-bold mb-3 text-blue-800 flex items-center">
+                                                    <i class="fas fa-link mr-2"></i>
+                                                    Quick Links
+                                                </h4>
+                                                <div class="space-y-2">
+                                                    <a href="${talk.seriesLink}" class="block text-blue-600 hover:text-blue-800 hover:underline transition-colors">
+                                                        <i class="fas fa-info-circle mr-2"></i>View Series Details
+                                                    </a>
+                                                    ${talk.recording ? `
+                                                        <a href="${talk.recording}" class="block text-red-600 hover:text-red-800 hover:underline transition-colors" target="_blank">
+                                                            <i class="fas fa-video mr-2"></i>Recording
+                                                        </a>
+                                                    ` : ''}
+                                                    ${talk.notes ? `
+                                                        <a href="${talk.notes}" class="block text-green-600 hover:text-green-800 hover:underline transition-colors" target="_blank">
+                                                            <i class="fas fa-file-pdf mr-2"></i>Notes
+                                                        </a>
+                                                    ` : ''}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             `).join('')}
@@ -235,7 +337,7 @@
                 `;
             });
 
-            document.getElementById('archive-talks').innerHTML = accordionHTML || '<p class="text-gray-600">No past talks available for this year.</p>';
+            document.getElementById('archive-talks').innerHTML = accordionHTML || '<div class="bg-white rounded-lg shadow-md p-6"><p class="text-gray-600 text-center">No past talks available for this year.</p></div>';
 
             // Render Mathjax
             renderMathJax();
@@ -243,6 +345,19 @@
             // Render pagination
             renderPagination(sortedSeries.length);
         }
+
+        // Toggle series accordion
+        function toggleSeries(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+
+            content.classList.toggle('hidden');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+
+        // Make toggleSeries globally available
+        window.toggleSeries = toggleSeries;
 
         // Render pagination controls
         function renderPagination(totalSeries) {
@@ -260,7 +375,7 @@
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
                 button.textContent = i;
-                button.className = `px-4 py-2 rounded-lg transition-colors ${currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`;
+                button.className = `px-4 py-3 rounded-lg transition-colors font-medium ${currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`;
                 button.addEventListener('click', () => {
                     currentPage = i;
                     renderTalks();
@@ -314,7 +429,7 @@
             }
         };
     </script>
-    
+
     <!-- MathJax Script -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>

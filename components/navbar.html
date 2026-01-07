@@ -1,42 +1,252 @@
-<nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50" role="navigation"
-    aria-label="Main navigation">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-        <!-- Logo + Title -->
-        <div class="flex items-center space-x-4">
-            <a href="/topogeoiiitd/" class="flex items-center space-x-4">
-                <img src="/topogeoiiitd/assets/logo.png" alt="Seminar Logo" class="h-14 w-14 rounded-full"
-                    loading="lazy" />
-                <div class="leading-tight">
-                    <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
-                    <p class="text-sm mt-0.5">IIIT Delhi</p>
+<!-- Enhanced Navbar with Modern Design -->
+<nav class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white shadow-2xl fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b border-blue-700/30"
+    role="navigation" aria-label="Main navigation">
+    <!-- Animated Background Overlay -->
+    <div
+        class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 transition-opacity duration-300 hover:opacity-100">
+    </div>
+
+    <div class="container mx-auto px-4 py-3 relative">
+        <div class="flex justify-between items-center">
+            <!-- Logo + Title with Hover Effects -->
+            <div class="flex items-center space-x-4 group">
+                <a href="/" class="flex items-center space-x-4 transform transition-all duration-300 hover:scale-105">
+                    <!-- Logo with Glow Effect -->
+                    <div class="relative">
+                        <div
+                            class="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-20 blur-xl transition-all duration-300">
+                        </div>
+                        <img src="/assets/logo.png" alt="Seminar Logo"
+                            class="h-14 w-14 rounded-full relative z-10 ring-2 ring-blue-400/50 group-hover:ring-cyan-400/70 transition-all duration-300"
+                            loading="lazy" />
+                    </div>
+
+                    <!-- Title with Gradient Text -->
+                    <div class="leading-tight">
+                        <h1
+                            class="text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent group-hover:from-cyan-200 group-hover:to-white transition-all duration-300">
+                            Topology & Geometry Seminar
+                        </h1>
+                        <p
+                            class="text-sm mt-0.5 text-blue-200 group-hover:text-cyan-200 transition-colors duration-300">
+                            IIIT Delhi
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Desktop Nav Links with Advanced Hover Effects -->
+            <div class="hidden md:flex space-x-1" id="desktop-nav">
+                <a href="/"
+                    class="nav-link relative px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm group">
+                    <span class="relative z-10">Home</span>
+                    <div
+                        class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                </a>
+                <a href="/#upcoming"
+                    class="nav-link relative px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm group">
+                    <span class="relative z-10">Upcoming</span>
+                    <div
+                        class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                </a>
+                <a href="/schedule/"
+                    class="nav-link relative px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm group">
+                    <span class="relative z-10">Schedule</span>
+                    <div
+                        class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                </a>
+                <a href="/archive/"
+                    class="nav-link relative px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm group">
+                    <span class="relative z-10">Archive</span>
+                    <div
+                        class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                </a>
+                <a href="/#organizers"
+                    class="nav-link relative px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm group">
+                    <span class="relative z-10">Organizers</span>
+                    <div
+                        class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button with Animation -->
+            <button
+                class="md:hidden focus:outline-none group relative p-2 rounded-lg hover:bg-white/10 transition-all duration-300"
+                id="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+                <div
+                    class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+                <i
+                    class="fas fa-bars text-xl relative z-10 transform group-hover:scale-110 transition-transform duration-300"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Enhanced Mobile Nav Links -->
+    <div id="mobile-nav"
+        class="hidden md:hidden bg-gradient-to-b from-blue-800/95 to-blue-900/95 backdrop-blur-lg border-t border-blue-700/50">
+        <div class="flex flex-col space-y-1 px-4 py-4">
+            <a href="/"
+                class="mobile-nav-link relative px-4 py-3 rounded-lg transition-all duration-300 hover:bg-white/10 group">
+                <span class="flex items-center space-x-3">
+                    <i class="fas fa-home w-4"></i>
+                    <span>Home</span>
+                </span>
+                <div
+                    class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+            </a>
+            <a href="/#upcoming"
+                class="mobile-nav-link relative px-4 py-3 rounded-lg transition-all duration-300 hover:bg-white/10 group">
+                <span class="flex items-center space-x-3">
+                    <i class="fas fa-calendar-alt w-4"></i>
+                    <span>Upcoming</span>
+                </span>
+                <div
+                    class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+            </a>
+            <a href="/schedule/"
+                class="mobile-nav-link relative px-4 py-3 rounded-lg transition-all duration-300 hover:bg-white/10 group">
+                <span class="flex items-center space-x-3">
+                    <i class="fas fa-list w-4"></i>
+                    <span>Schedule</span>
+                </span>
+                <div
+                    class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+            </a>
+            <a href="/archive/"
+                class="mobile-nav-link relative px-4 py-3 rounded-lg transition-all duration-300 hover:bg-white/10 group">
+                <span class="flex items-center space-x-3">
+                    <i class="fas fa-archive w-4"></i>
+                    <span>Archive</span>
+                </span>
+                <div
+                    class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                </div>
+            </a>
+            <a href="/#organizers"
+                class="mobile-nav-link relative px-4 py-3 rounded-lg transition-all duration-300 hover:bg-white/10 group">
+                <span class="flex items-center space-x-3">
+                    <i class="fas fa-users w-4"></i>
+                    <span>Organizers</span>
+                </span>
+                <div
+                    class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 </div>
             </a>
         </div>
-
-        <!-- Desktop Nav Links -->
-        <div class="hidden md:flex space-x-6" id="desktop-nav">
-            <a href="/topogeoiiitd/" class="hover:text-blue-200 transition-colors">Home</a>
-            <a href="/topogeoiiitd/#upcoming" class="hover:text-blue-200 transition-colors">Upcoming</a>
-            <a href="/topogeoiiitd/schedule/" class="hover:text-blue-200 transition-colors">Schedule</a>
-            <a href="/topogeoiiitd/archive/" class="hover:text-blue-200 transition-colors">Archive</a>
-            <a href="/topogeoiiitd/#organizers" class="hover:text-blue-200 transition-colors">Organizers</a>
-        </div>
-
-        <!-- Mobile Menu Button -->
-        <button class="md:hidden focus:outline-none" id="mobile-menu-btn" aria-label="Toggle menu"
-            aria-expanded="false">
-            <i class="fas fa-bars text-xl"></i>
-        </button>
-    </div>
-
-    <!-- Mobile Nav Links -->
-    <div id="mobile-nav" class="hidden md:hidden bg-blue-700 text-white">
-        <div class="flex flex-col space-y-4 px-4 py-3">
-            <a href="/topogeoiiitd/" class="hover:text-blue-200 transition-colors">Home</a>
-            <a href="/topogeoiiitd/#upcoming" class="hover:text-blue-200 transition-colors">Upcoming</a>
-            <a href="/topogeoiiitd/schedule/" class="hover:text-blue-200 transition-colors">Schedule</a>
-            <a href="/topogeoiiitd/archive/" class="hover:text-blue-200 transition-colors">Archive</a>
-            <a href="/topogeoiiitd/#organizers" class="hover:text-blue-200 transition-colors">Organizers</a>
-        </div>
     </div>
 </nav>
+
+<!-- Enhanced Styles for Additional Effects -->
+<style>
+    /* Smooth scroll offset for fixed navbar */
+    html {
+        scroll-padding-top: 80px;
+    }
+
+    /* Active page indicator */
+    .nav-link.active,
+    .mobile-nav-link.active {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-link.active::before,
+    .mobile-nav-link.active::before {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 2px;
+        background: linear-gradient(to right, #22d3ee, #3b82f6);
+        border-radius: 1px;
+    }
+
+    /* Mobile nav link active indicator */
+    .mobile-nav-link.active::before {
+        left: 16px;
+        bottom: 50%;
+        transform: translateY(50%);
+        width: 3px;
+        height: 20px;
+    }
+
+    /* Smooth animations */
+    .nav-link,
+    .mobile-nav-link {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Hover underline effect for desktop */
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(to right, #22d3ee, #3b82f6);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+</style>
+
+<!-- JavaScript for Enhanced Functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Highlight active page
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath || (currentPath === '/' && href === '/')) {
+                link.classList.add('active');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navbar
+        let lastScroll = 0;
+        const navbar = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.style.backgroundColor = 'rgba(30, 58, 138, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+            } else {
+                navbar.style.backgroundColor = '';
+                navbar.style.backdropFilter = '';
+            }
+
+            lastScroll = currentScroll;
+        });
+    });
+</script>

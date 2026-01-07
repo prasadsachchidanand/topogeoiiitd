@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poisson Geometry and Numerical Integration - Topology and Geometry Seminar - IIIT Delhi</title>
+    <title>Invariant theory of Hamiltonian mechanics and related numerical analysis - Topology and Geometry Seminar - IIIT Delhi</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo.png">
+    <link rel="apple-touch-icon" href="/assets/logo.png">
+    <link rel="shortcut icon" href="/assets/logo.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -29,9 +36,7 @@
     <!-- Hero Section -->
     <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
         <div class="container mx-auto px-4 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4" id="series-title">Loading...</h1>
-            <p class="text-xl md:text-2xl mb-8" id="series-subtitle">Exploring the interplay between theoretical
-                mechanics, numerical analysis and differential geometry</p>
+            <h1 class="text-3xl md:text-4xl font-bold mb-4" id="series-title">Invariant theory of Hamiltonian mechanics and related numerical analysis</h1>
             <div class="bg-white text-blue-900 inline-block px-6 py-3 rounded-lg shadow-lg">
                 <p class="font-semibold" id="speaker-name">Loading...</p>
                 <p class="text-lg" id="speaker-affiliation">Loading...</p>
@@ -73,14 +78,7 @@
             <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">References</h2>
             <div class="bg-white rounded-lg shadow-md p-6">
                 <ul id="references-list" class="list-disc list-inside text-gray-700 space-y-3">
-                    <li><strong>Symplectic Geometry and Analytical Mechanics</strong> by Paulette Libermann,
-                        Charles-Michel Marle (Springer Dordrecht, 1987)</li>
-                    <li><strong>Lectures on Poisson Geometry</strong> by Marius Crainic, Rui Loja Fernandes, Ioan Mărcuţ
-                        (American Mathematical Society, 2021)</li>
-                    <li><strong>Geometric Numerical Integration</strong> by Ernst Hairer, Gerhard Wanner, Christian
-                        Lubich (Springer-Verlag Berlin, 2006)</li>
-                    <li><strong>Symplectic Groupoids for Poisson Integrators</strong> by Oscar Cosserat (Journal of
-                        Geometry and Physics, 2023)</li>
+                    Loading...
                 </ul>
             </div>
         </section>
@@ -90,18 +88,32 @@
             <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">About the Speaker</h2>
             <div class="bg-white rounded-lg shadow-md p-6 text-center">
                 <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden">
-                    <div class="w-full h-full bg-blue-100 flex items-center justify-center text-blue-800">
+                    <img id="speaker-photo" class="w-full h-full object-cover hidden" alt="Speaker Photo">
+                    <div id="speaker-photo-placeholder"
+                        class="w-full h-full bg-blue-100 flex items-center justify-center text-blue-800">
                         <i class="fas fa-user text-3xl"></i>
                     </div>
                 </div>
-                <h3 id="speaker-bio-name" class="text-xl font-bold">Loading...</h3>
+                <h3 id="speaker-bio-name" class="text-xl font-bold">
+                    <a id="speaker-name-link" href="#"
+                        class="hover:text-blue-600 transition-colors duration-200">Loading...</a>
+                </h3>
                 <p id="speaker-bio-affiliation" class="text-gray-600 mb-4">Loading...</p>
-                <p id="speaker-bio-description" class="text-gray-700 text-justify">Oscar Cosserat is a postdoctoral
-                    researcher at the Göttingen Mathematisches Institut, in Germany. He received his PhD in 2023 from
-                    the University of La Rochelle, France. His research focuses on the interplay between theoretical
-                    mechanics, numerical analysis and differential geometry.</p>
-                <p class="mt-2 text-gray-700">Email: <a id="speaker-email" href="#"
-                        class="text-blue-600 hover:underline">Loading...</a></p>
+                <p id="speaker-bio-description" class="text-gray-700 text-justify mb-4">Loading...</p>
+
+                <!-- Contact Information -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope mr-2 text-blue-600"></i>
+                        <span>Email: <a id="speaker-email" href="#"
+                                class="text-blue-600 hover:underline">Loading...</a></span>
+                    </div>
+                    <div id="speaker-personal-page-container" class="flex items-center hidden">
+                        <i class="fas fa-globe mr-2 text-blue-600"></i>
+                        <span>Personal Page: <a id="speaker-personal-page" href="#" target="_blank"
+                                class="text-blue-600 hover:underline">Visit Page</a></span>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -177,6 +189,15 @@
             }
         }
 
+        // Render MathJax after content is loaded
+        function renderMathJax() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch(function (err) {
+                    console.error('MathJax typeset failed: ' + err.message);
+                });
+            }
+        }
+
         // Fetch and render series talks
         async function fetchAndRenderSeries() {
             try {
@@ -194,10 +215,9 @@
                 const firstTalk = oscarTalks[0];
                 const speakerName = firstTalk.speaker;
                 const speakerAffiliation = firstTalk.affiliation;
-                const seriesTitle = firstTalk.series;
+                const speakerAbout = firstTalk.about || "Loading speaker information...";
 
                 // Update hero section
-                document.getElementById('series-title').textContent = seriesTitle;
                 document.getElementById('speaker-name').textContent = `Speaker: ${speakerName}`;
                 document.getElementById('speaker-affiliation').textContent = `${speakerAffiliation}`;
 
@@ -205,13 +225,45 @@
                 document.getElementById('series-description').textContent = firstTalk.description || 'This course explores the fascinating interplay between Poisson geometry, Hamiltonian mechanics, and numerical integration methods.';
 
                 // Update speaker bio section
-                document.getElementById('speaker-bio-name').textContent = speakerName;
+                const speakerNameLink = document.getElementById('speaker-name-link');
+                speakerNameLink.textContent = speakerName;
+
                 document.getElementById('speaker-bio-affiliation').textContent = speakerAffiliation;
+                document.getElementById('speaker-bio-description').textContent = speakerAbout;
 
                 // Set email (you may need to update this with Oscar's actual email)
                 const emailElement = document.getElementById('speaker-email');
                 emailElement.href = 'mailto:oscar.cosserat@mathematik.uni-goettingen.de';
                 emailElement.textContent = 'oscar.cosserat@mathematik.uni-goettingen.de';
+
+                // Update personal page link if available
+                const personalPageUrl = firstTalk.personalPage || firstTalk.homepage || firstTalk.website;
+                if (personalPageUrl) {
+                    const personalPageContainer = document.getElementById('speaker-personal-page-container');
+                    const personalPageElement = document.getElementById('speaker-personal-page');
+                    const speakerNameLink = document.getElementById('speaker-name-link');
+
+                    personalPageElement.href = personalPageUrl;
+                    personalPageContainer.classList.remove('hidden');
+
+                    // Also make the speaker name clickable
+                    speakerNameLink.href = personalPageUrl;
+                    speakerNameLink.target = '_blank';
+                } else {
+                    // Remove link functionality if no personal page
+                    const speakerNameLink = document.getElementById('speaker-name-link');
+                    speakerNameLink.removeAttribute('href');
+                    speakerNameLink.classList.add('cursor-default');
+                }
+
+                // Update references
+                const referencesList = document.getElementById('references-list');
+                referencesList.innerHTML = `
+                    <li><strong>Symplectic Geometry and Analytical Mechanics</strong> by Paulette Libermann, Charles-Michel Marle (Springer Dordrecht, 1987)</li>
+                    <li><strong>Lectures on Poisson Geometry</strong> by Marius Crainic, Rui Loja Fernandes, Ioan Mărcuţ (American Mathematical Society, 2021)</li>
+                    <li><strong>Geometric Numerical Integration </strong>by Ernst Hairer, Gerhard Wanner, Christian Lubich (Springer-Verlag Berlin, 2006)</li>
+                    <li><strong>Symplectic Groupoids for Poisson Integrators</strong> Oscar Cosserat (Journal of Geometry and Physics, 2023)</li>
+                `;
 
                 // Render schedule
                 document.getElementById('series-schedule').innerHTML = oscarTalks.length ? oscarTalks.map(talk => `
@@ -233,7 +285,32 @@
                                     <i class="far fa-clock mr-2"></i>
                                     ${talk.time}
                                 </p>
-                                ${talk.abstract ? `<p class="text-gray-700 mb-4"><strong>Plan:</strong> ${talk.abstract}</p>` : ''}
+                                ${talk.abstract ? `<p class="text-gray-700 mb-4 text-justify"><strong>Plan:</strong> ${talk.abstract}</p>` : ''}
+
+                                <!-- Recording and Notes section -->
+                                ${(talk.recording || talk.notes) ? `
+                                    <div class="mt-4 pt-4 border-t border-gray-200">
+                                        <h4 class="font-semibold text-gray-800 mb-2">Post-Lecture Resources:</h4>
+                                        <div class="flex flex-wrap gap-3">
+                                            ${talk.recording ? `
+                                                <a href="${talk.recording}" 
+                                                   class="inline-flex items-center px-3 py-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors" 
+                                                   target="_blank">
+                                                    <i class="fas fa-video mr-2"></i>
+                                                    Watch Recording
+                                                </a>
+                                            ` : ''}
+                                            ${talk.notes ? `
+                                                <a href="${talk.notes}" 
+                                                   class="inline-flex items-center px-3 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors" 
+                                                   target="_blank">
+                                                    <i class="fas fa-file-alt mr-2"></i>
+                                                    Lecture Notes
+                                                </a>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                ` : ''}
                             </div>
                             <div class="zoom-details w-full md:w-1/3">
                                 <div class="bg-blue-50 p-4 rounded-lg">
@@ -260,6 +337,8 @@
                     </div>
                 `).join('') : '<p class="text-gray-600">No talks scheduled for this series.</p>';
 
+                renderMathJax();
+
             } catch (error) {
                 console.error('Error fetching talks:', error);
 
@@ -282,5 +361,33 @@
             await fetchAndRenderSeries();
         });
     </script>
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            loader: {
+                load: ['[tex]/mathtools']
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ],
+                tags: 'ams',
+                displayMath: [
+                    ['$$', '$$'],
+                    ['\\[', '\\]']
+                ],
+                packages: { '[+]': ['mathtools'] }
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <!-- MathJax Script -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
 </body>
 </html>
