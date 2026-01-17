@@ -191,7 +191,6 @@
       }
     ]
   },
-
   {
     "id": "LS-2",
     "title": "Spin manifolds",
@@ -216,7 +215,6 @@
     "notes": "/notes/Lukas-Lecture_Notes-2.pdf",
     "abstract": "In this talk, we will introduce the spin groups and discuss the properties necessary to define spinable manifolds. We will then associate a canonical connection, the so-called spin connection, with every spin manifold $M$. This connection induces a Dirac bundle structure on $M$. The associated Dirac operator satisfies the Schrödinger-Lichnerowicz formula,  a special case of the Weitzenböck formula. Additionally, we will discuss the Atiyah-Singer index theorem, which links the index of the Dirac operator to topological properties of the manifold. These equations are the key features of spin geometry that we will exploit later."
   },
-
   {
     "id": "LS-3",
     "title": "Llarull's theorem and generalizations",
@@ -241,7 +239,6 @@
     "notes": "/notes/Lukas-Lecture_Notes-3.pdf",
     "abstract": "The theorem of Llarull is a famous rigidity result in scalar curvature which states the following: Let $(M,g)$ be a closed connected $n$-dimensional smooth Riemannian spin manifold with $n\\geq2$ even and $\\mathrm{scal}_g \\geq n(n-1)$. If $f\\colon M\\to S^n$ is a smooth 1-Lipschitz map of non-zero degree then $f$ is a Riemannian isometry.\n\nWe will discuss a generalization of this theorem, which states that it is sufficient to assume that $g$ is a metric of Sobolev regularity $W^{1,p}$ with $p> n$ and that $f$ is merely 1-Lipschitz instead of smooth.\n\nThis is joint work with Simone Cecchini, Bernhard Hanke, and Thomas Schick."
   },
-
   {
     "id": "LS-4",
     "title": "Scalar curvature rigidity for manifolds with cone singularities",
@@ -266,7 +263,6 @@
     "notes": "/notes/Lukas-Lecture_Notes-4.pdf",
     "abstract": "In this talk, we will discuss another generalization of Llarull's theorem in even dimensions where we allow cone-like singularities in the domain. To do so, we will discuss an abstract functional analytic setup that enables us to show that the Dirac operator on these singular spaces is Fredholm. Moreover, we will apply an index formula of Chou together with a deformation argument to show that the index is non-zero.\n\nThis is joint work with Simone Cecchini, Bernhard Hanke, and Thomas Schick."
   },
-  
   {
     "id": "SR-1",
     "title": "Motivation. Groups as metric spaces",
@@ -426,7 +422,6 @@
     "notes": "/notes/Sergio-Lecture_Notes-5.pdf",
     "abstract": "It is well known that the degree-zero singular homology of a topological space is determined by its path-connected components. Similarly, degree-zero Alexander-Spanier cohomology can be computed from its connected components. We ask whether, for a topological bornological space $X$, there exists a similar connection between $HB^{1}(X)$ and the ``components at infinity of $X$''. \n\nThis question naturally leads us to give meaning to notions such as rays in $X$, (path-)connected components at infinity, and ultimately to consider compactifications of $X$. After addressing this question, we generalize the tools involved by studying certain extensions of $X$ whose boundaries at infinity are Stone spaces [4], which can therefore be treated dually as topological spaces or as Boolean algebras (this is recent work in progress). \n\nWe will conclude the course by reviewing some questions that remain open."
   },
-  
   {
     "id": "SS-1",
     "title": "Foundations and Basic Examples",
@@ -442,9 +437,9 @@
       "3 February"
     ],
     "seriesLink": "/series/on-the-groups-of-self-homotopy-equivalences",
-    "zoomLink": "",
-    "meetingId": "",
-    "passcode": "",
+    "zoomLink": "https://iiitd-ac-in.zoom.us/j/98973225688?pwd=XhklapvhcYK1psmzGXtjCCgzFBmlFU.1",
+    "meetingId": "989 7322 5688",
+    "passcode": "1729",
     "description": "We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups.",
     "part": "Part 1",
     "recording": "",
@@ -466,9 +461,9 @@
       "3 February"
     ],
     "seriesLink": "/series/on-the-groups-of-self-homotopy-equivalences",
-    "zoomLink": "",
-    "meetingId": "",
-    "passcode": "",
+    "zoomLink": "https://iiitd-ac-in.zoom.us/j/98973225688?pwd=XhklapvhcYK1psmzGXtjCCgzFBmlFU.1",
+    "meetingId": "989 7322 5688",
+    "passcode": "1729",
     "description": "We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups.",
     "part": "Part 2",
     "recording": "",
@@ -489,9 +484,9 @@
       "3 February"
     ],
     "seriesLink": "/series/on-the-groups-of-self-homotopy-equivalences",
-    "zoomLink": "",
-    "meetingId": "",
-    "passcode": "",
+    "zoomLink": "https://iiitd-ac-in.zoom.us/j/98973225688?pwd=XhklapvhcYK1psmzGXtjCCgzFBmlFU.1",
+    "meetingId": "989 7322 5688",
+    "passcode": "1729",
     "description": "We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups.",
     "part": "Part 3",
     "recording": "",
