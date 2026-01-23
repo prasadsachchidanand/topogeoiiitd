@@ -1,180 +1,140 @@
-<!-- Enhanced Footer with Modern Design -->
+<!-- Enhanced Footer -->
 <footer class="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white overflow-hidden">
+
     <!-- Animated Background Elements -->
-    <div class="absolute inset-0">
+    <div class="absolute inset-0 pointer-events-none">
         <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-indigo-500/10 rounded-full blur-2xl animate-pulse"
             style="animation-delay: 1s;"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-cyan-500/5 rounded-full blur-xl animate-pulse"
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-cyan-500/5 rounded-full blur-xl animate-pulse"
             style="animation-delay: 2s;"></div>
     </div>
 
-    <!-- Gradient Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent"></div>
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
 
     <div class="relative z-10">
-        <!-- Main Footer Content -->
         <div class="container mx-auto px-6 py-12">
-            <!-- Top Section -->
-            <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
-                <!-- Seminar Info Section -->
+
+            <!-- Main Content -->
+            <div class="flex flex-col md:flex-row gap-12 mb-12">
+
+                <!-- Seminar Info -->
                 <div class="flex-1">
-                    <div class="group">
-                        <a href="/"
-                            class="flex items-center space-x-4 mb-6 transform transition-all duration-300 hover:scale-105">
-                            <!-- Enhanced Logo -->
-                            <div class="relative">
-                                <div
-                                    class="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-30 blur-xl transition-all duration-500">
-                                </div>
-                                <img src="/assets/logo.png" alt="Seminar Logo"
-                                    class="h-16 w-16 rounded-full relative z-10 ring-2 ring-blue-400/30 group-hover:ring-cyan-400/50 transition-all duration-300"
-                                    loading="lazy" />
-                            </div>
-
-                            <div class="leading-tight">
-                                <h2
-                                    class="text-2xl font-bold bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent group-hover:from-cyan-200 group-hover:to-white transition-all duration-300">
-                                    Topology & Geometry Seminar
-                                </h2>
-                                <p class="text-blue-300 group-hover:text-cyan-300 transition-colors duration-300">
-                                    IIIT Delhi
-                                </p>
-                            </div>
-                        </a>
-
-                        <!-- YouTube Link -->
-                        <div class="flex space-x-4">
-                            <a href="https://youtube.com/playlist?list=PLrcy-sY3vswEAbpCADmD-RvJVptfdWEis&si=pkmdTsg3s1htJ2wR" target="_blank"
-                                class="group relative p-3 rounded-full bg-slate-800/50 hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 transition-all duration-300 transform hover:scale-110 hover:-translate-y-1">
-                                <i
-                                    class="fab fa-youtube text-red-400 group-hover:text-white transition-colors duration-300"></i>
-                                <div
-                                    class="absolute inset-0 rounded-full bg-red-500/20 opacity-0 group-hover:opacity-100 blur transition-opacity duration-300">
-                                </div>
-                            </a>
+                    <a href="/"
+                        class="group flex items-center space-x-4 mb-6 transition-transform duration-300 hover:scale-105">
+                        <div class="relative w-16 aspect-square rounded-full overflow-hidden flex-shrink-0">
+                            <img src="/assets/logo.png" alt="Topology and Geometry Seminar Logo"
+                                class="w-full h-full object-cover rounded-full ring-2 ring-blue-400/40 group-hover:ring-cyan-400/60 transition"
+                                loading="lazy">
                         </div>
-                    </div>
+
+                        <div>
+                            <h2
+                                class="text-2xl font-bold bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent">
+                                Topology & Geometry Seminar
+                            </h2>
+                            <p class="text-blue-300">IIIT Delhi</p>
+                        </div>
+                    </a>
+
+                    <!-- YouTube Button (Perfect Circle) -->
+                    <a href="https://youtube.com/playlist?list=PLrcy-sY3vswEAbpCADmD-RvJVptfdWEis&si=pkmdTsg3s1htJ2wR"
+                        target="_blank" rel="noopener noreferrer" aria-label="YouTube Playlist" class="group relative flex items-center justify-center w-12 h-12 rounded-full
+                              bg-slate-800/60 hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500
+                              transition-all duration-300 hover:scale-110 hover:-translate-y-1">
+
+                        <i class="fab fa-youtube text-xl text-red-400 group-hover:text-white transition-colors"
+                            aria-hidden="true"></i>
+
+                        <span
+                            class="absolute inset-0 rounded-full bg-red-500/20 opacity-0 group-hover:opacity-100 blur transition"></span>
+                    </a>
                 </div>
 
-                <!-- Quick Links Section -->
-                <div class="flex-1">
+                <!-- Quick Links -->
+                <nav class="flex-1" aria-label="Footer Navigation">
                     <h3
                         class="text-xl font-bold mb-6 bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
                         Quick Links
                     </h3>
+
                     <div class="space-y-3">
                         <a href="/"
-                            class="footer-link group flex items-center space-x-2 text-slate-300 hover:text-cyan-300 transition-all duration-300">
-                            <i
-                                class="fas fa-home w-4 text-blue-400 group-hover:text-cyan-400 transition-colors duration-300"></i>
-                            <span class="group-hover:translate-x-1 transition-transform duration-300">Home</span>
+                            class="footer-link group flex items-center space-x-2 text-slate-300 hover:text-cyan-300">
+                            <i class="fas fa-home w-4 text-blue-400 group-hover:text-cyan-400" aria-hidden="true"></i>
+                            <span class="group-hover:translate-x-1 transition">Home</span>
                         </a>
+
                         <a href="/schedule/"
-                            class="footer-link group flex items-center space-x-2 text-slate-300 hover:text-cyan-300 transition-all duration-300">
-                            <i
-                                class="fas fa-list w-4 text-blue-400 group-hover:text-cyan-400 transition-colors duration-300"></i>
-                            <span class="group-hover:translate-x-1 transition-transform duration-300">Schedule</span>
+                            class="footer-link group flex items-center space-x-2 text-slate-300 hover:text-cyan-300">
+                            <i class="fas fa-list w-4 text-blue-400 group-hover:text-cyan-400" aria-hidden="true"></i>
+                            <span class="group-hover:translate-x-1 transition">Schedule</span>
                         </a>
+
                         <a href="/archive/"
-                            class="footer-link group flex items-center space-x-2 text-slate-300 hover:text-cyan-300 transition-all duration-300">
-                            <i
-                                class="fas fa-archive w-4 text-blue-400 group-hover:text-cyan-400 transition-colors duration-300"></i>
-                            <span class="group-hover:translate-x-1 transition-transform duration-300">Archive</span>
+                            class="footer-link group flex items-center space-x-2 text-slate-300 hover:text-cyan-300">
+                            <i class="fas fa-archive w-4 text-blue-400 group-hover:text-cyan-400"
+                                aria-hidden="true"></i>
+                            <span class="group-hover:translate-x-1 transition">Archive</span>
                         </a>
-                        <a href="https://forms.gle/6RyaS3FkSeQ5PbyeA" target="_blank"
-                            class="footer-link group flex items-center space-x-2 text-slate-300 hover:text-cyan-300 transition-all duration-300">
-                            <i
-                                class="fas fa-envelope w-4 text-blue-400 group-hover:text-cyan-400 transition-colors duration-300"></i>
-                            <span class="group-hover:translate-x-1 transition-transform duration-300">Join Mailing
-                                Group</span>
+
+                        <a href="https://forms.gle/6RyaS3FkSeQ5PbyeA" target="_blank" rel="noopener noreferrer"
+                            class="footer-link group flex items-center space-x-2 text-slate-300 hover:text-cyan-300">
+                            <i class="fas fa-envelope w-4 text-blue-400 group-hover:text-cyan-400"
+                                aria-hidden="true"></i>
+                            <span class="group-hover:translate-x-1 transition">Join Mailing Group</span>
                         </a>
                     </div>
-                </div>
+                </nav>
 
-                <!-- Contact Section -->
-                <div class="flex-1">
+                <!-- Contact -->
+                <address class="flex-1 not-italic">
                     <h3
                         class="text-xl font-bold mb-6 bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">
                         Contact
                     </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start space-x-3">
-                            <i class="fas fa-envelope text-blue-400 mt-1"></i>
-                            <div>
-                                <p class="text-slate-400 text-sm">Email</p>
-                                <a href="mailto:sachchidanand@iiitd.ac.in"
-                                    class="text-cyan-300 hover:text-white transition-colors duration-300 hover:underline">
-                                    sachchidanand@iiitd.ac.in
-                                </a> <br>
-                                <a href="mailto:ss18ip021@iiserkol.ac.in"
-                                    class="text-cyan-300 hover:text-white transition-colors duration-300 hover:underline">
-                                    ss18ip021@iiserkol.ac.in
-                                </a> <br>
-                                <a href="mailto:aritra@ksom.res.in"
-                                    class="text-cyan-300 hover:text-white transition-colors duration-300 hover:underline">
-                                    aritra@ksom.res.in
-                                </a>
-                            </div>
-                        </div>
+
+                    <div class="space-y-2 text-slate-300">
+                        <p>
+                            <a href="mailto:sachchidanand@iiitd.ac.in" class="text-cyan-300 hover:underline">
+                                sachchidanand@iiitd.ac.in
+                            </a>
+                        </p>
+                        <p>
+                            <a href="mailto:ss18ip021@iiserkol.ac.in" class="text-cyan-300 hover:underline">
+                                ss18ip021@iiserkol.ac.in
+                            </a>
+                        </p>
+                        <p>
+                            <a href="mailto:aritra@ksom.res.in" class="text-cyan-300 hover:underline">
+                                aritra@ksom.res.in
+                            </a>
+                        </p>
                     </div>
-                </div>
+                </address>
             </div>
 
             <!-- Divider -->
-            <div class="relative">
-                <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div class="w-full border-t border-gradient-to-r from-transparent via-slate-600 to-transparent">
-                    </div>
-                </div>
-                <div class="relative flex justify-center">
-                    <div class="h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent w-64"></div>
-                </div>
+            <div class="h-px bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent mb-8"></div>
+
+            <!-- Bottom -->
+            <div class="text-center text-slate-400 text-sm">
+                © 2026 Topology & Geometry Seminar, IIIT Delhi. All rights reserved.
             </div>
 
-            <!-- Bottom Section -->
-            <div class="pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                <div class="text-slate-400 text-sm text-center md:text-left">
-                    <p>© 2026 Topology & Geometry Seminar, IIIT Delhi. All rights reserved.</p>
-                </div>
-
-                <!-- Back to Top Button -->
-                <!-- <button id="back-to-top"
-                    class="group relative px-6 py-2 bg-slate-800/50 hover:bg-gradient-to-r hover:from-blue-600 hover:to-cyan-600 text-slate-300 hover:text-white rounded-full transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-cyan-500/50">
-                    <span class="flex items-center space-x-2">
-                        <i class="fas fa-arrow-up group-hover:animate-bounce"></i>
-                        <span class="text-sm">Back to Top</span>
-                    </span>
-                    <div
-                        class="absolute inset-0 rounded-full bg-cyan-500/20 opacity-0 group-hover:opacity-100 blur transition-opacity duration-300">
-                    </div>
-                </button> -->
-            </div>
         </div>
     </div>
 </footer>
 
-<!-- Enhanced Styles -->
+<!-- Footer Enhancements -->
 <style>
-    /* Custom animations */
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0px);
-        }
-
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-
     .footer-link {
         position: relative;
     }
 
-    .footer-link::before {
-        content: '';
+    .footer-link::after {
+        content: "";
         position: absolute;
         left: 0;
         bottom: -2px;
@@ -184,127 +144,17 @@
         transition: width 0.3s ease;
     }
 
-    .footer-link:hover::before {
+    .footer-link:hover::after {
         width: 100%;
     }
 
-    /* Gradient border animation */
-    .bg-gradient-border {
-        background: linear-gradient(45deg, #1e40af, #06b6d4, #3b82f6, #22d3ee);
-        background-size: 400% 400%;
-        animation: gradientShift 3s ease infinite;
-    }
-
-    @keyframes gradientShift {
-        0% {
-            background-position: 0% 50%;
-        }
-
-        50% {
-            background-position: 100% 50%;
-        }
-
-        100% {
-            background-position: 0% 50%;
-        }
-    }
-
-    /* Smooth scroll behavior */
     html {
         scroll-behavior: smooth;
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .animate-pulse {
+            animation: none;
+        }
+    }
 </style>
-
-<!-- JavaScript for Enhanced Functionality -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Back to top button functionality
-        const backToTopBtn = document.getElementById('back-to-top');
-
-        if (backToTopBtn) {
-            backToTopBtn.addEventListener('click', function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-
-            // Show/hide back to top button based on scroll position
-            window.addEventListener('scroll', function () {
-                if (window.pageYOffset > 300) {
-                    backToTopBtn.style.opacity = '1';
-                    backToTopBtn.style.visibility = 'visible';
-                } else {
-                    backToTopBtn.style.opacity = '0';
-                    backToTopBtn.style.visibility = 'hidden';
-                }
-            });
-        }
-
-        // Newsletter signup functionality
-        const newsletterForm = document.querySelector('input[type="email"]')?.parentElement;
-        const submitBtn = newsletterForm?.querySelector('button');
-        const emailInput = newsletterForm?.querySelector('input[type="email"]');
-
-        if (submitBtn && emailInput) {
-            submitBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                const email = emailInput.value.trim();
-
-                if (email && isValidEmail(email)) {
-                    // Here you would typically send the email to your backend
-                    showNotification('Thank you! You have been added to our mailing list.', 'success');
-                    emailInput.value = '';
-                } else {
-                    showNotification('Please enter a valid email address.', 'error');
-                }
-            });
-
-            emailInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    submitBtn.click();
-                }
-            });
-        }
-
-        // Email validation
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        // Simple notification system
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-lg text-white transform translate-x-full transition-transform duration-300 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'
-                }`;
-            notification.textContent = message;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.transform = 'translateX(0)';
-            }, 100);
-
-            setTimeout(() => {
-                notification.style.transform = 'translateX(full)';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }
-
-        // Smooth scrolling for footer links
-        document.querySelectorAll('.footer-link[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    });
-</script>

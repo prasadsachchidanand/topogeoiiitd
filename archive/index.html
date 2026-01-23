@@ -11,7 +11,6 @@
     <link rel="apple-touch-icon" href="/assets/logo.png">
     <link rel="shortcut icon" href="/assets/logo.png">
 
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -28,13 +27,84 @@
                 margin-top: 1rem;
             }
         }
+
+        /* Smooth animations for accordion */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+
+        .accordion-content.open {
+            max-height: 5000px;
+            opacity: 1;
+            transition: max-height 0.5s ease-in, opacity 0.4s ease-in;
+        }
+
+        .chevron-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .chevron-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        /* Loading spinner animation */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Series color badges */
+        .series-badge-blue {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .series-badge-green {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .series-badge-purple {
+            background-color: #E9D5FF;
+            color: #6B21A8;
+        }
+
+        .series-badge-orange {
+            background-color: #FED7AA;
+            color: #9A3412;
+        }
+
+        .series-badge-pink {
+            background-color: #FCE7F3;
+            color: #9F1239;
+        }
+
+        .series-badge-indigo {
+            background-color: #E0E7FF;
+            color: #3730A3;
+        }
+
+        /* Search highlight */
+        .search-highlight {
+            background-color: #FEF08A;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans min-h-full flex flex-col">
     <!-- Include Navbar -->
     <div id="navbar-container"></div>
 
-    <!-- Hero Section - Added top padding to account for fixed navbar -->
+    <!-- Hero Section -->
     <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Talk Archive</h1>
@@ -47,8 +117,27 @@
         <!-- Filter Section -->
         <section class="mb-8">
             <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <h2 class="text-2xl font-bold text-blue-800">Filter Past Talks</h2>
+                <h2 class="text-2xl font-bold text-blue-800 mb-4">Filter Past Talks</h2>
+
+                <!-- Search Bar -->
+                <div class="mb-4">
+                    <div class="relative">
+                        <input type="text" id="search-input" placeholder="Search by title, speaker, or abstract..."
+                            class="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <button id="clear-search"
+                            class="hidden absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Year Filter -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div id="results-info" class="text-gray-600">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <span id="results-count">Loading talks...</span>
+                    </div>
                     <div class="flex items-center">
                         <label for="year-filter" class="text-gray-700 font-medium mr-3">Filter by Year:</label>
                         <select id="year-filter"
@@ -60,8 +149,14 @@
             </div>
         </section>
 
+        <!-- Loading State -->
+        <div id="loading-state" class="flex flex-col items-center justify-center py-16">
+            <div class="spinner w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full mb-4"></div>
+            <p class="text-gray-600 text-lg">Loading talks...</p>
+        </div>
+
         <!-- Archive -->
-        <section class="mb-12">
+        <section class="mb-12" id="archive-section" style="display: none;">
             <div id="archive-talks" class="space-y-6"></div>
             <!-- Pagination -->
             <div class="mt-8 flex justify-center items-center space-x-2">
@@ -76,7 +171,7 @@
         </section>
     </main>
 
-    <!-- Footer - stays at bottom -->
+    <!-- Footer -->
     <div id="footer-container" class="mt-auto"></div>
 
     <script>
@@ -89,7 +184,6 @@
                 initializeNavbar();
             } catch (error) {
                 console.error('Error loading navbar:', error);
-                // Fallback: create a simple navbar if external file fails
                 document.getElementById('navbar-container').innerHTML = `
                     <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
                         <div class="container mx-auto px-4 py-3">
@@ -100,7 +194,6 @@
             }
         }
 
-        // Initialize navbar functionality
         function initializeNavbar() {
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileNav = document.getElementById('mobile-nav');
@@ -110,8 +203,6 @@
                     const isExpanded = mobileNav.classList.toggle('hidden');
                     mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
                 });
-            } else {
-                console.error('Mobile menu elements not found:', { mobileMenuBtn, mobileNav });
             }
         }
 
@@ -123,7 +214,6 @@
                 document.getElementById('footer-container').innerHTML = footerHtml;
             } catch (error) {
                 console.error('Error loading footer:', error);
-                // Fallback: create a simple footer if external file fails
                 document.getElementById('footer-container').innerHTML = `
                 <footer class="bg-blue-900 text-white py-8 mt-auto">
                     <div class="container mx-auto px-4">
@@ -147,7 +237,6 @@
             }
         }
 
-        // Render MathJax after content is loaded
         function renderMathJax() {
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise().catch(function (err) {
@@ -157,17 +246,90 @@
         }
 
         // Pagination settings
-        const talksPerPage = 3;
+        const talksPerPage = 6;
         let currentPage = 1;
         let allTalks = [];
         let filteredTalks = [];
+        let searchTerm = '';
 
-        // Fetch and render archived talks
+        // Series color mapping
+        const seriesColors = {};
+        const colorClasses = ['series-badge-blue', 'series-badge-green', 'series-badge-purple', 'series-badge-orange', 'series-badge-pink', 'series-badge-indigo'];
+        let colorIndex = 0;
+
+        function getSeriesColor(series) {
+            if (!seriesColors[series]) {
+                seriesColors[series] = colorClasses[colorIndex % colorClasses.length];
+                colorIndex++;
+            }
+            return seriesColors[series];
+        }
+
+        // Highlight search terms
+        function highlightText(text, search) {
+            if (!search) return text;
+            const regex = new RegExp(`(${search})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
+        }
+
+        // Filter talks based on search and year
+        function applyFilters() {
+            const selectedYear = document.getElementById('year-filter').value;
+
+            filteredTalks = allTalks.filter(talk => {
+                // Year filter
+                const yearMatch = selectedYear === 'all' ||
+                    new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getFullYear() == selectedYear;
+
+                // Search filter
+                const searchLower = searchTerm.toLowerCase();
+                const searchMatch = !searchTerm ||
+                    talk.title.toLowerCase().includes(searchLower) ||
+                    (talk.speaker && talk.speaker.toLowerCase().includes(searchLower)) ||
+                    (talk.abstract && talk.abstract.toLowerCase().includes(searchLower)) ||
+                    (talk.series && talk.series.toLowerCase().includes(searchLower));
+
+                return yearMatch && searchMatch;
+            });
+
+            currentPage = 1;
+            updateResultsInfo();
+            renderTalks();
+        }
+
+        // Update results count
+        function updateResultsInfo() {
+            const totalTalks = filteredTalks.length;
+            const totalSeries = Object.keys(groupTalksBySeries(filteredTalks)).length;
+
+            let infoText = `Showing ${totalTalks} talk${totalTalks !== 1 ? 's' : ''} across ${totalSeries} series`;
+
+            if (searchTerm) {
+                infoText += ` matching "${searchTerm}"`;
+            }
+
+            document.getElementById('results-count').textContent = infoText;
+        }
+
+        // Group talks by series
+        function groupTalksBySeries(talks) {
+            const groupedTalks = {};
+            talks.forEach(talk => {
+                const series = talk.series || 'Others';
+                if (!groupedTalks[series]) {
+                    groupedTalks[series] = [];
+                }
+                groupedTalks[series].push(talk);
+            });
+            return groupedTalks;
+        }
+
         async function fetchAndRenderArchive() {
             try {
                 const response = await fetch('/data/talks.json');
                 const talksData = await response.json();
                 const currentDate = new Date();
+
                 allTalks = talksData
                     .filter(talk => {
                         try {
@@ -178,81 +340,98 @@
                             return false;
                         }
                     })
-                    .sort((a, b) => new Date(b.date) - new Date(a.date));  // Sort by date descending
+                    .sort((a, b) => new Date(b.date) - new Date(a.date));
 
                 filteredTalks = [...allTalks];
 
-                // Populate year dropdown
-                const years = [...new Set(allTalks.map(talk => new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getFullYear()))].sort((a, b) => b - a);
+                // Populate year dropdown with counts
+                const yearCounts = {};
+                allTalks.forEach(talk => {
+                    const year = new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getFullYear();
+                    yearCounts[year] = (yearCounts[year] || 0) + 1;
+                });
+
+                const years = Object.keys(yearCounts).sort((a, b) => b - a);
                 const yearFilter = document.getElementById('year-filter');
+
+                // Update "All Years" option with total count
+                yearFilter.options[0].textContent = `All Years (${allTalks.length})`;
+
                 years.forEach(year => {
                     const option = document.createElement('option');
                     option.value = year;
-                    option.textContent = year;
+                    option.textContent = `${year} (${yearCounts[year]})`;
                     yearFilter.appendChild(option);
                 });
 
-                // Add event listener for year filter
-                yearFilter.addEventListener('change', () => {
-                    const selectedYear = yearFilter.value;
-                    filteredTalks = selectedYear === 'all' ? [...allTalks] : allTalks.filter(talk => new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getFullYear() == selectedYear);
-                    currentPage = 1; // Reset to first page on filter change
-                    renderTalks();
+                // Event listeners
+                yearFilter.addEventListener('change', applyFilters);
+
+                const searchInput = document.getElementById('search-input');
+                const clearSearch = document.getElementById('clear-search');
+
+                searchInput.addEventListener('input', (e) => {
+                    searchTerm = e.target.value.trim();
+                    clearSearch.classList.toggle('hidden', !searchTerm);
+                    applyFilters();
                 });
 
+                clearSearch.addEventListener('click', () => {
+                    searchInput.value = '';
+                    searchTerm = '';
+                    clearSearch.classList.add('hidden');
+                    applyFilters();
+                });
+
+                // Hide loading, show content
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('archive-section').style.display = 'block';
+
                 // Initial render
+                updateResultsInfo();
                 renderTalks();
             } catch (error) {
                 console.error('Error fetching talks:', error);
-                document.getElementById('archive-talks').innerHTML = '<div class="bg-white rounded-lg shadow-md p-6"><p class="text-red-600 text-center">Error loading talks. Please try again later.</p></div>';
+                document.getElementById('loading-state').innerHTML = '<div class="bg-white rounded-lg shadow-md p-6"><p class="text-red-600 text-center">Error loading talks. Please try again later.</p></div>';
             }
         }
 
-        // Render talks for the current page
         function renderTalks() {
-            // Group talks by series
-            const groupedTalks = {};
-            filteredTalks.forEach(talk => {
-                const series = talk.series || 'Others';
-                if (!groupedTalks[series]) {
-                    groupedTalks[series] = [];
-                }
-                groupedTalks[series].push(talk);
-            });
+            const groupedTalks = groupTalksBySeries(filteredTalks);
 
-            // Sort series by most recent talk date
             const sortedSeries = Object.keys(groupedTalks).sort((a, b) => {
                 const latestDateA = Math.max(...groupedTalks[a].map(talk => new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getTime()));
                 const latestDateB = Math.max(...groupedTalks[b].map(talk => new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`).getTime()));
-                return latestDateB - latestDateA; // Descending order
+                return latestDateB - latestDateA;
             });
 
-            // Paginate series
             const startIndex = (currentPage - 1) * talksPerPage;
             const endIndex = startIndex + talksPerPage;
             const seriesToShow = sortedSeries.slice(startIndex, endIndex);
 
-            // Render accordion
             let accordionHTML = '';
             seriesToShow.forEach(series => {
                 const talks = groupedTalks[series];
                 if (talks.length === 0) return;
 
+                const seriesColorClass = getSeriesColor(series);
+                const seriesId = series.toLowerCase().replace(/\s+/g, '-');
+
                 accordionHTML += `
                     <div class="bg-white rounded-lg shadow-md border border-gray-200">
-                        <button class="w-full text-left p-6 bg-blue-50 text-blue-800 font-bold text-lg flex justify-between items-center hover:bg-blue-100 focus:outline-none transition-colors rounded-t-lg" onclick="toggleSeries(this)">
-                            ${series} 
+                        <button class="accordion-button w-full text-left p-6 bg-blue-50 text-blue-800 font-bold text-lg flex justify-between items-center hover:bg-blue-100 focus:outline-none transition-colors rounded-t-lg" onclick="toggleSeries(this, '${seriesId}')">
+                            ${highlightText(series, searchTerm)}
                             <div class="flex items-center gap-3">
-                                <span class="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">${talks.length} talk${talks.length > 1 ? 's' : ''}</span>
-                                <i class="fas fa-chevron-down transition-transform text-blue-600"></i>
+                                <span class="${seriesColorClass} px-3 py-1 rounded-full text-sm font-medium">${talks.length} talk${talks.length > 1 ? 's' : ''}</span>
+                                <i class="fas fa-chevron-down chevron-icon text-blue-600"></i>
                             </div>
                         </button>
-                        <div class="hidden" id="${series.toLowerCase().replace(/\s+/g, '-')}-talks">
+                        <div class="accordion-content" id="${seriesId}-talks">
                             ${talks.map(talk => `
                                 <div class="talk-card border-t border-gray-200 p-6">
                                     <div class="flex flex-col md:flex-row justify-between gap-6">
                                         <div class="content">
-                                            <h3 class="text-xl font-bold text-blue-700 mb-2">${talk.title}</h3>
+                                            <h3 class="text-xl font-bold text-blue-700 mb-2">${highlightText(talk.title, searchTerm)}</h3>
                                             ${talk.part ? `<p class="text-gray-600 mb-3 font-medium">${talk.part} of the series</p>` : ''}
                                             
                                             <div class="flex flex-wrap gap-4 mb-4 text-gray-700">
@@ -270,14 +449,13 @@
                                                 <div class="mb-4 p-3 bg-gray-50 rounded-lg">
                                                     <p class="font-medium text-gray-800">
                                                         <i class="fas fa-user mr-2 text-blue-600"></i>
-                                                        Speaker: ${talk.speaker}${talk.affiliation ? `, ${talk.affiliation}` : ''}
+                                                        Speaker: ${highlightText(talk.speaker, searchTerm)}${talk.affiliation ? `, ${talk.affiliation}` : ''}
                                                     </p>
                                                 </div>
                                             ` : ''}
                                             
-                                            ${talk.abstract ? `<div class="mb-4"><p class="text-gray-700 text-justify"><strong class="text-gray-800">Abstract:</strong> ${talk.abstract}</p></div>` : ''}
+                                            ${talk.abstract ? `<div class="mb-4"><p class="text-gray-700 text-justify"><strong class="text-gray-800">Abstract:</strong> ${highlightText(talk.abstract, searchTerm)}</p></div>` : ''}
 
-                                            <!-- Post-Lecture Resources -->
                                             ${(talk.recording || talk.notes) ? `
                                                 <div class="mt-4 pt-4 border-t border-gray-200">
                                                     <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
@@ -337,40 +515,31 @@
                 `;
             });
 
-            document.getElementById('archive-talks').innerHTML = accordionHTML || '<div class="bg-white rounded-lg shadow-md p-6"><p class="text-gray-600 text-center">No past talks available for this year.</p></div>';
+            document.getElementById('archive-talks').innerHTML = accordionHTML || '<div class="bg-white rounded-lg shadow-md p-6"><p class="text-gray-600 text-center">No talks found matching your criteria.</p></div>';
 
-            // Render Mathjax
             renderMathJax();
-
-            // Render pagination
             renderPagination(sortedSeries.length);
         }
 
-        // Toggle series accordion
-        function toggleSeries(button) {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('i');
+        function toggleSeries(button, seriesId) {
+            const content = document.getElementById(`${seriesId}-talks`);
+            const icon = button.querySelector('.chevron-icon');
 
-            content.classList.toggle('hidden');
-            icon.classList.toggle('fa-chevron-down');
-            icon.classList.toggle('fa-chevron-up');
+            content.classList.toggle('open');
+            icon.classList.toggle('rotated');
         }
 
-        // Make toggleSeries globally available
         window.toggleSeries = toggleSeries;
 
-        // Render pagination controls
         function renderPagination(totalSeries) {
             const totalPages = Math.ceil(totalSeries / talksPerPage);
             const prevButton = document.getElementById('prev-page');
             const nextButton = document.getElementById('next-page');
             const pageNumbers = document.getElementById('page-numbers');
 
-            // Update buttons
             prevButton.disabled = currentPage === 1;
             nextButton.disabled = currentPage === totalPages || totalPages === 0;
 
-            // Generate page numbers
             pageNumbers.innerHTML = '';
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
@@ -379,26 +548,27 @@
                 button.addEventListener('click', () => {
                     currentPage = i;
                     renderTalks();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
                 pageNumbers.appendChild(button);
             }
 
-            // Event listeners for prev/next buttons
             prevButton.onclick = () => {
                 if (currentPage > 1) {
                     currentPage--;
                     renderTalks();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             };
             nextButton.onclick = () => {
                 if (currentPage < totalPages) {
                     currentPage++;
                     renderTalks();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             };
         }
 
-        // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', async () => {
             await loadNavbar();
             await loadFooter();
@@ -430,7 +600,6 @@
         };
     </script>
 
-    <!-- MathJax Script -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </body>
 </html>
