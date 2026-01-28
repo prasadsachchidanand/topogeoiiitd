@@ -468,8 +468,8 @@
     "passcode": "1729",
     "description": "We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups.",
     "part": "Part 2",
-    "recording": "",
-    "notes": "",
+    "recording": "https://youtu.be/0u58WlPFLEI",
+    "notes": "/notes/Sandip-Lecture_Notes-2.pdf",
     "abstract": "We survey explicit computations of the group of self-homotopy equivalences $\\mathcal{E}(X)$ for key spaces in homotopy theory. This includes results for pseudo-projective planes, with emphasis on lens spaces, as well as for Moore spaces $M(G, n)$ and twisted Eilenberg-MacLane spaces. We also discuss the structure of $\\mathcal{E}(X)$ for real, complex, and quaternionic projective spaces. Additionally, we present computations of $\\mathcal{E}_H(X)$ for rank one $H$-spaces, specifically $S^1$, $S^3$, $S^7$, $\\mathbb{R}P^3$, $\\mathbb{R}P^7$, and for certain higher-dimensional examples such as $S^3\\times S^7$, $S^3\\times S^3$, $S^7\\times S^7$, $SU(3)$, and $Sp(2)$. These cases illustrate the diversity and depth of self-equivalence groups across notable spaces in topology.",
     "about": "Sandip Samanta completed his PhD at the Indian Institute of Science Education and Research Kolkata (IISER Kolkata) under the supervision of Prof. Somnath Basu. He is currently a visiting student at IISER Kolkata. His research interests lie primarily in algebraic topology, with a focus on homotopy theory, loop spaces, and higher categorical structures. He also has keen interests in differential geometry and various aspects of combinatorics."
   },
