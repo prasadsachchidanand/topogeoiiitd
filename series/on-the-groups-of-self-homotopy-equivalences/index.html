@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>On The Groups of Self-Homotopy Equivalences - Topology and Geometry Seminar - IIIT Delhi</title>
+    <title id="page-title">Lecture Series - Topology and Geometry Seminar - IIIT Delhi</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo.png">
@@ -36,7 +36,8 @@
     <!-- Hero Section -->
     <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
         <div class="container mx-auto px-4 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4">On The Groups of Self-Homotopy Equivalences</h1>
+            <h1 id="series-title" class="text-3xl md:text-4xl font-bold mb-4">Loading...</h1>
+            <p class="text-xl md:text-2xl mb-8"></p>
             <div class="bg-white text-blue-900 inline-block px-6 py-3 rounded-lg shadow-lg">
                 <p class="font-semibold" id="speaker-name">Loading...</p>
                 <p class="text-lg" id="speaker-affiliation">Loading...</p>
@@ -52,10 +53,8 @@
             <div class="bg-white rounded-lg shadow-md p-6">
                 <p id="series-description" class="text-gray-700 mb-4">Loading...</p>
                 <p class="text-gray-700">
-                    The talks are intended for researchers, graduate students, and advanced undergraduates with a
-                    background in algebraic topology, such as familiarity with homotopy groups and (co)homology. No
-                    advanced knowledge of homotopy theory is assumed; any specialized concepts required will be
-                    introduced with appropriate context and references as needed.
+                    The course is designed for researchers, graduate students, and advanced undergraduates with
+                    basic prior knowledge of homological algebra, general topology, and singular homology.
                 </p>
             </div>
         </section>
@@ -66,14 +65,25 @@
             <div id="series-schedule" class="space-y-8">Loading...</div>
         </section>
 
-        <!-- References -->
-        <section class="mb-12">
+        <!-- References (hidden if no references exist) -->
+        <section id="references-section" class="mb-12 hidden">
             <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">References</h2>
             <div class="bg-white rounded-lg shadow-md p-6">
-                <h3 class="text-lg font-semibold mb-3 text-blue-700">Key Papers</h3>
-                <ul id="references-list" class="list-disc list-inside text-gray-700 space-y-3">
-                    Loading...
-                </ul>
+                <div id="books-container" class="hidden">
+                    <h3 class="text-lg font-semibold mb-3 text-blue-700">Books</h3>
+                    <ul id="books-list" class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                    </ul>
+                </div>
+                <div id="papers-container" class="hidden">
+                    <h3 class="text-lg font-semibold mb-3 text-blue-700">Papers</h3>
+                    <ul id="papers-list" class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                    </ul>
+                </div>
+                <div id="notes-container" class="hidden">
+                    <h3 class="text-lg font-semibold mb-3 text-blue-700">Lecture Notes</h3>
+                    <ul id="notes-list" class="list-disc list-inside text-gray-700 space-y-2">
+                    </ul>
+                </div>
             </div>
         </section>
 
@@ -114,6 +124,54 @@
     <div id="footer-container" class="mt-auto"></div>
 
     <script>
+        // Get URL parameters to determine which series to load
+        function getSeriesFromPath() {
+            // Extract series identifier from URL path
+            // Examples:
+            // /series/kim/ -> 'kim'
+            // /series/kim/index.html -> 'kim'
+            // /series/sergio/ -> 'sergio'
+            const pathParts = window.location.pathname.split('/').filter(part => part);
+
+            // Find 'series' in path and get the next part
+            const seriesIndex = pathParts.indexOf('series');
+            if (seriesIndex !== -1 && pathParts[seriesIndex + 1]) {
+                return pathParts[seriesIndex + 1].replace('.html', '');
+            }
+
+            // Fallback: check for query parameter (backward compatibility)
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('series') || 'kim'; // Default to kim
+        }
+
+        // Configuration object to map series directory names to JSON files
+        const seriesConfig = {
+            'knot-theory': {
+                jsonFile: '/data/kim.json',
+                seriesName: 'Knot theory and topology'
+            },
+            'coarse-cohomology': {
+                jsonFile: '/data/sergio.json',
+                seriesName: 'Topological and Homological Tools for the Study of Spaces from Infinitely Far Away'
+            },
+            'spin-geometry-and-scalar-curvature-rigidity': {
+                jsonFile: '/data/lukas.json',
+                seriesName: 'Spin Geometry and Scalar Curvature Rigidity'
+            },
+            'invariant-theory-of-hamiltonian-mechanics-and-related-numerical-analysis': {
+                jsonFile: '/data/oscar.json',
+                seriesName: 'Invariant theory of Hamiltonian mechanics and related numerical analysis'
+            },
+            'existence-of-higher-extremal-kahler-metrics-on-minimal-ruled-surface': {
+                jsonFile: '/data/rajas.json',
+                seriesName: 'Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface'
+            },
+            'on-the-groups-of-self-homotopy-equivalences': {
+                jsonFile: '/data/sandip.json',
+                seriesName: 'On The Groups of Self-Homotopy Equivalences'
+            }
+        };
+
         // Load navbar component
         async function loadNavbar() {
             try {
@@ -123,7 +181,6 @@
                 initializeNavbar();
             } catch (error) {
                 console.error('Error loading navbar:', error);
-                // Fallback: create a simple navbar if external file fails
                 document.getElementById('navbar-container').innerHTML = `
                 <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
                     <div class="container mx-auto px-4 py-3">
@@ -144,12 +201,10 @@
                     const isExpanded = mobileNav.classList.toggle('hidden');
                     mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
                 });
-            } else {
-                console.error('Mobile menu elements not found:', { mobileMenuBtn, mobileNav });
             }
         }
 
-        // Load footer component
+        // load footer component
         async function loadFooter() {
             try {
                 const response = await fetch('/components/footer.html');
@@ -157,7 +212,6 @@
                 document.getElementById('footer-container').innerHTML = footerHtml;
             } catch (error) {
                 console.error('Error loading footer:', error);
-                // Fallback: create a simple footer if external file fails
                 document.getElementById('footer-container').innerHTML = `
                 <footer class="bg-blue-900 text-white py-8 mt-auto">
                     <div class="container mx-auto px-4">
@@ -181,41 +235,79 @@
             }
         }
 
-        // Render MathJax after content is loaded
-        function renderMathJax() {
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise().catch(function (err) {
-                    console.error('MathJax typeset failed: ' + err.message);
-                });
-            }
-        }
-
-        // Fetch and render series data from json
+        // Fetch and render series talks
         async function fetchAndRenderSeries() {
             try {
-                const response = await fetch('/data/sandip.json');
-                const talksArray = await response.json();
+                // Get series identifier from URL path
+                const seriesId = getSeriesFromPath();
+                const config = seriesConfig[seriesId];
 
-                // Filter talks for this series and sort by date
-                const HomotopyEquivalenceTalks = talksArray.filter(talk => talk.series === 'On The Groups of Self-Homotopy Equivalences')
-                    .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                if (HomotopyEquivalenceTalks.length === 0) {
-                    throw new Error('No On The Groups of Self-Homotopy Equivalences talks found');
+                if (!config) {
+                    throw new Error(`Unknown series: ${seriesId}`);
                 }
 
-                // Get speaker info from first talk
-                const firstTalk = HomotopyEquivalenceTalks[0];
-                const speakerName = firstTalk.speaker;
-                const speakerAffiliation = firstTalk.affiliation;
-                const speakerAbout = firstTalk.about || "Sandip Samanta is in the final stages of his PhD under the supervision of Prof. Somnath Basu at IISER Kolkata. His primary research interests are in algebraic topology, with a particular focus on homotopy theory. He also has keen interests in differential geometry and various aspects of combinatorics.";
+                const response = await fetch(config.jsonFile);
+                const data = await response.json();
+
+                // Check if using new optimized structure (object with series/talks) or old structure (array)
+                const isOptimized = data.series && data.talks;
+
+                let seriesInfo, seriesTalks;
+
+                if (isOptimized) {
+                    // New optimized structure
+                    seriesInfo = data.series;
+                    seriesTalks = data.talks.sort((a, b) => new Date(a.date) - new Date(b.date));
+                } else {
+                    // Old structure (array of talks)
+                    seriesTalks = data.filter(talk =>
+                        talk.series === config.seriesName
+                    ).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                    if (seriesTalks.length === 0) {
+                        throw new Error(`No talks found for series: ${config.seriesName}`);
+                    }
+
+                    // Extract series info from first talk
+                    const firstTalk = seriesTalks[0];
+                    seriesInfo = {
+                        name: firstTalk.series,
+                        speaker: firstTalk.speaker,
+                        affiliation: firstTalk.affiliation,
+                        personalPage: firstTalk.personalPage,
+                        mail: firstTalk.mail,
+                        description: firstTalk.description,
+                        about: firstTalk.about || "",
+                        zoomLink: firstTalk.zoomLink || "",
+                        meetingId: firstTalk.meetingId || "",
+                        passcode: firstTalk.passcode || "",
+                        references: []
+                    };
+
+                    // Collect references from all talks (old structure)
+                    seriesTalks.forEach(talk => {
+                        if (talk.references) {
+                            seriesInfo.references = seriesInfo.references || [];
+                            seriesInfo.references.push(...talk.references);
+                        }
+                    });
+                }
+
+                const speakerName = seriesInfo.speaker;
+                const speakerAffiliation = seriesInfo.affiliation;
+                const speakerAbout = seriesInfo.about || "";
+
+                // Update page title
+                document.getElementById('page-title').textContent = `${seriesInfo.name} - ${speakerName} - IIIT Delhi`;
 
                 // Update hero section
+                document.getElementById('series-title').textContent = seriesInfo.name;
                 document.getElementById('speaker-name').textContent = `Speaker: ${speakerName}`;
-                document.getElementById('speaker-affiliation').textContent = `${speakerAffiliation}`;
+                document.getElementById('speaker-affiliation').textContent = speakerAffiliation;
 
-                // Update series description
-                document.getElementById('series-description').textContent = firstTalk.description || 'We present a comprehensive survey of the groups of self-homotopy equivalences $\\mathcal{E}(X)$ and their important subgroups, focusing on classical computations for key spaces such as spheres, projective spaces, Moore spaces, and rank one $H$-spaces. The study includes structural results, exact sequences for products and wedges, various generalizations of self-equivalences, and notable applications in fibration classification and $H$-space theory. We conclude by outlining open problems regarding the characterization, computation, and realization of these groups, highlighting ongoing challenges and directions in algebraic topology.';
+                // Update series description (parse HTML from JSON)
+                const descriptionElement = document.getElementById('series-description');
+                descriptionElement.innerHTML = seriesInfo.description || 'Loading series description...';
 
                 // Update speaker bio section
                 document.getElementById('speaker-bio-affiliation').textContent = speakerAffiliation;
@@ -227,11 +319,16 @@
 
                 // Update email
                 const emailElement = document.getElementById('speaker-email');
-                emailElement.href = 'mailto:ss18ip021@iiserkol.ac.in';
-                emailElement.textContent = firstTalk.mail || 'ss18ip021@iiserkol.ac.in';
+                if (seriesInfo.mail) {
+                    emailElement.href = `mailto:${seriesInfo.mail}`;
+                    emailElement.textContent = seriesInfo.mail;
+                } else {
+                    emailElement.textContent = 'Not available';
+                    emailElement.removeAttribute('href');
+                }
 
                 // Update personal page link if available
-                const personalPageUrl = firstTalk.personalPage || firstTalk.homepage || firstTalk.website;
+                const personalPageUrl = seriesInfo.personalPage || seriesInfo.homepage || seriesInfo.website;
                 if (personalPageUrl) {
                     const personalPageContainer = document.getElementById('speaker-personal-page-container');
                     const personalPageElement = document.getElementById('speaker-personal-page');
@@ -243,25 +340,74 @@
                     speakerNameLink.href = personalPageUrl;
                     speakerNameLink.target = '_blank';
                 } else {
-                    // Remove link functionality if no personal page
                     speakerNameLink.removeAttribute('href');
                     speakerNameLink.classList.add('cursor-default');
                 }
 
-                // Keep default references
-                const referencesList = document.getElementById('references-list');
-                referencesList.innerHTML = `
-                    <li><strong>On maps of H-spaces</strong> by M. Arkowitz, and C. R. Curjel (Topology, 1967) - A comprehensive introduction to h-homotopy equivalences.</li>
-                    <li><strong>Self-homotopy equivalences which induce the identity on homology, cohomology or homotopy groups</strong> by M. Arkowitz and K. -i. Maruyama (Topology and its Applications, 1998) - Some special kind of self-homotopy equivalences are discussed.</li>
-                    <li><strong>On the self-equivalences of H-spaces</strong> by N. Sawashita (Journal of Mathematics, Tokushima University, 1976) - A good source for the H-equivalence computations of some standard H-spaces.</li>
-                    <li><strong>On the group $\\mathcal{E}[X]$ of homotopy equivalence maps.</strong> by W. Shih (Bull. Amer. Math. Soc, 1964) - It Discusses self-homotopy equivalences of certain well-known spaces.</li>
-                `;
+                // Update references from the JSON data
+                const booksElement = document.getElementById('books-list');
+                const papersElement = document.getElementById('papers-list');
+                const notesElement = document.getElementById('notes-list');
+                const booksContainer = document.getElementById('books-container');
+                const papersContainer = document.getElementById('papers-container');
+                const notesContainer = document.getElementById('notes-container');
+                const referencesSection = document.getElementById('references-section');
 
-                // Render schedule/talks with proper abstract formatting
-                const scheduleContainer = document.getElementById('series-schedule');
-                scheduleContainer.innerHTML = HomotopyEquivalenceTalks.map(talk => {
-                    // Convert \n in abstract to <br> tags for proper display
+                // Get references (handle both old and new structure)
+                const allReferences = seriesInfo.references || [];
+
+                // Remove duplicates and categorize
+                const uniqueReferences = allReferences.filter((ref, index, self) =>
+                    index === self.findIndex(r => r.citation === ref.citation)
+                );
+
+                const books = uniqueReferences.filter(ref => ref.type === 'book');
+                const papers = uniqueReferences.filter(ref => ref.type === 'paper');
+                const scripts = uniqueReferences.filter(ref => ref.type === 'script');
+
+                // Only show sections if they have content
+                let hasAnyReferences = false;
+
+                if (books.length > 0) {
+                    booksElement.innerHTML = books.map(ref =>
+                        ref.url ? `<li><a href="${ref.url}" class="text-blue-600 hover:underline" target="_blank">${ref.citation}</a></li>`
+                            : `<li>${ref.citation}</li>`
+                    ).join('');
+                    booksContainer.classList.remove('hidden');
+                    hasAnyReferences = true;
+                }
+
+                if (papers.length > 0) {
+                    papersElement.innerHTML = papers.map(ref =>
+                        ref.url ? `<li><a href="${ref.url}" class="text-blue-600 hover:underline" target="_blank">${ref.citation}</a></li>`
+                            : `<li>${ref.citation}</li>`
+                    ).join('');
+                    papersContainer.classList.remove('hidden');
+                    hasAnyReferences = true;
+                }
+
+                if (scripts.length > 0) {
+                    notesElement.innerHTML = scripts.map(ref =>
+                        ref.url ? `<li><a href="${ref.url}" class="text-blue-600 hover:underline" target="_blank">${ref.citation}</a></li>`
+                            : `<li>${ref.citation}</li>`
+                    ).join('');
+                    notesContainer.classList.remove('hidden');
+                    hasAnyReferences = true;
+                }
+
+                // Show the entire References section only if there are any references
+                if (hasAnyReferences) {
+                    referencesSection.classList.remove('hidden');
+                }
+
+                // Render schedule with proper abstract formatting
+                document.getElementById('series-schedule').innerHTML = seriesTalks.map(talk => {
                     const formattedAbstract = talk.abstract ? talk.abstract.replace(/\n/g, '<br>') : '';
+
+                    // Use series-level zoom info if talk-level is not provided (for optimized structure)
+                    const zoomLink = talk.zoomLink || seriesInfo.zoomLink || '';
+                    const meetingId = talk.meetingId || seriesInfo.meetingId || 'TBA';
+                    const passcode = talk.passcode || seriesInfo.passcode || 'TBA';
 
                     return `
                     <div class="talk-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
@@ -283,7 +429,6 @@
                                     ${talk.time || 'Time TBA'}
                                 </p>
                                 ${formattedAbstract ? `<p class="text-gray-700 mb-4"><strong>Plan:</strong> ${formattedAbstract}</p>` : ''}
-                                <!-- Recording and Notes section -->
                                 ${(talk.recording || talk.notes) ? `
                                     <div class="mt-4 pt-4 border-t border-gray-200">
                                         <h4 class="font-semibold text-gray-800 mb-2">Post-Lecture Resources:</h4>
@@ -313,19 +458,19 @@
                                     <h4 class="font-bold mb-2 text-blue-800">Zoom Meeting</h4>
                                     <p class="mb-2">
                                         <span class="font-medium text-gray-700">Link:</span> 
-                                        <a href="${talk.zoomLink || '#'}" 
+                                        <a href="${zoomLink || '#'}" 
                                            class="text-blue-600 hover:underline" 
                                            target="_blank">
-                                           ${talk.zoomLink ? 'Join Meeting' : 'TBA'}
+                                           ${zoomLink ? 'Join Meeting' : 'TBA'}
                                         </a>
                                     </p>
                                     <p class="mb-2">
                                         <span class="font-medium text-gray-700">Meeting ID:</span> 
-                                        ${talk.meetingId || 'TBA'}
+                                        ${meetingId}
                                     </p>
                                     <p>
                                         <span class="font-medium text-gray-700">Passcode:</span> 
-                                        ${talk.passcode || 'TBA'}
+                                        ${passcode}
                                     </p>
                                 </div>
                             </div>
@@ -333,21 +478,28 @@
                     </div>
                 `}).join('');
 
-                renderMathJax();
-
             } catch (error) {
-                console.error('Error fetching talks data:', error);
+                console.error('Error fetching talks:', error);
 
                 // Show error messages
+                document.getElementById('series-title').textContent = 'Error Loading Series';
                 document.getElementById('speaker-name').textContent = 'Error loading speaker data';
-                document.getElementById('speaker-affiliation').textContent = 'Error loading speaker data';
+                document.getElementById('speaker-affiliation').textContent = '';
                 document.getElementById('series-description').textContent = 'Error loading series description. Please try again later.';
                 document.getElementById('series-schedule').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
                 document.getElementById('speaker-bio-name').textContent = 'Error loading speaker data';
                 document.getElementById('speaker-bio-affiliation').textContent = '';
-                document.getElementById('speaker-bio-description').textContent = 'Error loading speaker bio. Please try again later.';
+                document.getElementById('speaker-bio-description').textContent = '';
                 document.getElementById('speaker-email').textContent = 'Error loading email';
-                document.getElementById('references-list').innerHTML = '<li class="text-red-600">Error loading references. Please try again later.</li>';
+            }
+        }
+
+        // Render MathJax after content is loaded
+        function renderMathJax() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise().catch(function (err) {
+                    console.error('MathJax typeset failed: ' + err.message);
+                });
             }
         }
 
@@ -356,7 +508,6 @@
             await loadNavbar();
             await loadFooter();
             await fetchAndRenderSeries();
-            // Render MathJax after content is loaded
             setTimeout(renderMathJax, 100);
         });
     </script>

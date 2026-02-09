@@ -326,11 +326,31 @@
 
         async function fetchAndRenderArchive() {
             try {
+                // Fetch the merged talks.json file
                 const response = await fetch('/data/talks.json');
-                const talksData = await response.json();
+                let allTalksFromFile = await response.json();
+
+                // Handle both old structure (array) and new optimized structure
+                let allTalksFlat = [];
+
+                if (Array.isArray(allTalksFromFile)) {
+                    // Already an array of talks (from your merge script)
+                    allTalksFlat = allTalksFromFile;
+                } else if (allTalksFromFile.series && allTalksFromFile.talks) {
+                    // Single optimized structure (shouldn't happen with merge script, but handle it)
+                    const seriesInfo = allTalksFromFile.series;
+                    allTalksFlat = allTalksFromFile.talks.map(talk => ({
+                        ...talk,
+                        series: seriesInfo.name,
+                        speaker: talk.speaker || seriesInfo.speaker,
+                        affiliation: talk.affiliation || seriesInfo.affiliation,
+                        seriesLink: talk.seriesLink || `/series-template.html?series=${seriesInfo.name.toLowerCase().replace(/\s+/g, '-')}`
+                    }));
+                }
+
                 const currentDate = new Date();
 
-                allTalks = talksData
+                allTalks = allTalksFlat
                     .filter(talk => {
                         try {
                             const talkDateTime = new Date(`${talk.date}T${talk.time.replace(' IST', '')}+05:30`);
