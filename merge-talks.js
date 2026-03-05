@@ -8,7 +8,8 @@ const seriesDirectoryMap = {
     'lukas.json': 'spin-geometry-and-scalar-curvature-rigidity',
     'oscar.json': 'invariant-theory-of-hamiltonian-mechanics-and-related-numerical-analysis',
     'rajas.json': 'existence-of-higher-extremal-kahler-metrics-on-minimal-ruled-surface',
-    'sandip.json': 'on-the-groups-of-self-homotopy-equivalences'
+    'sandip.json': 'on-the-groups-of-self-homotopy-equivalences',
+    'david.json': 'diffeology'
     // Add more mappings when you add new series
 };
 
