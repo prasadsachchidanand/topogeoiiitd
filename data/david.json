@@ -29,8 +29,8 @@
       "date": "2026-03-10",
       "time": "16:00 IST",
       "part": "Part 1",
-      "recording": "",
-      "notes": "",
+      "recording": "https://youtu.be/4hjN5ZYDL4s",
+      "notes": "/notes/David-Lecture_Notes-1.pdf",
       "abstract": "We will introduce the category of diffeological spaces, and give several examples: the cusp \\(x^2 = y^3\\), as a subset of \\(\\mathbb{R}^2\\); the irrational tori \\(\\mathbb{R}/(\\mathbb{Z} + \\alpha\\mathbb{Z})\\), for irrational \\(\\alpha\\); and the diffeomorphism group of the real line, \\(\\operatorname{Diff}(\\mathbb{R})\\). These will illustrate how the category of diffeological spaces is closed under taking, respectively, subsets, quotients, and mapping spaces, and help give a sense of the data contained within a diffeological structure."
     },
     {
