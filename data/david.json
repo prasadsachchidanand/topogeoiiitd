@@ -39,8 +39,8 @@
       "date": "2026-03-17",
       "time": "16:00 IST",
       "part": "Part 2",
-      "recording": "",
-      "notes": "",
+      "recording": "https://youtu.be/n2KDD913wSU",
+      "notes": "/notes/David-Lecture_Notes-2.pdf",
       "abstract": "We will introduce two other approaches to singular and infinite-dimensional spaces, namely Lie groupoids (a step towards differentiable stacks), and convenient infinite-dimensional manifold structures. We will then explore how relevant diffeological spaces appear in both contexts."
     },
     {
