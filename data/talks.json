@@ -608,8 +608,8 @@
     "date": "2026-03-24",
     "time": "16:00 IST",
     "part": "Part 3",
-    "recording": "",
-    "notes": "",
+    "recording": "https://youtu.be/KCvb7ueM3Rg",
+    "notes": "/notes/David-Lecture_Notes-3.pdf",
     "abstract": "Having completed the introductions, we will summarize some recent progress in using diffeology to understand geometry. Among these will include: a generalization of the Serre-Swan theorem using diffeological vector bundles; an integration of Lie algebroids to diffeological groupoids, even when no integrating Lie groupoid exists; and a diffeological approach to the question of geometric quantization.",
     "series": "A first encounter with diffeology",
     "speaker": "David Miyamoto",
@@ -622,5 +622,26 @@
     "meetingId": "989 7322 5688",
     "passcode": "1729",
     "seriesLink": "/series/diffeology/"
+  },
+  {
+    "id": "AD-1",
+    "title": "Introduction to minimal and maximal surfaces in $\\mathbb{R}^3$ and $\\mathbb{L}_1^3$ respectively",
+    "date": "2026-04-05",
+    "time": "16:00 IST",
+    "part": "Part 1",
+    "recording": "",
+    "notes": "",
+    "abstract": "In this talk, we will discuss minimal and maximal surfaces in three-dimensional Euclidean and Lorentz-Minkowski space respectively. We will explore how they are related and how to construct them. In particular, we will cover Björling problem and Weierstrass-Ennerper representations for them. I will also define the term maxface on which my next two lectures will be.",
+    "series": "Construction of arbitrary genus maxfaces in the Lorentz-Minkowski space",
+    "speaker": "Anu Dhochak",
+    "affiliation": "ICTS-TIFR, Bengaluru, India",
+    "personalPage": "https://www.icts.res.in/people/anu-dhochak",
+    "mail": "anu.dhochak@icts.res.in",
+    "description": "",
+    "about": "Anu Dhochak is a postdoctoral fellow at ICTS-TIFR, Bengaluru, working with Professor Rukmini Dey. Her broad area of research is Differential Geometry. Her interest lies in construction on minimal and maximal surfaces. Recently, she is also exploring non-abelian Hodge theory on Sasakian Manifolds and the study of non-zero constant mean curvature surfaces in $\\mathbb{R}^3$.",
+    "zoomLink": "https://iiitd-ac-in.zoom.us/j/98973225688?pwd=XhklapvhcYK1psmzGXtjCCgzFBmlFU.1",
+    "meetingId": "989 7322 5688",
+    "passcode": "1729",
+    "seriesLink": "/series/existence-of-arbitrary-genus-maxfaces-in-the-lorentz-minkowski-space/"
   }
 ]

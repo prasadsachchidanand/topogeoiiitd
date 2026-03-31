@@ -49,8 +49,8 @@
       "date": "2026-03-24",
       "time": "16:00 IST",
       "part": "Part 3",
-      "recording": "",
-      "notes": "",
+      "recording": "https://youtu.be/KCvb7ueM3Rg",
+      "notes": "/notes/David-Lecture_Notes-3.pdf",
       "abstract": "Having completed the introductions, we will summarize some recent progress in using diffeology to understand geometry. Among these will include: a generalization of the Serre-Swan theorem using diffeological vector bundles; an integration of Lie algebroids to diffeological groupoids, even when no integrating Lie groupoid exists; and a diffeological approach to the question of geometric quantization."
     }
   ]

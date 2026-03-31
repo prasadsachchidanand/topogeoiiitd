@@ -9,7 +9,8 @@ const seriesDirectoryMap = {
     'oscar.json': 'invariant-theory-of-hamiltonian-mechanics-and-related-numerical-analysis',
     'rajas.json': 'existence-of-higher-extremal-kahler-metrics-on-minimal-ruled-surface',
     'sandip.json': 'on-the-groups-of-self-homotopy-equivalences',
-    'david.json': 'diffeology'
+    'david.json': 'diffeology',
+    'anu.json': 'existence-of-arbitrary-genus-maxfaces-in-the-lorentz-minkowski-space'
     // Add more mappings when you add new series
 };
 
