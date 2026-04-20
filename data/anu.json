@@ -21,6 +21,17 @@
       "recording": "",
       "notes": "",
       "abstract": "In this talk, we will discuss minimal and maximal surfaces in three-dimensional Euclidean and Lorentz-Minkowski space respectively. We will explore how they are related and how to construct them. In particular, we will cover Björling problem and Weierstrass-Ennerper representations for them. I will also define the term maxface on which my next two lectures will be."
+    },
+
+    {
+      "id": "AD-2",
+      "title": "Node-opening construction of maxfaces",
+      "date": "2026-04-21",
+      "time": "16:00 IST",
+      "part": "Part 2",
+      "recording": "",
+      "notes": "",
+      "abstract": "In this talk, we will discuss the existence of a 1-parameter family of arbitrary genus maxfaces with an arbitrary number of spacelike ends and infinitely many swallowtails. Our primary tool of construction will be node-opening technique. All maxfces of these families are embedded in a wider sense. We will also see families of Lorentzian Costa and Costa-Hoffman-Meeks surfaces, as well as periodic surfaces of infinite genus, as examples."
     }
   ]
 }

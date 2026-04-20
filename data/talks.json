@@ -643,5 +643,26 @@
     "meetingId": "989 7322 5688",
     "passcode": "1729",
     "seriesLink": "/series/existence-of-arbitrary-genus-maxfaces-in-the-lorentz-minkowski-space/"
+  },
+  {
+    "id": "AD-2",
+    "title": "Node-opening construction of maxfaces",
+    "date": "2026-04-21",
+    "time": "16:00 IST",
+    "part": "Part 2",
+    "recording": "",
+    "notes": "",
+    "abstract": "In this talk, we will discuss the existence of a 1-parameter family of arbitrary genus maxfaces with an arbitrary number of spacelike ends and infinitely many swallowtails. Our primary tool of construction will be node-opening technique. All maxfces of these families are embedded in a wider sense. We will also see families of Lorentzian Costa and Costa-Hoffman-Meeks surfaces, as well as periodic surfaces of infinite genus, as examples.",
+    "series": "Construction of arbitrary genus maxfaces in the Lorentz-Minkowski space",
+    "speaker": "Anu Dhochak",
+    "affiliation": "ICTS-TIFR, Bengaluru, India",
+    "personalPage": "https://www.icts.res.in/people/anu-dhochak",
+    "mail": "anu.dhochak@icts.res.in",
+    "description": "This talk discusses the construction of maximal surfaces (maxfaces) in Lorentz-Minkowski space with arbitrary genus, highlighting methods, geometric properties, and connections to minimal surface theory.\n\nPrerequisites: Basic differential geometry of curves and surfaces, familiarity with curvature and genus; some exposure to minimal surfaces is helpful.",
+    "about": "Anu Dhochak is a postdoctoral fellow at ICTS-TIFR, Bengaluru, working with Professor Rukmini Dey. Her broad area of research is Differential Geometry. Her interest lies in construction on minimal and maximal surfaces. Recently, she is also exploring non-abelian Hodge theory on Sasakian Manifolds and the study of non-zero constant mean curvature surfaces in $\\mathbb{R}^3$.",
+    "zoomLink": "https://iiitd-ac-in.zoom.us/j/98973225688?pwd=XhklapvhcYK1psmzGXtjCCgzFBmlFU.1",
+    "meetingId": "989 7322 5688",
+    "passcode": "1729",
+    "seriesLink": "/series/existence-of-arbitrary-genus-maxfaces-in-the-lorentz-minkowski-space/"
   }
 ]
