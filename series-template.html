@@ -169,8 +169,40 @@
             'on-the-groups-of-self-homotopy-equivalences': {
                 jsonFile: '/data/sandip.json',
                 seriesName: 'On The Groups of Self-Homotopy Equivalences'
+            },
+            // --- Added: previously missing entries (pages existed but had no config -> "Unknown series" error) ---
+            'diffeology': {
+                jsonFile: '/data/david.json',
+                seriesName: 'A first encounter with diffeology'
+            },
+            'existence-of-arbitrary-genus-maxfaces-in-the-lorentz-minkowski-space': {
+                jsonFile: '/data/anu.json',
+                seriesName: 'Existence of arbitrary genus maxfaces in the Lorentz-Minkowski space'
+            },
+            // NOTE: no data/*.json file was found for 'finsler-geometry' — add its jsonFile/seriesName here
+            // once that speaker's JSON file exists in /data, otherwise this page will keep erroring.
+            'non-commutative-witt-vectors-characteristic-map-and-pairing': {
+                jsonFile: '/data/ramyak.json',
+                seriesName: 'Non-Commutative Witt Vectors, Characteristic Map and Pairing'
             }
         };
+
+        // --- Added: shared IST-aware date/time helpers, and a "has this talk concluded?" check ---
+        function parseISTDateTime(dateStr, timeStr) {
+            if (!dateStr || !timeStr) return null;
+            const cleanTime = timeStr.replace(/\s*IST\s*/i, '').trim();
+            const dt = new Date(`${dateStr}T${cleanTime}:00+05:30`);
+            return isNaN(dt.getTime()) ? null : dt;
+        }
+
+        function hasTalkConcluded(talk) {
+            const dt = parseISTDateTime(talk.date, talk.time);
+            // If date/time is missing or malformed, don't hide the Zoom info —
+            // fail safe towards "still show it" rather than silently breaking the card.
+            if (!dt) return false;
+            return dt < new Date();
+        }
+        // --- End added helpers ---
 
         // Load navbar component
         async function loadNavbar() {
@@ -409,6 +441,41 @@
                     const meetingId = talk.meetingId || seriesInfo.meetingId || 'TBA';
                     const passcode = talk.passcode || seriesInfo.passcode || 'TBA';
 
+                    // --- Added: decide whether this specific talk's Zoom info should still be clickable ---
+                    const talkConcluded = hasTalkConcluded(talk);
+
+                    const zoomDetailsHtml = talkConcluded ? `
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 text-gray-600">
+                                <i class="fas fa-check-circle mr-1"></i> Talk Concluded
+                            </h4>
+                            <p class="text-gray-500 text-sm">
+                                ${talk.recording ? 'This talk has ended — see the recording above.' : 'This talk has ended.'}
+                            </p>
+                        </div>
+                    ` : `
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2 text-blue-800">Zoom Meeting</h4>
+                            <p class="mb-2">
+                                <span class="font-medium text-gray-700">Link:</span> 
+                                <a href="${zoomLink || '#'}" 
+                                   class="text-blue-600 hover:underline" 
+                                   target="_blank">
+                                   ${zoomLink ? 'Join Meeting' : 'TBA'}
+                                </a>
+                            </p>
+                            <p class="mb-2">
+                                <span class="font-medium text-gray-700">Meeting ID:</span> 
+                                ${meetingId}
+                            </p>
+                            <p>
+                                <span class="font-medium text-gray-700">Passcode:</span> 
+                                ${passcode}
+                            </p>
+                        </div>
+                    `;
+                    // --- End added block ---
+
                     return `
                     <div class="talk-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
                         <div class="flex flex-col md:flex-row justify-between gap-4">
@@ -454,25 +521,7 @@
                                 ` : ''}
                             </div>
                             <div class="zoom-details w-full md:w-1/3">
-                                <div class="bg-blue-50 p-4 rounded-lg">
-                                    <h4 class="font-bold mb-2 text-blue-800">Zoom Meeting</h4>
-                                    <p class="mb-2">
-                                        <span class="font-medium text-gray-700">Link:</span> 
-                                        <a href="${zoomLink || '#'}" 
-                                           class="text-blue-600 hover:underline" 
-                                           target="_blank">
-                                           ${zoomLink ? 'Join Meeting' : 'TBA'}
-                                        </a>
-                                    </p>
-                                    <p class="mb-2">
-                                        <span class="font-medium text-gray-700">Meeting ID:</span> 
-                                        ${meetingId}
-                                    </p>
-                                    <p>
-                                        <span class="font-medium text-gray-700">Passcode:</span> 
-                                        ${passcode}
-                                    </p>
-                                </div>
+                                ${zoomDetailsHtml}
                             </div>
                         </div>
                     </div>

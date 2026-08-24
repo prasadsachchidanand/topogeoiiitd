@@ -10,7 +10,8 @@ const seriesDirectoryMap = {
     'rajas.json': 'existence-of-higher-extremal-kahler-metrics-on-minimal-ruled-surface',
     'sandip.json': 'on-the-groups-of-self-homotopy-equivalences',
     'david.json': 'diffeology',
-    'anu.json': 'existence-of-arbitrary-genus-maxfaces-in-the-lorentz-minkowski-space'
+    'anu.json': 'existence-of-arbitrary-genus-maxfaces-in-the-lorentz-minkowski-space',
+    'ramyak.json': 'non-commutative-witt-vectors-characteristic-map-and-pairing'
     // Add more mappings when you add new series
 };
 
