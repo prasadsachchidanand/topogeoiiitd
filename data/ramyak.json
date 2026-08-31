@@ -45,7 +45,7 @@
       "date": "2026-08-27",
       "time": "09:00 IST",
       "part": "Part 2",
-      "recording": "",
+      "recording": "https://youtu.be/CEpQe7Ui69o",
       "notes": "/notes/Ramyak-Lecture_Notes-2.pdf",
       "abstract": "If one takes the view of Witt vectors as the \\(t\\)-adic completion of \\(\\operatorname{End}_0(R)\\), then one can essentially circumvent the use of the trace property and the Witt vectors with coefficients used in DKNP, and recover every property of the Witt vectors as a consequence of the K-theoretic properties of \\(\\operatorname{End}_0(R)\\). This second talk will focus on an alternate definition of Witt vectors and the characteristic map, and additionally give an external pairing of Witt vectors and \\(\\operatorname{Nil}_0(R)\\)."
     }
