@@ -1,0 +1,28 @@
+{
+  "series": {
+    "slug": "replace-with-series-url",
+    "name": "Full title of the lecture series",
+    "speaker": "Speaker name",
+    "affiliation": "Speaker affiliation",
+    "personalPage": "https://example.com",
+    "mail": "speaker@example.com",
+    "description": "Description and prerequisites for the series.",
+    "about": "Short biography of the speaker.",
+    "zoomLink": "",
+    "meetingId": "",
+    "passcode": "",
+    "references": []
+  },
+  "talks": [
+    {
+      "id": "ABC-1",
+      "title": "Title of the first talk",
+      "date": "2026-09-01",
+      "time": "16:00 IST",
+      "part": "Part 1",
+      "abstract": "Abstract of the talk.",
+      "recording": "",
+      "notes": ""
+    }
+  ]
+}

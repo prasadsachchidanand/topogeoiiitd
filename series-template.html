@@ -144,46 +144,12 @@
             return urlParams.get('series') || 'kim'; // Default to kim
         }
 
-        // Configuration object to map series directory names to JSON files
+        // This single entry is filled automatically by scripts/build.js.
+        // Adding a new data/*.json file never requires editing this template.
         const seriesConfig = {
-            'knot-theory': {
-                jsonFile: '/data/kim.json',
-                seriesName: 'Knot theory and topology'
-            },
-            'coarse-cohomology': {
-                jsonFile: '/data/sergio.json',
-                seriesName: 'Topological and Homological Tools for the Study of Spaces from Infinitely Far Away'
-            },
-            'spin-geometry-and-scalar-curvature-rigidity': {
-                jsonFile: '/data/lukas.json',
-                seriesName: 'Spin Geometry and Scalar Curvature Rigidity'
-            },
-            'invariant-theory-of-hamiltonian-mechanics-and-related-numerical-analysis': {
-                jsonFile: '/data/oscar.json',
-                seriesName: 'Invariant theory of Hamiltonian mechanics and related numerical analysis'
-            },
-            'existence-of-higher-extremal-kahler-metrics-on-minimal-ruled-surface': {
-                jsonFile: '/data/rajas.json',
-                seriesName: 'Existence of Higher Extremal Kähler Metrics on a Minimal Ruled Surface'
-            },
-            'on-the-groups-of-self-homotopy-equivalences': {
-                jsonFile: '/data/sandip.json',
-                seriesName: 'On The Groups of Self-Homotopy Equivalences'
-            },
-            // --- Added: previously missing entries (pages existed but had no config -> "Unknown series" error) ---
-            'diffeology': {
-                jsonFile: '/data/david.json',
-                seriesName: 'A first encounter with diffeology'
-            },
-            'existence-of-arbitrary-genus-maxfaces-in-the-lorentz-minkowski-space': {
-                jsonFile: '/data/anu.json',
-                seriesName: 'Existence of arbitrary genus maxfaces in the Lorentz-Minkowski space'
-            },
-            // NOTE: no data/*.json file was found for 'finsler-geometry' — add its jsonFile/seriesName here
-            // once that speaker's JSON file exists in /data, otherwise this page will keep erroring.
-            'non-commutative-witt-vectors-characteristic-map-and-pairing': {
-                jsonFile: '/data/ramyak.json',
-                seriesName: 'Non-Commutative Witt Vectors, Characteristic Map and Pairing'
+            '__SERIES_SLUG__': {
+                jsonFile: '__SERIES_DATA_URL__',
+                seriesName: '__SERIES_NAME_JS__'
             }
         };
 
