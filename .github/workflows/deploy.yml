@@ -3,61 +3,62 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change to 'master' if needed
-  workflow_dispatch:  # Allows manual trigger
+      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout source repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          path: source-repo  # Checkout to a subdirectory
-      
-      - name: Setup SSH
+          path: source-repo
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build and validate website
+        working-directory: source-repo
+        env:
+          SITE_URL: https://topogeoiiitd.github.io
+          BASE_PATH: ""
+        run: |
+          npm run build
+          npm run check
+
+      - name: Set up deployment key
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
-      
+
       - name: Configure SSH known hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-      
-      - name: Clone target repository
+
+      - name: Clone publication repository
         run: |
           git clone git@github.com:topogeoiiitd/topogeoiiitd.github.io.git target-repo
-      
-      - name: Copy files to target repository
+
+      - name: Copy generated website
         run: |
-          # Remove old files (except .git directory)
           find target-repo -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
-          
-          # Copy all files from source to target
-          cp -r source-repo/* target-repo/ 2>/dev/null || true
-          
-          # Copy hidden files except .git and .github
-          for file in source-repo/.[^.]*; do
-            filename=$(basename "$file")
-            if [ "$filename" != ".git" ] && [ "$filename" != ".github" ]; then
-              cp -r "$file" target-repo/ 2>/dev/null || true
-            fi
-          done
-      
-      - name: Commit and push to target repository
+          cp -r source-repo/dist/. target-repo/
+
+      - name: Commit and publish
         run: |
           cd target-repo
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git add .
-          
-          # Only commit if there are changes
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "No changes to publish."
           else
-            git commit -m "Deploy from prasadsachchidanand/topogeoiiitd@${{ github.sha }}"
+            git commit -m "Deploy generated site from prasadsachchidanand/topogeoiiitd@${{ github.sha }}"
             git push
           fi

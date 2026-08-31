@@ -27,7 +27,7 @@ npm run new-series -- metric-geometry
 This creates `data/metric-geometry.json`. Edit that one file and add any PDF notes to `notes/`. The build automatically:
 
 - creates the series page using `series-template.html`;
-- merges the talks into `data/talks.json`;
+- merges the talks into the generated `data/talks.json`;
 - updates the home page, schedule, and archive through their existing scripts;
 - updates the sitemap, RSS feed, and calendar;
 - adds canonical metadata and Schema.org event information.
@@ -60,8 +60,6 @@ The validation step compares the generated page structure with the original `ind
 
 `site.config.json` contains the website URL, title, description, contact email, timezone, mailing-list link, and YouTube link.
 
-## GitHub Pages
+## Publishing
 
-The workflow in `.github/workflows/pages.yml` builds, validates, and publishes the website on every push and once daily. The daily build keeps date-dependent schedule/archive content current.
-
-In GitHub, select **Settings → Pages → Build and deployment → Source → GitHub Actions** once.
+The workflow in `.github/workflows/deploy.yml` runs automatically after every push to `main`. It builds and validates the site, then publishes the generated `dist/` directory to <https://topogeoiiitd.github.io/> using the existing deployment key.
