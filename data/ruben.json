@@ -5,7 +5,7 @@
     "speaker": "Ruben Louis",
     "affiliation": "University of Illinois Urbana-Champaign",
     "personalPage": "https://ruben-louis.apps.math.cnrs.fr/",
-    "mail": "",
+    "mail": "louisruben96@yahoo.com",
     "description": "Roughly speaking, a foliation on a smooth manifold is a partition of the manifold into immersed submanifolds of constant dimension, called leaves, which fit together smoothly. When the dimensions of these submanifolds are allowed to vary, we speak of a singular foliation. By the Frobenius theorem, a regular foliation can be described as an involutive subbundle of the tangent bundle. The dual of such a vector bundle carries a natural linear Poisson structure that encodes the infinitesimal structure of the foliation; this is known as the Courant correspondence. In the singular case, the dimensions of the leaves vary, producing a singular object inside the tangent bundle rather than an ordinary vector subbundle. Consequently, one cannot directly construct a Poisson structure on its dual in the usual way. This difficulty can nevertheless be overcome by embedding the smooth manifold into the category of smooth schemes. This lecture series explores the relationship between these two worlds through examples and applications.",
     "about": "Dr. Ruben Louis is a Haitian mathematician specializing in differential geometry, singular foliations, higher algebraic structures, and mathematical physics. He is a J. L. Doob Research Assistant Professor in the Department of Mathematics at the University of Illinois Urbana-Champaign (UIUC).",
     "zoomLink": "https://iiitd-ac-in.zoom.us/j/99715726257?pwd=2b9vl3aSfRUHjCtksbeeuZ0bi8b5jE.1",
