@@ -34,6 +34,8 @@ This creates `data/metric-geometry.json`. Edit that one file and add any PDF not
 
 No directory mapping or copied HTML page is required.
 
+The `prerequisites` field is optional. Leave it empty when a series has no stated prerequisites; text entered there appears only on that series page.
+
 ## Add or update a talk
 
 Edit only the corresponding file in `data/`. For example:
