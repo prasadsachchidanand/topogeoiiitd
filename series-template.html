@@ -52,10 +52,7 @@
             <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">About the Series</h2>
             <div class="bg-white rounded-lg shadow-md p-6">
                 <p id="series-description" class="text-gray-700 mb-4">Loading...</p>
-                <p class="text-gray-700">
-                    The course is designed for researchers, graduate students, and advanced undergraduates with
-                    basic prior knowledge of homological algebra, general topology, and singular homology.
-                </p>
+                <p id="series-prerequisites" class="text-gray-700 hidden"></p>
             </div>
         </section>
 
@@ -159,6 +156,41 @@
             const cleanTime = timeStr.replace(/\s*IST\s*/i, '').trim();
             const dt = new Date(`${dateStr}T${cleanTime}:00+05:30`);
             return isNaN(dt.getTime()) ? null : dt;
+        }
+
+        function formatTalkDate(dateStr, timeStr) {
+            const dt = parseISTDateTime(dateStr, timeStr);
+            if (!dt) return dateStr || 'Date TBA';
+            return dt.toLocaleDateString('en-US', {
+                timeZone: 'Asia/Kolkata',
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        function formatTalkTime(dateStr, timeStr) {
+            const dt = parseISTDateTime(dateStr, timeStr);
+            if (!dt) return timeStr || 'Time TBA';
+
+            const cleanTime = timeStr.replace(/\s*IST\s*/i, '').trim();
+            const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if (!userTimeZone || userTimeZone === 'Asia/Kolkata' || userTimeZone === 'Asia/Calcutta') {
+                return `${cleanTime} IST`;
+            }
+
+            const localDateTime = dt.toLocaleString('en-US', {
+                timeZone: userTimeZone,
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            });
+            return `${cleanTime} IST <span class="text-gray-400 text-sm font-normal">(${localDateTime} in your time zone)</span>`;
         }
 
         function hasTalkConcluded(talk) {
@@ -307,6 +339,13 @@
                 const descriptionElement = document.getElementById('series-description');
                 descriptionElement.innerHTML = seriesInfo.description || 'Loading series description...';
 
+                // Prerequisites are optional and belong to the individual series.
+                const prerequisitesElement = document.getElementById('series-prerequisites');
+                if (seriesInfo.prerequisites && seriesInfo.prerequisites.trim()) {
+                    prerequisitesElement.innerHTML = `<strong>Prerequisites:</strong> ${seriesInfo.prerequisites}`;
+                    prerequisitesElement.classList.remove('hidden');
+                }
+
                 // Update speaker bio section
                 document.getElementById('speaker-bio-affiliation').textContent = speakerAffiliation;
                 document.getElementById('speaker-bio-description').textContent = speakerAbout;
@@ -416,7 +455,7 @@
                                 <i class="fas fa-check-circle mr-1"></i> Talk Concluded
                             </h4>
                             <p class="text-gray-500 text-sm">
-                                ${talk.recording ? 'This talk has ended — see the recording.' : 'This talk has ended.'}
+                                ${talk.recording ? 'This talk has ended — see the recording above.' : 'This talk has ended.'}
                             </p>
                         </div>
                     ` : `
@@ -450,16 +489,11 @@
                                 ${talk.part ? `<p class="text-gray-600 mb-2">${talk.part} of the series</p>` : ''}
                                 <p class="text-gray-700 mb-2 flex items-center">
                                     <i class="far fa-calendar-alt mr-2"></i>
-                                    ${talk.date ? new Date(talk.date).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric'
-                    }) : 'Date TBA'}
+                                    ${formatTalkDate(talk.date, talk.time)}
                                 </p>
                                 <p class="text-gray-700 mb-4 flex items-center">
                                     <i class="far fa-clock mr-2"></i>
-                                    ${talk.time || 'Time TBA'}
+                                    ${formatTalkTime(talk.date, talk.time)}
                                 </p>
                                 ${formattedAbstract ? `<p class="text-gray-700 mb-4"><strong>Abstract:</strong> ${formattedAbstract}</p>` : ''}
                                 ${(talk.recording || talk.notes) ? `
