@@ -237,10 +237,31 @@
             }
         }
 
+        function scrollToCurrentHash() {
+            if (!window.location.hash) return;
+
+            let targetId;
+            try {
+                targetId = decodeURIComponent(window.location.hash.slice(1));
+            } catch (_) {
+                return;
+            }
+
+            const target = document.getElementById(targetId);
+            if (!target) return;
+
+            requestAnimationFrame(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+
+        window.addEventListener('hashchange', scrollToCurrentHash);
+
         document.addEventListener('DOMContentLoaded', async () => {
             await loadNavbar();
             await loadFooter();
             await fetchAndRenderTalks();
+            scrollToCurrentHash();
         });
     </script>
 
