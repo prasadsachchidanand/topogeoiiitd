@@ -214,7 +214,7 @@ function copyDirectory(source, destination) {
 }
 
 function buildStaticFiles() {
-  for (const directory of ['assets', 'components', 'notes', 'register', 'series']) {
+  for (const directory of ['assets', 'components', 'notes', 'register']) {
     copyDirectory(path.join(root, directory), path.join(dist, directory));
   }
   for (const component of ['navbar.html', 'footer.html']) {
