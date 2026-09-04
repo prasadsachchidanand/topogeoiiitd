@@ -73,19 +73,17 @@
                     </div>
                 </a>
                 <button type="button"
-                    class="theme-toggle relative px-3 py-2 rounded-lg transition-all duration-300 hover:bg-white/10"
+                    class="theme-toggle relative inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-blue-300/50 transition-all duration-300 hover:bg-white/20"
                     aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
-                    <i class="theme-toggle-icon fas fa-moon relative z-10" aria-hidden="true"></i>
-                    <span class="theme-toggle-label sr-only">Dark mode</span>
+                    <span class="theme-toggle-label relative z-10 text-sm font-medium">Dark mode</span>
                 </button>
             </div>
 
             <!-- Mobile theme and menu controls -->
             <div class="md:hidden flex items-center space-x-1">
                 <button type="button"
-                    class="theme-toggle relative p-2 rounded-lg hover:bg-white/10 transition-all duration-300"
+                    class="theme-toggle theme-toggle-mobile relative p-2 rounded-lg bg-white/10 border border-blue-300/50 hover:bg-white/20 transition-all duration-300"
                     aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
-                    <i class="theme-toggle-icon fas fa-moon text-xl relative z-10" aria-hidden="true"></i>
                     <span class="theme-toggle-label sr-only">Dark mode</span>
                 </button>
                 <button
@@ -192,6 +190,25 @@
         transform: translateY(50%);
         width: 3px;
         height: 20px;
+    }
+
+    /* Self-contained theme icon: visible even if external icon fonts fail. */
+    .theme-toggle::before {
+        content: '☾';
+        position: relative;
+        z-index: 10;
+        font-size: 1.15rem;
+        line-height: 1;
+    }
+
+    .theme-toggle[aria-pressed="true"]::before {
+        content: '☀';
+    }
+
+    .theme-toggle-mobile {
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        justify-content: center;
     }
 
     /* Smooth animations */
