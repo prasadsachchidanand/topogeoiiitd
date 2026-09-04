@@ -118,6 +118,10 @@ function loadContent() {
       usedIds.add(raw.id);
       const start = parseStart(raw.date, raw.time);
       if (!start) throw new Error(`${filename}: invalid date/time for ${raw.id}.`);
+      const durationMinutes = Number(raw.durationMinutes ?? config.defaultDurationMinutes);
+      if (!Number.isFinite(durationMinutes) || durationMinutes <= 0) {
+        throw new Error(`${filename}: durationMinutes must be a positive number for ${raw.id}.`);
+      }
       return {
         ...raw,
         series: raw.series || meta.name,
@@ -131,9 +135,10 @@ function loadContent() {
         meetingId: raw.meetingId || meta.meetingId || '',
         passcode: raw.passcode || meta.passcode || '',
         seriesLink: `/series/${meta.slug}/`,
+        durationMinutes,
         start: start.instant,
         startIso: start.iso,
-        end: new Date(start.instant.getTime() + Number(raw.durationMinutes || config.defaultDurationMinutes) * 60_000)
+        end: new Date(start.instant.getTime() + durationMinutes * 60_000)
       };
     }).sort((a, b) => a.start - b.start);
     return { filename, meta, talks, original: parsed };
@@ -190,6 +195,8 @@ function enhanceHead(html, { title, description, urlPath, schema, robots = 'inde
     <meta property="og:url" content="${escapeHtml(canonical)}">
     <meta property="og:image" content="${escapeHtml(absoluteUrl('/assets/logo.png'))}">
     <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="/assets/theme.css">
+    <script src="/assets/theme.js"></script>
     ${schema ? `<script type="application/ld+json">${JSON.stringify(schema).replaceAll('<', '\\u003c')}</script>` : ''}`;
   return html.replace('</head>', `${additions}\n</head>`);
 }

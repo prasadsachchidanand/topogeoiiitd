@@ -23,7 +23,8 @@
       "part": "Part 1",
       "abstract": "Abstract of the talk.",
       "recording": "",
-      "notes": ""
+      "notes": "",
+      "durationMinutes": 60
     }
   ]
 }

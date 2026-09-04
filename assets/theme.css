@@ -1,0 +1,144 @@
+:root {
+    color-scheme: light;
+}
+
+html.dark {
+    color-scheme: dark;
+}
+
+body,
+.bg-gray-50,
+.bg-white,
+.bg-gray-100,
+.bg-gray-200,
+input,
+select,
+textarea {
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+html.dark body,
+html.dark .bg-gray-50 {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark .bg-white {
+    background-color: #1e293b !important;
+}
+
+html.dark .bg-gray-100 {
+    background-color: #334155 !important;
+}
+
+html.dark .bg-gray-200,
+html.dark .hover\:bg-gray-200:hover,
+html.dark .hover\:bg-gray-300:hover {
+    background-color: #475569 !important;
+}
+
+html.dark .bg-blue-50 {
+    background-color: #172554 !important;
+}
+
+html.dark .bg-blue-100,
+html.dark .hover\:bg-blue-200:hover {
+    background-color: #1e3a5f !important;
+}
+
+html.dark .bg-green-100,
+html.dark .hover\:bg-green-200:hover {
+    background-color: #14532d !important;
+}
+
+html.dark .bg-red-100,
+html.dark .hover\:bg-red-200:hover {
+    background-color: #7f1d1d !important;
+}
+
+html.dark .bg-yellow-100,
+html.dark .hover\:bg-yellow-200:hover {
+    background-color: #713f12 !important;
+}
+
+html.dark .text-gray-900,
+html.dark .text-gray-800 {
+    color: #f8fafc !important;
+}
+
+html.dark .text-gray-700,
+html.dark .text-gray-600 {
+    color: #cbd5e1 !important;
+}
+
+html.dark .text-gray-500,
+html.dark .text-gray-400 {
+    color: #94a3b8 !important;
+}
+
+html.dark .text-blue-900,
+html.dark .text-blue-800 {
+    color: #dbeafe !important;
+}
+
+html.dark .text-blue-700,
+html.dark .text-blue-600,
+html.dark .hover\:text-blue-800:hover {
+    color: #93c5fd !important;
+}
+
+html.dark .text-green-800,
+html.dark .text-green-600 {
+    color: #86efac !important;
+}
+
+html.dark .text-red-800,
+html.dark .text-red-600 {
+    color: #fca5a5 !important;
+}
+
+html.dark .border-gray-200,
+html.dark .border-gray-300,
+html.dark .border-blue-200 {
+    border-color: #475569 !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+    background-color: #0f172a !important;
+    border-color: #475569 !important;
+    color: #f8fafc !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+html.dark mark {
+    background-color: #854d0e;
+    color: #fef3c7;
+}
+
+.theme-toggle {
+    min-width: 2.5rem;
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid #67e8f9;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body,
+    .bg-gray-50,
+    .bg-white,
+    .bg-gray-100,
+    .bg-gray-200,
+    input,
+    select,
+    textarea {
+        transition: none;
+    }
+}

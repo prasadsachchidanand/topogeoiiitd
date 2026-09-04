@@ -194,11 +194,15 @@
         }
 
         function hasTalkConcluded(talk) {
-            const dt = parseISTDateTime(talk.date, talk.time);
-            // If date/time is missing or malformed, don't hide the Zoom info —
-            // fail safe towards "still show it" rather than silently breaking the card.
-            if (!dt) return false;
-            return dt < new Date();
+            const start = parseISTDateTime(talk.date, talk.time);
+            // Keep the meeting information visible throughout the lecture.
+            if (!start) return false;
+            const configuredDuration = Number(talk.durationMinutes);
+            const durationMinutes = Number.isFinite(configuredDuration) && configuredDuration > 0
+                ? configuredDuration
+                : 60;
+            const end = new Date(start.getTime() + durationMinutes * 60_000);
+            return new Date() >= end;
         }
         // --- End added helpers ---
 
