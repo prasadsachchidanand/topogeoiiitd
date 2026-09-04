@@ -16,6 +16,7 @@ if (!/^https?:\/\//.test(config.siteUrl)) throw new Error('siteUrl must be a com
 
 const now = process.env.BUILD_NOW ? new Date(process.env.BUILD_NOW) : new Date();
 if (Number.isNaN(now.getTime())) throw new Error('BUILD_NOW is invalid.');
+const assetVersion = String(process.env.GITHUB_SHA || now.getTime()).slice(0, 12);
 
 const read = (file) => fs.readFileSync(file, 'utf8');
 const write = (relative, contents) => {
@@ -160,6 +161,10 @@ function publicData(value) {
 }
 
 function applyBasePath(html) {
+  html = html.replace(
+    /fetch\((['"])((?:\/|\.\/|\.\.\/)components\/(?:navbar|footer)\.html)\1\)/g,
+    "fetch($1$2$1, { cache: 'no-store' })"
+  );
   if (!config.basePath) return html;
   return html
     .replace(/(href|src)="\/(?!\/)/g, `$1="${config.basePath}/`)
@@ -195,8 +200,8 @@ function enhanceHead(html, { title, description, urlPath, schema, robots = 'inde
     <meta property="og:url" content="${escapeHtml(canonical)}">
     <meta property="og:image" content="${escapeHtml(absoluteUrl('/assets/logo.png'))}">
     <meta name="twitter:card" content="summary">
-    <link rel="stylesheet" href="/assets/theme.css">
-    <script src="/assets/theme.js"></script>
+    <link rel="stylesheet" href="/assets/theme.css?v=${assetVersion}">
+    <script src="/assets/theme.js?v=${assetVersion}"></script>
     ${schema ? `<script type="application/ld+json">${JSON.stringify(schema).replaceAll('<', '\\u003c')}</script>` : ''}`;
   return html.replace('</head>', `${additions}\n</head>`);
 }
