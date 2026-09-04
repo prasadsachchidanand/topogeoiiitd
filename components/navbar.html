@@ -36,7 +36,7 @@
             </div>
 
             <!-- Desktop Nav Links with Advanced Hover Effects -->
-            <div class="hidden md:flex space-x-1" id="desktop-nav">
+            <div class="hidden md:flex items-center space-x-1" id="desktop-nav">
                 <a href="/"
                     class="nav-link relative px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-sm group">
                     <span class="relative z-10">Home</span>
@@ -72,18 +72,30 @@
                         class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
                 </a>
+                <button type="button"
+                    class="theme-toggle relative inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-blue-300/50 transition-all duration-300 hover:bg-white/20"
+                    aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+                    <span class="theme-toggle-label relative z-10 text-sm font-medium">Dark mode</span>
+                </button>
             </div>
 
-            <!-- Mobile Menu Button with Animation -->
-            <button
-                class="md:hidden focus:outline-none group relative p-2 rounded-lg hover:bg-white/10 transition-all duration-300"
-                id="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
-                <div
-                    class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                </div>
-                <i
-                    class="fas fa-bars text-xl relative z-10 transform group-hover:scale-110 transition-transform duration-300"></i>
-            </button>
+            <!-- Mobile theme and menu controls -->
+            <div class="md:hidden flex items-center space-x-1">
+                <button type="button"
+                    class="theme-toggle theme-toggle-mobile relative p-2 rounded-lg bg-white/10 border border-blue-300/50 hover:bg-white/20 transition-all duration-300"
+                    aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+                    <span class="theme-toggle-label sr-only">Dark mode</span>
+                </button>
+                <button
+                    class="focus:outline-none group relative p-2 rounded-lg hover:bg-white/10 transition-all duration-300"
+                    id="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+                    <div
+                        class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                    <i
+                        class="fas fa-bars text-xl relative z-10 transform group-hover:scale-110 transition-transform duration-300"></i>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -178,6 +190,25 @@
         transform: translateY(50%);
         width: 3px;
         height: 20px;
+    }
+
+    /* Self-contained theme icon: visible even if external icon fonts fail. */
+    .theme-toggle::before {
+        content: '☾';
+        position: relative;
+        z-index: 10;
+        font-size: 1.15rem;
+        line-height: 1;
+    }
+
+    .theme-toggle[aria-pressed="true"]::before {
+        content: '☀';
+    }
+
+    .theme-toggle-mobile {
+        min-width: 2.5rem;
+        min-height: 2.5rem;
+        justify-content: center;
     }
 
     /* Smooth animations */

@@ -42,10 +42,13 @@ Edit only the corresponding file in `data/`. For example:
 
 ```json
 "recording": "https://youtu.be/example",
-"notes": "/notes/example.pdf"
+"notes": "/notes/example.pdf",
+"durationMinutes": 60
 ```
 
 Then run `npm run dev` to inspect the result.
+
+`durationMinutes` is optional and defaults to 60. The series page keeps the Zoom link visible until that duration has elapsed.
 
 ## Commands
 
