@@ -3,14 +3,11 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
-const { spawnSync } = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
-const built = spawnSync(process.execPath, [path.join(__dirname, 'build.js')], { stdio: 'inherit' });
-if (built.status !== 0) process.exit(built.status || 1);
 
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.ics': 'text/calendar; charset=utf-8', '.png': 'image/png', '.pdf': 'application/pdf', '.webmanifest': 'application/manifest+json' };
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.ics': 'text/calendar; charset=utf-8', '.png': 'image/png', '.pdf': 'application/pdf', '.webmanifest': 'application/manifest+json' };
 const port = Number(process.env.PORT || 8080);
 
 http.createServer((request, response) => {

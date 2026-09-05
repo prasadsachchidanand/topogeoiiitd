@@ -50,24 +50,28 @@
                 const dt = parseISTDateTime(dateStr, timeStr);
                 if (isNaN(dt.getTime())) return timeStr;
 
-                const istFormatted = dt.toLocaleTimeString('en-US', {
+                const istClock = dt.toLocaleTimeString('en-US', {
                     timeZone: 'Asia/Kolkata',
                     hour: '2-digit',
-                    minute: '2-digit',
-                    timeZoneName: 'short'
+                    minute: '2-digit'
                 });
+                const istFormatted = `${istClock} IST`;
 
                 const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 if (userTZ === 'Asia/Kolkata') return istFormatted;
 
-                const localFormatted = dt.toLocaleTimeString('en-US', {
+                const localFormatted = dt.toLocaleString('en-US', {
                     timeZone: userTZ,
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
                     hour: '2-digit',
                     minute: '2-digit',
                     timeZoneName: 'short'
                 });
 
-                return `${istFormatted} <span class="text-gray-400 text-sm font-normal">(${localFormatted} local)</span>`;
+                return `${istFormatted} <span class="text-gray-400 text-sm font-normal">(${localFormatted} in your time zone)</span>`;
             } catch (e) {
                 return timeStr;
             }
@@ -137,7 +141,7 @@
         // Generate Google Calendar URL (uses IST-anchored Date)
         function generateGoogleCalendarURL(talk) {
             const startDate = parseISTDateTime(talk.date, talk.time);
-            const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+            const endDate = new Date(startDate.getTime() + (Number(talk.durationMinutes) || 60) * 60 * 1000);
 
             const fmt = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
             const title = encodeURIComponent(`${talk.title} - ${talk.series}`);
@@ -150,7 +154,7 @@
 
         function generateICS(talk) {
             const startDate = parseISTDateTime(talk.date, talk.time);
-            const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+            const endDate = new Date(startDate.getTime() + (Number(talk.durationMinutes) || 60) * 60 * 1000);
 
             const fmt = d => {
                 const pad = n => String(n).padStart(2, '0');
@@ -245,7 +249,11 @@ END:VCALENDAR`;
 
                 const currentDate = new Date();
                 const upcomingTalks = allTalks
-                    .filter(talk => parseISTDateTime(talk.date, talk.time) >= currentDate)
+                    .filter(talk => {
+                        const start = parseISTDateTime(talk.date, talk.time);
+                        const end = new Date(start.getTime() + (Number(talk.durationMinutes) || 60) * 60 * 1000);
+                        return end >= currentDate;
+                    })
                     .sort((a, b) => parseISTDateTime(a.date, a.time) - parseISTDateTime(b.date, b.time));
 
                 // Group by series
@@ -267,7 +275,7 @@ END:VCALENDAR`;
                             </button>
                             <div class="accordion-content space-y-8 p-4 hidden" id="${seriesId}-talks">
                                 ${talks.map(talk => `
-                                    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                                    <div id="${talk.id}" class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 scroll-mt-24">
                                         <div class="flex flex-col md:flex-row justify-between gap-4">
                                             <div class="max-w-full md:max-w-[65%]">
                                                 <h3 class="text-xl font-bold text-blue-700">${talk.title}</h3>
@@ -330,12 +338,14 @@ END:VCALENDAR`;
                 renderMathJax();
             } catch (error) {
                 console.error('Error fetching talks:', error);
-                document.getElementById('schedule-talks').innerHTML = `
-                    <div class="text-center py-8">
-                        <i class="fas fa-exclamation-triangle text-red-500 text-2xl mb-2"></i>
-                        <p class="text-red-600">Error loading talks. Please try again later.</p>
-                        <p class="text-gray-500 text-sm mt-2">${error.message}</p>
-                    </div>`;
+                const container = document.getElementById('schedule-talks');
+                if (!container.querySelector('[data-talk-id]')) {
+                    container.innerHTML = `
+                        <div class="text-center py-8">
+                            <i class="fas fa-exclamation-triangle text-red-500 text-2xl mb-2"></i>
+                            <p class="text-red-600">Error loading talks. Please try again later.</p>
+                        </div>`;
+                }
             }
         }
 

@@ -149,6 +149,204 @@ function loadContent() {
 const collections = loadContent();
 const talks = collections.flatMap((collection) => collection.talks).sort((a, b) => a.start - b.start);
 
+function formatDate(talk) {
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: config.timezone,
+    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+  }).format(talk.start);
+}
+
+function formatTime(talk) {
+  const clock = new Intl.DateTimeFormat('en-US', {
+    timeZone: config.timezone,
+    hour: '2-digit', minute: '2-digit'
+  }).format(talk.start);
+  return `${clock} IST`;
+}
+
+function isUpcoming(talk) {
+  return talk.end >= now;
+}
+
+function publicAbstract(value = '') {
+  return String(value).replace(/\r?\n/g, '<br>');
+}
+
+function zoomCard(talk) {
+  if (!isUpcoming(talk)) {
+    return `<div class="bg-gray-100 p-4 rounded-lg">
+      <h4 class="font-bold mb-2 text-gray-600"><i class="fas fa-check-circle mr-1"></i> Talk Concluded</h4>
+      <p class="text-gray-500 text-sm">${talk.recording ? 'This talk has ended — see the recording.' : 'This talk has ended.'}</p>
+    </div>`;
+  }
+  return `<div class="bg-blue-50 p-4 rounded-lg">
+    <h4 class="font-bold mb-2 text-blue-800">Zoom Meeting</h4>
+    <p class="mb-2"><span class="font-medium text-gray-700">Link:</span> ${talk.zoomLink ? `<a href="${escapeHtml(talk.zoomLink)}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Join Meeting</a>` : 'TBA'}</p>
+    <p class="mb-2"><span class="font-medium text-gray-700">Meeting ID:</span> ${escapeHtml(talk.meetingId || 'TBA')}</p>
+    <p><span class="font-medium text-gray-700">Passcode:</span> ${escapeHtml(talk.passcode || 'TBA')}</p>
+  </div>`;
+}
+
+function resources(talk) {
+  if (!talk.recording && !talk.notes) return '';
+  return `<div class="mt-4 pt-4 border-t border-gray-200">
+    <h4 class="font-semibold text-gray-800 mb-2">Post-Lecture Resources:</h4>
+    <div class="flex flex-wrap gap-3">
+      ${talk.recording ? `<a href="${escapeHtml(talk.recording)}" class="inline-flex items-center px-3 py-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors" target="_blank" rel="noopener noreferrer"><i class="fas fa-video mr-2"></i>Watch Recording</a>` : ''}
+      ${talk.notes ? `<a href="${escapeHtml(talk.notes)}" class="inline-flex items-center px-3 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors" target="_blank"><i class="fas fa-file-alt mr-2"></i>Lecture Notes</a>` : ''}
+    </div>
+  </div>`;
+}
+
+function homepageTalk(talk) {
+  if (!talk) return '<p class="text-gray-600">No upcoming talks scheduled at this time. Check back later!</p>';
+  return `<div id="${escapeHtml(talk.id)}" class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 scroll-mt-24">
+    <div class="flex flex-col md:flex-row justify-between gap-4">
+      <div class="max-w-full md:max-w-[65%]">
+        <h3 class="text-xl font-bold text-blue-700">${escapeHtml(talk.title)}</h3>
+        <p class="text-gray-600 mb-2">Speaker: ${talk.personalPage ? `<a href="${escapeHtml(talk.personalPage)}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${escapeHtml(talk.speaker)}</a>` : escapeHtml(talk.speaker)}</p>
+        <p class="text-gray-600 mb-2">${escapeHtml(talk.series)}${talk.part ? ` - ${escapeHtml(talk.part)}` : ''}</p>
+        <p class="text-gray-700 mb-2 flex items-center"><i class="far fa-calendar-alt mr-2"></i>${formatDate(talk)}</p>
+        <p class="text-gray-700 mb-4 flex items-center"><i class="far fa-clock mr-2"></i>${formatTime(talk)}</p>
+        ${talk.abstract ? `<p class="text-gray-700 mb-4 text-justify"><strong>Abstract:</strong> ${publicAbstract(talk.abstract)}</p>` : ''}
+        <a href="${escapeHtml(talk.seriesLink)}#${escapeHtml(talk.id)}" class="text-blue-600 hover:underline">View Series Details</a>
+      </div>
+      <div class="w-full md:w-1/3">${zoomCard(talk)}</div>
+    </div>
+  </div>`;
+}
+
+function scheduleTalk(talk) {
+  return `<div id="${escapeHtml(talk.id)}" class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 scroll-mt-24">
+    <div class="flex flex-col md:flex-row justify-between gap-4">
+      <div class="max-w-full md:max-w-[65%]">
+        <h3 class="text-xl font-bold text-blue-700">${escapeHtml(talk.title)}</h3>
+        <p class="text-gray-600 mb-2">Speaker: ${talk.personalPage ? `<a href="${escapeHtml(talk.personalPage)}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${escapeHtml(talk.speaker)}</a>` : escapeHtml(talk.speaker)}</p>
+        <p class="text-gray-600 mb-2">${escapeHtml(talk.series)}${talk.part ? ` - ${escapeHtml(talk.part)}` : ''}</p>
+        <p class="text-gray-700 mb-2 flex items-center"><i class="far fa-calendar-alt mr-2"></i>${formatDate(talk)}</p>
+        <p class="text-gray-700 mb-4 flex items-center"><i class="far fa-clock mr-2"></i>${formatTime(talk)}</p>
+        ${talk.abstract ? `<p class="text-gray-700 mb-4 text-justify"><strong>Abstract:</strong> ${publicAbstract(talk.abstract)}</p>` : ''}
+        <a href="${escapeHtml(talk.seriesLink)}#${escapeHtml(talk.id)}" class="text-blue-600 hover:underline">View Series Details</a>
+      </div>
+      <div class="w-full md:w-1/3">${zoomCard(talk)}
+        <button class="calendar-btn mt-3 w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none transition-colors flex items-center justify-center" data-talk-id="${escapeHtml(talk.id)}"><i class="fas fa-calendar-plus mr-2"></i>Add to Calendar</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function scheduleMarkup(items) {
+  if (!items.length) return '<p class="text-gray-600 text-center py-8">No upcoming talks scheduled at this time.</p>';
+  const grouped = new Map();
+  items.forEach((talk) => grouped.set(talk.series, [...(grouped.get(talk.series) || []), talk]));
+  return [...grouped].map(([series, seriesTalks]) => {
+    const id = slugify(series);
+    return `<div class="border border-gray-200 rounded-lg">
+      <button class="accordion-btn w-full text-left p-4 bg-blue-100 text-blue-800 font-semibold flex justify-between items-center hover:bg-blue-200 focus:outline-none transition-colors" data-target="${id}-talks">${escapeHtml(series)} (${seriesTalks.length} talk${seriesTalks.length === 1 ? '' : 's'})<i class="fas fa-chevron-down transition-transform"></i></button>
+      <div class="accordion-content space-y-8 p-4 hidden" id="${id}-talks">${seriesTalks.map(scheduleTalk).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function archiveMarkup(items) {
+  if (!items.length) return '<div class="bg-white rounded-lg shadow-md p-6"><p class="text-gray-600 text-center">No past talks are available yet.</p></div>';
+  const grouped = new Map();
+  items.forEach((talk) => grouped.set(talk.series, [...(grouped.get(talk.series) || []), talk]));
+  return [...grouped]
+    .sort((a, b) => Math.max(...b[1].map((talk) => talk.start)) - Math.max(...a[1].map((talk) => talk.start)))
+    .slice(0, 6)
+    .map(([series, seriesTalks], index) => {
+      const id = slugify(series);
+      const color = ['series-badge-blue', 'series-badge-green', 'series-badge-purple', 'series-badge-orange', 'series-badge-pink', 'series-badge-indigo'][index % 6];
+      const cards = seriesTalks.map((talk) => `<div id="${escapeHtml(talk.id)}" class="talk-card border-t border-gray-200 p-6 scroll-mt-24">
+        <div class="flex flex-col md:flex-row justify-between gap-6">
+          <div class="content">
+            <h3 class="text-xl font-bold text-blue-700 mb-2">${escapeHtml(talk.title)}</h3>
+            ${talk.part ? `<p class="text-gray-600 mb-3 font-medium">${escapeHtml(talk.part)} of the series</p>` : ''}
+            <div class="flex flex-wrap gap-4 mb-4 text-gray-700">
+              <p class="flex items-center"><i class="far fa-calendar-alt mr-2 text-blue-600"></i>${formatDate(talk)}</p>
+              <p class="flex items-center"><i class="far fa-clock mr-2 text-blue-600"></i>${formatTime(talk)}</p>
+            </div>
+            ${talk.speaker ? `<div class="mb-4 p-3 bg-gray-50 rounded-lg"><p class="font-medium text-gray-800"><i class="fas fa-user mr-2 text-blue-600"></i>Speaker: ${escapeHtml(talk.speaker)}${talk.affiliation ? `, ${escapeHtml(talk.affiliation)}` : ''}</p></div>` : ''}
+            ${talk.abstract ? `<div class="mb-4"><p class="text-gray-700 text-justify"><strong class="text-gray-800">Abstract:</strong> ${publicAbstract(talk.abstract)}</p></div>` : ''}
+            ${resources(talk)}
+          </div>
+          <div class="w-full md:w-1/3"><div class="bg-blue-50 p-4 rounded-lg">
+            <h4 class="font-bold mb-3 text-blue-800 flex items-center"><i class="fas fa-link mr-2"></i>Quick Links</h4>
+            <div class="space-y-2"><a href="${escapeHtml(talk.seriesLink)}#${escapeHtml(talk.id)}" class="block text-blue-600 hover:text-blue-800 hover:underline transition-colors"><i class="fas fa-info-circle mr-2"></i>View Series Details</a></div>
+          </div></div>
+        </div>
+      </div>`).join('');
+      return `<div class="bg-white rounded-lg shadow-md border border-gray-200">
+        <button class="accordion-button w-full text-left p-6 bg-blue-50 text-blue-800 font-bold text-lg flex justify-between items-center hover:bg-blue-100 focus:outline-none transition-colors rounded-t-lg" onclick="toggleSeries(this, '${id}')">${escapeHtml(series)}<span class="flex items-center gap-3"><span class="${color} px-3 py-1 rounded-full text-sm font-medium">${seriesTalks.length} talk${seriesTalks.length === 1 ? '' : 's'}</span><i class="fas fa-chevron-down chevron-icon text-blue-600"></i></span></button>
+        <div class="accordion-content" id="${id}-talks">${cards}</div>
+      </div>`;
+    }).join('');
+}
+
+function seriesSchedule(collection) {
+  return collection.talks.map((talk) => `<div id="${escapeHtml(talk.id)}" class="talk-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 scroll-mt-24">
+    <div class="flex flex-col md:flex-row justify-between gap-4">
+      <div class="content">
+        <h3 class="text-xl font-bold text-blue-700">${escapeHtml(talk.title)}</h3>
+        ${talk.part ? `<p class="text-gray-600 mb-2">${escapeHtml(talk.part)} of the series</p>` : ''}
+        <p class="text-gray-700 mb-2 flex items-center"><i class="far fa-calendar-alt mr-2"></i>${formatDate(talk)}</p>
+        <p class="text-gray-700 mb-4 flex items-center"><i class="far fa-clock mr-2"></i>${formatTime(talk)}</p>
+        ${talk.abstract ? `<p class="text-gray-700 mb-4"><strong>Abstract:</strong> ${publicAbstract(talk.abstract)}</p>` : ''}
+        ${resources(talk)}
+      </div>
+      <div class="zoom-details w-full md:w-1/3">${zoomCard(talk)}</div>
+    </div>
+  </div>`).join('');
+}
+
+function referencesMarkup(meta) {
+  const refs = uniqueReferences(meta.references || []);
+  if (!refs.length) return '';
+  const groups = [
+    ['book', 'Books'], ['paper', 'Papers'], ['script', 'Lecture Notes']
+  ].map(([type, label]) => {
+    const matching = refs.filter((ref) => ref.type === type);
+    if (!matching.length) return '';
+    return `<div${type === 'script' ? '' : ' class="mb-4"'}><h3 class="text-lg font-semibold mb-3 text-blue-700">${label}</h3><ul class="list-disc list-inside text-gray-700 space-y-2">${matching.map((ref) => `<li>${ref.url ? `<a href="${escapeHtml(ref.url)}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${escapeHtml(ref.citation)}</a>` : escapeHtml(ref.citation)}</li>`).join('')}</ul></div>`;
+  }).join('');
+  return `        <!-- References (hidden if no references exist) -->
+        <section id="references-section" class="mb-12">
+          <h2 class="text-3xl font-bold mb-6 text-blue-800 border-b-2 border-blue-200 pb-2">References</h2>
+          <div class="bg-white rounded-lg shadow-md p-6">${groups}</div>
+        </section>`;
+}
+
+function preRenderSeries(html, collection) {
+  const { meta } = collection;
+  const personal = meta.personalPage || meta.homepage || meta.website || '';
+  html = html
+    .replace(/(<h1 id="series-title"[^>]*>)[\s\S]*?(<\/h1>)/, (_, open, close) => `${open}${escapeHtml(meta.name)}${close}`)
+    .replace(/(<p class="font-semibold" id="speaker-name">)[\s\S]*?(<\/p>)/, (_, open, close) => `${open}Speaker: ${escapeHtml(meta.speaker)}${close}`)
+    .replace(/(<p class="text-lg" id="speaker-affiliation">)[\s\S]*?(<\/p>)/, (_, open, close) => `${open}${escapeHtml(meta.affiliation || '')}${close}`)
+    .replace(/(<p id="series-description"[^>]*>)[\s\S]*?(<\/p>)/, (_, open, close) => `${open}${meta.description || ''}${close}`)
+    .replace(/<p id="series-prerequisites"[^>]*>[\s\S]*?<\/p>/, () => meta.prerequisites ? `<p id="series-prerequisites" class="text-gray-700"><strong>Prerequisites:</strong> ${meta.prerequisites}</p>` : '<p id="series-prerequisites" class="text-gray-700 hidden"></p>')
+    .replace(/(<div id="series-schedule"[^>]*>)[\s\S]*?(<\/div>)/, (_, open, close) => `${open}${seriesSchedule(collection)}${close}`)
+    .replace(/        <!-- References \(hidden if no references exist\) -->[\s\S]*?        <!-- Speaker Bio -->/, () => `${referencesMarkup(meta)}\n\n        <!-- Speaker Bio -->`)
+    .replace(/<h3 id="speaker-bio-name"[\s\S]*?<\/h3>/, () => `<h3 id="speaker-bio-name" class="text-xl font-bold"><a id="speaker-name-link"${personal ? ` href="${escapeHtml(personal)}" target="_blank" rel="noopener noreferrer"` : ''} class="hover:text-blue-600 transition-colors duration-200">${escapeHtml(meta.speaker)}</a></h3>`)
+    .replace(/(<p id="speaker-bio-affiliation"[^>]*>)[\s\S]*?(<\/p>)/, (_, open, close) => `${open}${escapeHtml(meta.affiliation || '')}${close}`)
+    .replace(/(<p id="speaker-bio-description"[^>]*>)[\s\S]*?(<\/p>)/, (_, open, close) => `${open}${escapeHtml(meta.about || '')}${close}`)
+    .replace(/<a id="speaker-email"[\s\S]*?<\/a>/, () => `<a id="speaker-email"${meta.mail ? ` href="mailto:${escapeHtml(meta.mail)}"` : ''} class="text-blue-600 hover:underline">${escapeHtml(meta.mail || 'Not available')}</a>`)
+    .replace(/<div id="speaker-personal-page-container"[^>]*>/, () => `<div id="speaker-personal-page-container" class="flex items-center${personal ? '' : ' hidden'}">`)
+    .replace(/<a id="speaker-personal-page"[^>]*>[\s\S]*?<\/a>/, () => `<a id="speaker-personal-page" href="${escapeHtml(personal || '#')}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Visit Page</a>`);
+  return html;
+}
+
+function inlineComponents(html) {
+  const navbar = read(path.join(root, 'components', 'navbar.html'));
+  const footer = read(path.join(root, 'components', 'footer.html'));
+  return html
+    .replace('<div id="navbar-container"></div>', () => `<div id="navbar-container">${navbar}</div>`)
+    .replace('<div id="footer-container" class="mt-auto"></div>', () => `<div id="footer-container" class="mt-auto">${footer}</div>`)
+    .replaceAll('await loadNavbar();', 'initializeNavbar();')
+    .replaceAll('await loadFooter();', '// Footer is already present in the page.');
+}
+
 function withBasePath(value) {
   if (!config.basePath || typeof value !== 'string') return value;
   return value.startsWith('/') && !value.startsWith('//') ? pathUrl(value) : value;
@@ -172,11 +370,12 @@ function applyBasePath(html) {
 }
 
 function eventSchema(talk) {
+  const talkUrl = `${absoluteUrl(talk.seriesLink)}#${encodeURIComponent(talk.id)}`;
   return {
-    '@context': 'https://schema.org', '@type': 'EducationEvent', name: talk.title,
+    '@context': 'https://schema.org', '@type': 'EducationEvent', '@id': talkUrl, name: talk.title,
     description: truncate(talk.abstract, 500), startDate: talk.startIso, endDate: talk.end.toISOString(),
     eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
-    url: absoluteUrl(talk.seriesLink), location: { '@type': 'VirtualLocation', url: absoluteUrl(talk.seriesLink) },
+    url: talkUrl, location: { '@type': 'VirtualLocation', url: talkUrl },
     performer: { '@type': 'Person', name: talk.speaker, url: talk.personalPage || undefined, affiliation: talk.affiliation ? { '@type': 'Organization', name: talk.affiliation } : undefined },
     organizer: { '@type': 'Organization', name: config.title, url: absoluteUrl('/') }
   };
@@ -186,11 +385,16 @@ function enhanceHead(html, { title, description, urlPath, schema, robots = 'inde
   const safeTitle = escapeHtml(title);
   const safeDescription = escapeHtml(truncate(description));
   const canonical = absoluteUrl(urlPath);
-  html = html.replace(/<title([^>]*)>[\s\S]*?<\/title>/i, `<title$1>${safeTitle}</title>`);
+  html = html.replace(/<title([^>]*)>[\s\S]*?<\/title>/i, (_, attributes) => `<title${attributes}>${safeTitle}</title>`);
+  html = html.replace(/\s*<script src="https:\/\/cdn\.tailwindcss\.com"><\/script>/i, '');
   const additions = `
     <meta name="description" content="${safeDescription}">
     <meta name="robots" content="${robots}">
+    ${config.googleSiteVerification ? `<meta name="google-site-verification" content="${escapeHtml(config.googleSiteVerification)}">` : ''}
+    <meta name="theme-color" content="#1e3a8a">
     <link rel="canonical" href="${escapeHtml(canonical)}">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="alternate" type="application/rss+xml" title="${escapeHtml(config.title)} feed" href="/feed.xml">
     <link rel="alternate" type="text/calendar" title="${escapeHtml(config.title)} calendar" href="/calendar.ics">
     <meta property="og:type" content="website">
@@ -200,10 +404,11 @@ function enhanceHead(html, { title, description, urlPath, schema, robots = 'inde
     <meta property="og:url" content="${escapeHtml(canonical)}">
     <meta property="og:image" content="${escapeHtml(absoluteUrl('/assets/logo.png'))}">
     <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="/assets/site.css?v=${assetVersion}">
     <link rel="stylesheet" href="/assets/theme.css?v=${assetVersion}">
     <script src="/assets/theme.js?v=${assetVersion}"></script>
     ${schema ? `<script type="application/ld+json">${JSON.stringify(schema).replaceAll('<', '\\u003c')}</script>` : ''}`;
-  return html.replace('</head>', `${additions}\n</head>`);
+  return html.replace('</head>', () => `${additions}\n</head>`);
 }
 
 function copyDirectory(source, destination) {
@@ -221,20 +426,48 @@ function buildStaticFiles() {
     const target = path.join(dist, 'components', component);
     fs.writeFileSync(target, applyBasePath(read(target)));
   }
-  write('latex2Json.html', read(path.join(root, 'latex2Json.html')));
+  write('latex2Json.html', applyBasePath(enhanceHead(read(path.join(root, 'latex2Json.html')), {
+    title: `Internal JSON Helper - ${config.title}`,
+    description: 'Internal content preparation tool.',
+    urlPath: '/latex2Json.html',
+    robots: 'noindex, nofollow'
+  })));
 
   const organization = {
-    '@context': 'https://schema.org', '@type': 'Organization', name: config.title,
+    '@type': 'Organization', '@id': `${absoluteUrl('/')}#organization`, name: config.title,
     url: absoluteUrl('/'), logo: absoluteUrl('/assets/logo.png'), email: config.contactEmail,
     parentOrganization: { '@type': 'CollegeOrUniversity', name: config.institution, url: 'https://www.iiitd.ac.in/' }, sameAs: [config.youtubeUrl]
   };
-  write('index.html', applyBasePath(enhanceHead(read(path.join(root, 'index.html')), {
-    title: `${config.title} - ${config.institution}`, description: config.description, urlPath: '/', schema: organization
+  const website = {
+    '@type': 'WebSite', '@id': `${absoluteUrl('/')}#website`, url: absoluteUrl('/'),
+    name: config.title, description: config.description, publisher: { '@id': organization['@id'] }
+  };
+  let homepage = read(path.join(root, 'index.html'));
+  homepage = homepage.replace('<div id="upcoming-talks" class="space-y-8"></div>', () => `<div id="upcoming-talks" class="space-y-8">${homepageTalk(talks.find(isUpcoming))}</div>`);
+  homepage = inlineComponents(homepage);
+  write('index.html', applyBasePath(enhanceHead(homepage, {
+    title: `${config.title} - ${config.institution}`, description: config.description, urlPath: '/',
+    schema: { '@context': 'https://schema.org', '@graph': [organization, website] }
   })));
-  write('schedule/index.html', applyBasePath(enhanceHead(read(path.join(root, 'schedule', 'index.html')), {
+
+  let schedulePage = read(path.join(root, 'schedule', 'index.html'));
+  schedulePage = schedulePage.replace(/<div id="schedule-talks" class="space-y-4">[\s\S]*?<\/div>\s*<\/section>/, () => `<div id="schedule-talks" class="space-y-4">${scheduleMarkup(talks.filter(isUpcoming))}</div>\n        </section>`);
+  schedulePage = inlineComponents(schedulePage);
+  write('schedule/index.html', applyBasePath(enhanceHead(schedulePage, {
     title: `Schedule - ${config.title} - ${config.institution}`, description: `Upcoming ${config.title} talks at ${config.institution}.`, urlPath: '/schedule/'
   })));
-  write('archive/index.html', applyBasePath(enhanceHead(read(path.join(root, 'archive', 'index.html')), {
+
+  let archivePage = read(path.join(root, 'archive', 'index.html'));
+  const pastTalks = talks.filter((talk) => talk.end < now).sort((a, b) => b.start - a.start);
+  const pastSeriesCount = new Set(pastTalks.map((talk) => talk.series)).size;
+  archivePage = archivePage
+    .replace('<span id="results-count">Loading talks...</span>', () => `<span id="results-count">Showing ${pastTalks.length} talk${pastTalks.length === 1 ? '' : 's'} across ${pastSeriesCount} series</span>`)
+    .replace('<option value="all">All Years</option>', () => `<option value="all">All Years (${pastTalks.length})</option>`)
+    .replace(/        <!-- Loading State -->[\s\S]*?        <!-- Archive -->/, '        <div id="loading-state" class="hidden"></div>\n\n        <!-- Archive -->')
+    .replace('<section class="mb-12" id="archive-section" style="display: none;">', '<section class="mb-12" id="archive-section">')
+    .replace('<div id="archive-talks" class="space-y-6"></div>', () => `<div id="archive-talks" class="space-y-6">${archiveMarkup(pastTalks)}</div>`);
+  archivePage = inlineComponents(archivePage);
+  write('archive/index.html', applyBasePath(enhanceHead(archivePage, {
     title: `Archive - ${config.title} - ${config.institution}`, description: `Past topology and geometry talks, lecture series, recordings, and notes at ${config.institution}.`, urlPath: '/archive/'
   })));
 
@@ -242,7 +475,7 @@ function buildStaticFiles() {
     const source = path.join(root, 'register', page);
     const target = path.join(dist, 'register', page);
     const urlPath = `/register/${page === 'index.html' ? '' : page}`;
-    fs.writeFileSync(target, applyBasePath(enhanceHead(read(source), {
+    fs.writeFileSync(target, applyBasePath(enhanceHead(inlineComponents(read(source)), {
       title: page === 'index.html' ? `Subscribe - ${config.title}` : `Administration - ${config.title}`,
       description: `Registration for the ${config.title}.`, urlPath, robots: 'noindex, nofollow'
     })));
@@ -268,13 +501,23 @@ function buildSeriesPages() {
     const { meta } = collection;
     const jsName = String(meta.name).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\r?\n/g, ' ');
     let html = template
-      .replaceAll('__SERIES_SLUG__', meta.slug)
-      .replaceAll('__SERIES_DATA_URL__', pathUrl(`/data/${collection.filename}`))
-      .replaceAll('__SERIES_NAME_JS__', jsName);
+      .replaceAll('__SERIES_SLUG__', () => meta.slug)
+      .replaceAll('__SERIES_DATA_URL__', () => pathUrl(`/data/${collection.filename}`))
+      .replaceAll('__SERIES_NAME_JS__', () => jsName);
+    html = preRenderSeries(html, collection);
+    html = inlineComponents(html);
+    const breadcrumb = {
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+        { '@type': 'ListItem', position: 2, name: 'Archive', item: absoluteUrl('/archive/') },
+        { '@type': 'ListItem', position: 3, name: meta.name, item: absoluteUrl(`/series/${meta.slug}/`) }
+      ]
+    };
     html = enhanceHead(html, {
       title: `${meta.name} - ${config.title}`,
       description: meta.description || `${meta.name}, a lecture series by ${meta.speaker}.`,
-      urlPath: `/series/${meta.slug}/`, schema: collection.talks.map(eventSchema)
+      urlPath: `/series/${meta.slug}/`, schema: [breadcrumb, ...collection.talks.map(eventSchema)]
     });
     write(`series/${meta.slug}/index.html`, applyBasePath(html));
   });
@@ -289,19 +532,25 @@ function icsDate(date) {
 }
 
 function buildFeeds() {
-  const events = talks.map((talk) => `BEGIN:VEVENT\r\nUID:${icsEscape(talk.id)}@topogeoiiitd\r\nDTSTAMP:${icsDate(now)}\r\nDTSTART:${icsDate(talk.start)}\r\nDTEND:${icsDate(talk.end)}\r\nSUMMARY:${icsEscape(talk.title)}\r\nDESCRIPTION:${icsEscape(`Speaker: ${talk.speaker}\n${talk.abstract}\n\n${absoluteUrl(talk.seriesLink)}`)}\r\nLOCATION:Online\r\nURL:${absoluteUrl(talk.seriesLink)}\r\nEND:VEVENT`).join('\r\n');
+  const events = talks.map((talk) => {
+    const talkUrl = `${absoluteUrl(talk.seriesLink)}#${encodeURIComponent(talk.id)}`;
+    return `BEGIN:VEVENT\r\nUID:${icsEscape(talk.id)}@topogeoiiitd\r\nDTSTAMP:${icsDate(now)}\r\nDTSTART:${icsDate(talk.start)}\r\nDTEND:${icsDate(talk.end)}\r\nSUMMARY:${icsEscape(talk.title)}\r\nDESCRIPTION:${icsEscape(`Speaker: ${talk.speaker}\n${talk.abstract}\n\n${talkUrl}`)}\r\nLOCATION:Online\r\nURL:${talkUrl}\r\nEND:VEVENT`;
+  }).join('\r\n');
   write('calendar.ics', `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//${icsEscape(config.title)}//EN\r\nCALSCALE:GREGORIAN\r\nX-WR-CALNAME:${icsEscape(config.title)}\r\n${events}\r\nEND:VCALENDAR\r\n`);
 
-  const items = [...talks].sort((a, b) => b.start - a.start).slice(0, 30).map((talk) => `<item><title>${escapeXml(talk.title)}</title><link>${escapeXml(absoluteUrl(talk.seriesLink))}</link><guid>${escapeXml(`${absoluteUrl(talk.seriesLink)}#${talk.id}`)}</guid><pubDate>${talk.start.toUTCString()}</pubDate><description>${escapeXml(truncate(`${talk.speaker}. ${talk.abstract}`, 500))}</description></item>`).join('\n');
+  const items = [...talks].sort((a, b) => b.start - a.start).slice(0, 30).map((talk) => {
+    const talkUrl = `${absoluteUrl(talk.seriesLink)}#${encodeURIComponent(talk.id)}`;
+    return `<item><title>${escapeXml(talk.title)}</title><link>${escapeXml(talkUrl)}</link><guid>${escapeXml(talkUrl)}</guid><pubDate>${talk.start.toUTCString()}</pubDate><description>${escapeXml(truncate(`${talk.speaker}. ${talk.abstract}`, 500))}</description></item>`;
+  }).join('\n');
   write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>${escapeXml(config.title)}</title><link>${escapeXml(absoluteUrl('/'))}</link><description>${escapeXml(config.description)}</description>${items}</channel></rss>\n`);
 }
 
 function buildSeoFiles() {
-  const latest = talks.at(-1)?.date || now.toISOString().slice(0, 10);
+  const lastModified = now.toISOString().slice(0, 10);
   const paths = ['/', '/schedule/', '/archive/', ...collections.map((collection) => `/series/${collection.meta.slug}/`)];
-  write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map((item) => `  <url><loc>${escapeXml(absoluteUrl(item))}</loc><lastmod>${latest}</lastmod></url>`).join('\n')}\n</urlset>\n`);
+  write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map((item) => `  <url><loc>${escapeXml(absoluteUrl(item))}</loc><lastmod>${lastModified}</lastmod></url>`).join('\n')}\n</urlset>\n`);
   write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${absoluteUrl('/sitemap.xml')}\n`);
-  write('manifest.webmanifest', JSON.stringify({ name: config.title, short_name: 'TopoGeo IIITD', start_url: pathUrl('/'), display: 'standalone', background_color: '#f9fafb', theme_color: '#1e3a8a', icons: [{ src: pathUrl('/assets/logo.png'), sizes: '1024x1024', type: 'image/png' }] }, null, 2));
+  write('manifest.webmanifest', JSON.stringify({ name: config.title, short_name: 'TopoGeo IIITD', start_url: pathUrl('/'), display: 'standalone', background_color: '#f9fafb', theme_color: '#1e3a8a', icons: [{ src: pathUrl('/assets/logo.png'), sizes: '256x256', type: 'image/png' }] }, null, 2));
 }
 
 function build() {

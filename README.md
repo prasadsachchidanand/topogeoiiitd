@@ -9,12 +9,13 @@ Automation and SEO are added at build time; they do not replace the design.
 Open this folder in VS Code and run:
 
 ```bash
+npm install
 npm run dev
 ```
 
 Then open <http://localhost:8080>. Press `Control + C` to stop the preview.
 
-No `npm install` command is needed. Node.js 20 or newer is required.
+Run `npm install` once after cloning or whenever `package.json` changes. Node.js 20 or newer is required.
 
 ## Add a new lecture series
 
@@ -59,11 +60,13 @@ npm run dev         # build and preview locally
 npm run new-series -- my-series-slug
 ```
 
-The validation step compares the generated page structure with the original `index.html`, `schedule/index.html`, `archive/index.html`, and `series-template.html`. It fails if the visible structure changes unexpectedly.
+After changing a JSON or template file, stop the local server with `Control + C` and run `npm run dev` again. The production site rebuilds automatically after a push to `main`.
+
+The validation step checks generated pages, local links, pre-rendered content, metadata, and the production CSS bundle.
 
 ## Site-wide settings
 
-`site.config.json` contains the website URL, title, description, contact email, timezone, mailing-list link, and YouTube link.
+`site.config.json` contains the website URL, title, description, contact email, timezone, mailing-list link, YouTube link, and Google Search Console verification token.
 
 ## Publishing
 

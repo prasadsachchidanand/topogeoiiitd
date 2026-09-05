@@ -16,8 +16,9 @@ function walk(directory) {
   });
 }
 
-function visibleMarkup(html) {
-  return html.slice(html.search(/<body\b/i), html.search(/<script\b/i)).replaceAll(basePath, '');
+function initialMarkup(html) {
+  const body = html.match(/<body\b[\s\S]*?<\/body>/i)?.[0] || html;
+  return body.replace(/<script\b[\s\S]*?<\/script>/gi, '');
 }
 
 function localTarget(value) {
@@ -33,32 +34,30 @@ if (!fs.existsSync(dist)) {
   process.exit(1);
 }
 
-for (const required of ['index.html', 'schedule/index.html', 'archive/index.html', 'data/talks.json', 'sitemap.xml', 'robots.txt', 'feed.xml', 'calendar.ics']) {
+for (const required of ['index.html', 'schedule/index.html', 'archive/index.html', 'assets/site.css', 'data/talks.json', 'sitemap.xml', 'robots.txt', 'feed.xml', 'calendar.ics']) {
   if (!fs.existsSync(path.join(dist, required))) errors.push(`Missing ${required}`);
 }
 
-for (const relative of ['index.html', 'schedule/index.html', 'archive/index.html']) {
-  const source = fs.readFileSync(path.join(root, relative), 'utf8');
-  const generated = fs.readFileSync(path.join(dist, relative), 'utf8');
-  if (visibleMarkup(source) !== visibleMarkup(generated)) errors.push(`${relative}: visible structure differs from the original design.`);
-}
-
-const template = fs.readFileSync(path.join(root, 'series-template.html'), 'utf8');
 const seriesFiles = fs.readdirSync(path.join(dist, 'series'), { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(dist, 'series', entry.name, 'index.html')))
   .map((entry) => path.join(dist, 'series', entry.name, 'index.html'));
-for (const file of seriesFiles) {
-  if (visibleMarkup(template) !== visibleMarkup(fs.readFileSync(file, 'utf8'))) {
-    errors.push(`${path.relative(dist, file)}: visible structure differs from series-template.html.`);
-  }
-}
 
 const htmlFiles = walk(dist).filter((file) => file.endsWith('.html'));
 for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
   const relative = path.relative(dist, file);
+  const markup = initialMarkup(html);
   if (/__SERIES_[A-Z_]+__/.test(html)) errors.push(`${relative}: unresolved series-template placeholder.`);
   if (/<html\b/i.test(html) && !/<title[^>]*>[^<]+<\/title>/.test(html)) errors.push(`${relative}: missing page title.`);
+  if (/<html\b/i.test(html) && (html.match(/<!doctype html>/gi) || []).length !== 1) errors.push(`${relative}: expected exactly one doctype.`);
+  if (html.includes('cdn.tailwindcss.com')) errors.push(`${relative}: Tailwind development CDN is still present.`);
+  if (/<html\b/i.test(html) && !html.includes('/assets/site.css?')) errors.push(`${relative}: missing production CSS bundle.`);
+  if (/^(?:index|schedule\/index|archive\/index|series\/.*\/index)\.html$/.test(relative)) {
+    if (!markup.includes('<nav')) errors.push(`${relative}: navbar is not in the initial HTML.`);
+    if (!markup.includes('<footer')) errors.push(`${relative}: footer is not in the initial HTML.`);
+    if (/Loading(?: talks)?\.\.\./i.test(markup)) errors.push(`${relative}: loading placeholder remains in the initial HTML.`);
+    if ((markup.match(/<h1\b/gi) || []).length !== 1) errors.push(`${relative}: expected one visible h1 heading.`);
+  }
   for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     if (match[1].includes('${')) continue;
     const target = localTarget(match[1]);
@@ -69,7 +68,25 @@ for (const file of htmlFiles) {
 const talks = JSON.parse(fs.readFileSync(path.join(dist, 'data', 'talks.json'), 'utf8'));
 const expectedSeries = new Set(talks.map((talk) => String(talk.seriesLink).replace(basePath, '').match(/\/series\/([^/]+)/)?.[1]).filter(Boolean));
 for (const slug of expectedSeries) {
-  if (!fs.existsSync(path.join(dist, 'series', slug, 'index.html'))) errors.push(`Missing generated series page: ${slug}`);
+  const seriesFile = path.join(dist, 'series', slug, 'index.html');
+  if (!fs.existsSync(seriesFile)) {
+    errors.push(`Missing generated series page: ${slug}`);
+    continue;
+  }
+  const markup = initialMarkup(fs.readFileSync(seriesFile, 'utf8'));
+  for (const talk of talks.filter((item) => String(item.seriesLink).includes(`/series/${slug}/`))) {
+    if (!markup.includes(`id="${talk.id}"`)) errors.push(`series/${slug}/index.html: ${talk.id} is not pre-rendered.`);
+  }
+}
+
+const homepage = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+if (!homepage.includes('name="google-site-verification"')) errors.push('index.html: missing Google site verification tag.');
+if (!initialMarkup(homepage).includes('id="upcoming-talks"')) errors.push('index.html: missing upcoming talks content.');
+
+const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
+const today = new Date().toISOString().slice(0, 10);
+for (const match of sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)) {
+  if (match[1] > today) errors.push(`sitemap.xml: future lastmod date ${match[1]}.`);
 }
 
 if (errors.length) {
@@ -77,4 +94,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Validated ${talks.length} talks and ${expectedSeries.size} series. Visual structure matches the original pages.`);
+console.log(`Validated ${talks.length} talks and ${expectedSeries.size} series, including links, metadata, CSS, and pre-rendered content.`);

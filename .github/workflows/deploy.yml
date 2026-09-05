@@ -22,6 +22,10 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install build dependencies
+        working-directory: source-repo
+        run: npm ci
+
       - name: Build and validate website
         working-directory: source-repo
         env:
