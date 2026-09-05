@@ -99,24 +99,28 @@
                 const dt = parseISTDateTime(dateStr, timeStr);
                 if (isNaN(dt.getTime())) return timeStr;
 
-                const istFormatted = dt.toLocaleTimeString('en-US', {
+                const istClock = dt.toLocaleTimeString('en-US', {
                     timeZone: 'Asia/Kolkata',
                     hour: '2-digit',
-                    minute: '2-digit',
-                    timeZoneName: 'short'
+                    minute: '2-digit'
                 });
+                const istFormatted = `${istClock} IST`;
 
                 const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 if (userTZ === 'Asia/Kolkata') return istFormatted;
 
-                const localFormatted = dt.toLocaleTimeString('en-US', {
+                const localFormatted = dt.toLocaleString('en-US', {
                     timeZone: userTZ,
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
                     hour: '2-digit',
                     minute: '2-digit',
                     timeZoneName: 'short'
                 });
 
-                return `${istFormatted} <span class="text-gray-400 text-sm font-normal">(${localFormatted} local)</span>`;
+                return `${istFormatted} <span class="text-gray-400 text-sm font-normal">(${localFormatted} in your time zone)</span>`;
             } catch (e) {
                 return timeStr;
             }
@@ -195,13 +199,17 @@
                 const currentDate = new Date();
 
                 const upcomingTalks = talksData
-                    .filter(talk => parseISTDateTime(talk.date, talk.time) >= currentDate)
+                    .filter(talk => {
+                        const start = parseISTDateTime(talk.date, talk.time);
+                        const end = new Date(start.getTime() + (Number(talk.durationMinutes) || 60) * 60 * 1000);
+                        return end >= currentDate;
+                    })
                     .sort((a, b) => parseISTDateTime(a.date, a.time) - parseISTDateTime(b.date, b.time));
 
                 const nextTalk = upcomingTalks[0] || null;
 
                 document.getElementById('upcoming-talks').innerHTML = nextTalk ? `
-                    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                    <div id="${nextTalk.id}" class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 scroll-mt-24">
                         <div class="flex flex-col md:flex-row justify-between gap-4">
                             <div class="max-w-full md:max-w-[65%]">
                                 <h3 class="text-xl font-bold text-blue-700">${nextTalk.title}</h3>
@@ -233,7 +241,10 @@
                 renderMathJax();
             } catch (error) {
                 console.error('Error fetching talks:', error);
-                document.getElementById('upcoming-talks').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
+                const container = document.getElementById('upcoming-talks');
+                if (!container.children.length) {
+                    container.innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
+                }
             }
         }
 

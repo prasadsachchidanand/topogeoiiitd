@@ -174,10 +174,15 @@
             const dt = parseISTDateTime(dateStr, timeStr);
             if (!dt) return timeStr || 'Time TBA';
 
-            const cleanTime = timeStr.replace(/\s*IST\s*/i, '').trim();
             const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const istClock = dt.toLocaleTimeString('en-US', {
+                timeZone: 'Asia/Kolkata',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            const istFormatted = `${istClock} IST`;
             if (!userTimeZone || userTimeZone === 'Asia/Kolkata' || userTimeZone === 'Asia/Calcutta') {
-                return `${cleanTime} IST`;
+                return istFormatted;
             }
 
             const localDateTime = dt.toLocaleString('en-US', {
@@ -190,7 +195,7 @@
                 minute: '2-digit',
                 timeZoneName: 'short'
             });
-            return `${cleanTime} IST <span class="text-gray-400 text-sm font-normal">(${localDateTime} in your time zone)</span>`;
+            return `${istFormatted} <span class="text-gray-400 text-sm font-normal">(${localDateTime} in your time zone)</span>`;
         }
 
         function hasTalkConcluded(talk) {
@@ -486,7 +491,7 @@
                     // --- End added block ---
 
                     return `
-                    <div class="talk-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                    <div id="${talk.id}" class="talk-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 scroll-mt-24">
                         <div class="flex flex-col md:flex-row justify-between gap-4">
                             <div class="content">
                                 <h3 class="text-xl font-bold text-blue-700">${talk.title}</h3>
@@ -534,16 +539,11 @@
             } catch (error) {
                 console.error('Error fetching talks:', error);
 
-                // Show error messages
-                document.getElementById('series-title').textContent = 'Error Loading Series';
-                document.getElementById('speaker-name').textContent = 'Error loading speaker data';
-                document.getElementById('speaker-affiliation').textContent = '';
-                document.getElementById('series-description').textContent = 'Error loading series description. Please try again later.';
-                document.getElementById('series-schedule').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
-                document.getElementById('speaker-bio-name').textContent = 'Error loading speaker data';
-                document.getElementById('speaker-bio-affiliation').textContent = '';
-                document.getElementById('speaker-bio-description').textContent = '';
-                document.getElementById('speaker-email').textContent = 'Error loading email';
+                // The build pre-renders the page, so keep that useful content if JSON refresh fails.
+                if (document.getElementById('series-title').textContent.includes('Loading')) {
+                    document.getElementById('series-title').textContent = 'Error Loading Series';
+                    document.getElementById('series-schedule').innerHTML = '<p class="text-red-600">Error loading talks. Please try again later.</p>';
+                }
             }
         }
 
