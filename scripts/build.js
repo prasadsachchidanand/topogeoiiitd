@@ -84,6 +84,22 @@ function uniqueReferences(items) {
   });
 }
 
+function normalizeNotes(value) {
+  const entries = (Array.isArray(value) ? value : [value])
+    .map((item) => {
+      if (typeof item === 'string') return { label: '', url: item.trim() };
+      if (item && typeof item === 'object' && item.url) {
+        return { label: String(item.label || '').trim(), url: String(item.url).trim() };
+      }
+      return null;
+    })
+    .filter((item) => item && item.url);
+  return entries.map((item, index) => ({
+    label: item.label || (entries.length > 1 ? `Lecture Notes ${index + 1}` : 'Lecture Notes'),
+    url: item.url
+  }));
+}
+
 function loadContent() {
   const files = fs.readdirSync(dataDir).filter((file) => file.endsWith('.json') && !file.startsWith('_') && file !== 'talks.json').sort();
   const usedIds = new Set();
@@ -123,8 +139,11 @@ function loadContent() {
       if (!Number.isFinite(durationMinutes) || durationMinutes <= 0) {
         throw new Error(`${filename}: durationMinutes must be a positive number for ${raw.id}.`);
       }
+      const noteLinks = normalizeNotes(raw.notes);
       return {
         ...raw,
+        notes: noteLinks[0]?.url || '',
+        noteLinks,
         series: raw.series || meta.name,
         speaker: raw.speaker || meta.speaker,
         affiliation: raw.affiliation || meta.affiliation || '',
@@ -188,12 +207,13 @@ function zoomCard(talk) {
 }
 
 function resources(talk) {
-  if (!talk.recording && !talk.notes) return '';
+  const noteLinks = normalizeNotes(talk.noteLinks ?? talk.notes);
+  if (!talk.recording && !noteLinks.length) return '';
   return `<div class="mt-4 pt-4 border-t border-gray-200">
     <h4 class="font-semibold text-gray-800 mb-2">Post-Lecture Resources:</h4>
     <div class="flex flex-wrap gap-3">
       ${talk.recording ? `<a href="${escapeHtml(talk.recording)}" class="inline-flex items-center px-3 py-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition-colors" target="_blank" rel="noopener noreferrer"><i class="fas fa-video mr-2"></i>Watch Recording</a>` : ''}
-      ${talk.notes ? `<a href="${escapeHtml(talk.notes)}" class="inline-flex items-center px-3 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors" target="_blank"><i class="fas fa-file-alt mr-2"></i>Lecture Notes</a>` : ''}
+      ${noteLinks.map((note) => `<a href="${escapeHtml(note.url)}" class="inline-flex items-center px-3 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors" target="_blank"><i class="fas fa-file-alt mr-2"></i>${escapeHtml(note.label)}</a>`).join('')}
     </div>
   </div>`;
 }

@@ -1,0 +1,5 @@
+{
+  // Live Server must serve the generated site, not the source folder.
+  // Run `npm run build` first, then "Open with Live Server" on any page.
+  "liveServer.settings.root": "/dist"
+}

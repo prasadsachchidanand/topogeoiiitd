@@ -17,6 +17,11 @@ Then open <http://localhost:8080>. Press `Control + C` to stop the preview.
 
 Run `npm install` once after cloning or whenever `package.json` changes. Node.js 20 or newer is required.
 
+If you prefer the VS Code Live Server extension, run `npm run build` first and open a page from `dist/`. The
+repository's `.vscode/settings.json` already points Live Server at `dist/`. Serving the source folder directly
+does not work: `data/talks.json` and `assets/site.css` are produced by the build, so the pages report
+"Error loading talks".
+
 ## Add a new lecture series
 
 Run:
@@ -50,6 +55,22 @@ Edit only the corresponding file in `data/`. For example:
 Then run `npm run dev` to inspect the result.
 
 `durationMinutes` is optional and defaults to 60. The series page keeps the Zoom link visible until that duration has elapsed.
+
+### Several sets of notes for one talk
+
+`notes` accepts a single path, a plain list of paths, or a list of labelled entries. Use the labelled form when
+a speaker supplies more than one document for the same lecture:
+
+```json
+"notes": [
+  { "label": "Lecture Notes", "url": "/notes/Ruben-Lecture_Notes-1.pdf" },
+  { "label": "Handwritten Notes", "url": "/notes/Ruben-Lecture_Notes.pdf" }
+]
+```
+
+Each entry becomes its own button under **Post-Lecture Resources** on the series page and in the archive.
+The old single-string form still works and is labelled *Lecture Notes*; an unlabelled list is numbered
+*Lecture Notes 1*, *Lecture Notes 2*, and so on.
 
 ## Commands
 
