@@ -1,0 +1,49 @@
+{
+  "series": {
+    "slug": "eigenvalue-estimates-for-the-laplacian",
+    "name": "Eigenvalue Estimates for the Laplacian via Discretizations of Riemannian Manifolds with Bounded Ricci Curvature",
+    "speaker": "Anusha Bhattacharya",
+    "affiliation": "IISER Mohali",
+    "personalPage": "https://sites.google.com/view/anushabhattacharya/home",
+    "mail": "anushabhattacharya20@gmail.com",
+    "description": "The spectrum of the Laplacian on a Riemannian manifold encodes important information about its underlying geometry. Understanding the relationship between geometric properties and the spectral behaviour of a Riemannian manifold is therefore a fundamental problem in spectral geometry. In this three-part lecture series, we will explore this relationship, beginning with the basic tools of analysis on Riemannian manifolds and progressing to eigenvalue approximation and comparison results under geometric constraints. Together, these lectures aim to illustrate how geometric assumptions provide quantitative control over the spectrum of differential operators and how continuous and discrete approaches complement each other in the study of spectral geometry.",
+    "prerequisites": "",
+    "about": "Dr. Anusha Bhattacharya is a mathematician at IISER Mohali working in spectral geometry and geometric analysis, with a focus on studying manifolds through graph and simplicial discretizations.",
+    "zoomLink": "https://iiitd-ac-in.zoom.us/j/99715726257?pwd=2b9vl3aSfRUHjCtksbeeuZ0bi8b5jE.1",
+    "meetingId": "997 1572 6257",
+    "passcode": "1729",
+    "references": []
+  },
+  "talks": [
+    {
+      "id": "AB-1",
+      "title": "Introduction to Analysis on Riemannian Manifolds",
+      "date": "2026-11-19",
+      "time": "16:00 IST",
+      "part": "Part 1",
+      "abstract": "We will introduce the basic concepts of Riemannian geometry and analysis on manifolds, including the Laplace–Beltrami operator, its spectrum, and the variational characterization of eigenvalues. We will also discuss key results from comparison geometry and see how geometric quantities such as curvature, diameter, and injectivity radius influence the spectral properties of a manifold.",
+      "recording": "",
+      "notes": ""
+    },
+    {
+      "id": "AB-2",
+      "title": "Graph Discretization of Riemannian Manifolds and Spectral Approximation",
+      "date": "2026-11-26",
+      "time": "16:00 IST",
+      "part": "Part 2",
+      "abstract": "We will investigate how the spectrum of the Laplace–Beltrami operator can be approximated using finite weighted graphs constructed from a Riemannian manifold. In particular, we will discuss a graph discretization scheme and establish spectral convergence under absolute Ricci curvature bound, a positive lower bound on the injectivity radius, and an upper diameter bound. This provides a connection between continuous spectral geometry and discrete spectral methods.",
+      "recording": "",
+      "notes": ""
+    },
+    {
+      "id": "AB-3",
+      "title": "Cheng-Type Eigenvalue Estimates for the Hodge Laplacian",
+      "date": "2026-12-03",
+      "time": "16:00 IST",
+      "part": "Part 3",
+      "abstract": "In the final lecture, we will extend our discussion from functions to differential forms and introduce the Hodge Laplacian. We will discuss Cheng-type upper bounds for its eigenvalues on closed Riemannian manifolds under a lower Ricci curvature bound, a positive injectivity radius bound, and an upper diameter bound. The main focus will be on the role of harmonic coordinates and geometric analysis in obtaining these estimates, highlighting the challenges that arise when extending classical eigenvalue comparison results from functions to differential forms.",
+      "recording": "",
+      "notes": ""
+    }
+  ]
+}
