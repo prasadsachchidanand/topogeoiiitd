@@ -2,6 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { buildIcons } = require('./icons');
 
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
@@ -249,7 +250,7 @@ function scheduleTalk(talk) {
         <a href="${escapeHtml(talk.seriesLink)}#${escapeHtml(talk.id)}" class="text-blue-600 hover:underline">View Series Details</a>
       </div>
       <div class="w-full md:w-1/3">${zoomCard(talk)}
-        <button class="calendar-btn mt-3 w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none transition-colors flex items-center justify-center" data-talk-id="${escapeHtml(talk.id)}"><i class="fas fa-calendar-plus mr-2"></i>Add to Calendar</button>
+        ${calendarButton(talk)}
       </div>
     </div>
   </div>`;
@@ -315,9 +316,19 @@ function seriesSchedule(collection) {
         ${talk.abstract ? `<p class="text-gray-700 mb-4"><strong>Abstract:</strong> ${publicAbstract(talk.abstract)}</p>` : ''}
         ${resources(talk)}
       </div>
-      <div class="zoom-details w-full md:w-1/3">${zoomCard(talk)}</div>
+      <div class="zoom-details w-full md:w-1/3">${zoomCard(talk)}${isUpcoming(talk) ? calendarButton(talk) : ''}</div>
     </div>
   </div>`).join('');
+}
+
+function calendarButton(talk) {
+  return `<button type="button" class="calendar-btn mt-3 w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none transition-colors flex items-center justify-center" data-talk-id="${escapeHtml(talk.id)}"><i class="fas fa-calendar-plus mr-2"></i>Add to Calendar</button>`;
+}
+
+function calendarLinks() {
+  const feed = absoluteUrl('/calendar.ics');
+  const webcal = feed.replace(/^https?:/, 'webcal:');
+  return { feed, webcal, google: `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}` };
 }
 
 function referencesMarkup(meta) {
@@ -362,9 +373,7 @@ function inlineComponents(html) {
   const footer = read(path.join(root, 'components', 'footer.html'));
   return html
     .replace('<div id="navbar-container"></div>', () => `<div id="navbar-container">${navbar}</div>`)
-    .replace('<div id="footer-container" class="mt-auto"></div>', () => `<div id="footer-container" class="mt-auto">${footer}</div>`)
-    .replaceAll('await loadNavbar();', 'initializeNavbar();')
-    .replaceAll('await loadFooter();', '// Footer is already present in the page.');
+    .replace('<div id="footer-container" class="mt-auto"></div>', () => `<div id="footer-container" class="mt-auto">${footer}</div>`);
 }
 
 function withBasePath(value) {
@@ -379,10 +388,8 @@ function publicData(value) {
 }
 
 function applyBasePath(html) {
-  html = html.replace(
-    /fetch\((['"])((?:\/|\.\/|\.\.\/)components\/(?:navbar|footer)\.html)\1\)/g,
-    "fetch($1$2$1, { cache: 'no-store' })"
-  );
+  // Cache-bust local scripts and stylesheets that pages reference without a version.
+  html = html.replace(/(src|href)="(\/assets\/[^"?]+\.(?:js|css))"/g, `$1="$2?v=${assetVersion}"`);
   if (!config.basePath) return html;
   return html
     .replace(/(href|src)="\/(?!\/)/g, `$1="${config.basePath}/`)
@@ -413,7 +420,6 @@ function enhanceHead(html, { title, description, urlPath, schema, robots = 'inde
     ${config.googleSiteVerification ? `<meta name="google-site-verification" content="${escapeHtml(config.googleSiteVerification)}">` : ''}
     <meta name="theme-color" content="#1e3a8a">
     <link rel="canonical" href="${escapeHtml(canonical)}">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="alternate" type="application/rss+xml" title="${escapeHtml(config.title)} feed" href="/feed.xml">
     <link rel="alternate" type="text/calendar" title="${escapeHtml(config.title)} calendar" href="/calendar.ics">
@@ -424,6 +430,7 @@ function enhanceHead(html, { title, description, urlPath, schema, robots = 'inde
     <meta property="og:url" content="${escapeHtml(canonical)}">
     <meta property="og:image" content="${escapeHtml(absoluteUrl('/assets/logo.png'))}">
     <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="/assets/icons.css?v=${assetVersion}">
     <link rel="stylesheet" href="/assets/site.css?v=${assetVersion}">
     <link rel="stylesheet" href="/assets/theme.css?v=${assetVersion}">
     <script src="/assets/theme.js?v=${assetVersion}"></script>
@@ -472,6 +479,11 @@ function buildStaticFiles() {
 
   let schedulePage = read(path.join(root, 'schedule', 'index.html'));
   schedulePage = schedulePage.replace(/<div id="schedule-talks" class="space-y-4">[\s\S]*?<\/div>\s*<\/section>/, () => `<div id="schedule-talks" class="space-y-4">${scheduleMarkup(talks.filter(isUpcoming))}</div>\n        </section>`);
+  const calendar = calendarLinks();
+  schedulePage = schedulePage
+    .replaceAll('__CALENDAR_GOOGLE_URL__', () => escapeHtml(calendar.google))
+    .replaceAll('__CALENDAR_WEBCAL_URL__', () => escapeHtml(calendar.webcal))
+    .replaceAll('__CALENDAR_FEED_URL__', () => escapeHtml(calendar.feed));
   schedulePage = inlineComponents(schedulePage);
   write('schedule/index.html', applyBasePath(enhanceHead(schedulePage, {
     title: `Schedule - ${config.title} - ${config.institution}`, description: `Upcoming ${config.title} talks at ${config.institution}.`, urlPath: '/schedule/'
@@ -489,6 +501,14 @@ function buildStaticFiles() {
   archivePage = inlineComponents(archivePage);
   write('archive/index.html', applyBasePath(enhanceHead(archivePage, {
     title: `Archive - ${config.title} - ${config.institution}`, description: `Past topology and geometry talks, lecture series, recordings, and notes at ${config.institution}.`, urlPath: '/archive/'
+  })));
+
+  // GitHub Pages serves dist/404.html for any missing URL, so every link in it is root-relative.
+  write('404.html', applyBasePath(enhanceHead(inlineComponents(read(path.join(root, '404.html'))), {
+    title: `Page Not Found - ${config.title}`,
+    description: 'The requested page could not be found.',
+    urlPath: '/404.html',
+    robots: 'noindex, nofollow'
   })));
 
   for (const page of ['index.html', 'admin.html']) {
@@ -556,7 +576,8 @@ function buildFeeds() {
     const talkUrl = `${absoluteUrl(talk.seriesLink)}#${encodeURIComponent(talk.id)}`;
     return `BEGIN:VEVENT\r\nUID:${icsEscape(talk.id)}@topogeoiiitd\r\nDTSTAMP:${icsDate(now)}\r\nDTSTART:${icsDate(talk.start)}\r\nDTEND:${icsDate(talk.end)}\r\nSUMMARY:${icsEscape(talk.title)}\r\nDESCRIPTION:${icsEscape(`Speaker: ${talk.speaker}\n${talk.abstract}\n\n${talkUrl}`)}\r\nLOCATION:Online\r\nURL:${talkUrl}\r\nEND:VEVENT`;
   }).join('\r\n');
-  write('calendar.ics', `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//${icsEscape(config.title)}//EN\r\nCALSCALE:GREGORIAN\r\nX-WR-CALNAME:${icsEscape(config.title)}\r\n${events}\r\nEND:VCALENDAR\r\n`);
+  // REFRESH-INTERVAL / X-PUBLISHED-TTL ask subscribed calendar apps to check for new talks twice a day.
+  write('calendar.ics', `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//${icsEscape(config.title)}//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nX-WR-CALNAME:${icsEscape(config.title)}\r\nX-WR-CALDESC:${icsEscape(config.description)}\r\nREFRESH-INTERVAL;VALUE=DURATION:PT12H\r\nX-PUBLISHED-TTL:PT12H\r\n${events}\r\nEND:VCALENDAR\r\n`);
 
   const items = [...talks].sort((a, b) => b.start - a.start).slice(0, 30).map((talk) => {
     const talkUrl = `${absoluteUrl(talk.seriesLink)}#${encodeURIComponent(talk.id)}`;
@@ -581,7 +602,8 @@ function build() {
   buildSeriesPages();
   buildFeeds();
   buildSeoFiles();
-  console.log(`Built the original design with ${talks.length} talks and ${collections.length} automatic series pages.`);
+  const iconCount = buildIcons(dist);
+  console.log(`Built the original design with ${talks.length} talks, ${collections.length} automatic series pages, and ${iconCount} icons.`);
 }
 
 build();

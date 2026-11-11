@@ -12,7 +12,6 @@
     <link rel="shortcut icon" href="/assets/logo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .talk-card .content {
             max-width: 65%;
@@ -175,24 +174,6 @@
     <div id="footer-container" class="mt-auto"></div>
 
     <script>
-        // Load navbar component
-        async function loadNavbar() {
-            try {
-                const response = await fetch('/components/navbar.html');
-                const navbarHtml = await response.text();
-                document.getElementById('navbar-container').innerHTML = navbarHtml;
-                initializeNavbar();
-            } catch (error) {
-                console.error('Error loading navbar:', error);
-                document.getElementById('navbar-container').innerHTML = `
-                    <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
-                        <div class="container mx-auto px-4 py-3">
-                            <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
-                        </div>
-                    </nav>
-                `;
-            }
-        }
 
         function initializeNavbar() {
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -203,37 +184,6 @@
                     const isExpanded = mobileNav.classList.toggle('hidden');
                     mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
                 });
-            }
-        }
-
-        // Load footer component
-        async function loadFooter() {
-            try {
-                const response = await fetch('/components/footer.html');
-                const footerHtml = await response.text();
-                document.getElementById('footer-container').innerHTML = footerHtml;
-            } catch (error) {
-                console.error('Error loading footer:', error);
-                document.getElementById('footer-container').innerHTML = `
-                <footer class="bg-blue-900 text-white py-8 mt-auto">
-                    <div class="container mx-auto px-4">
-                        <div class="flex flex-col md:flex-row justify-between">
-                            <div class="mb-6 md:mb-0">
-                                <h2 class="text-xl font-bold mb-2">Topology and Geometry Seminar</h2>
-                                <p>IIIT Delhi</p>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-2">Contact</h3>
-                                <p>Email: <a href="mailto:seminar@math.iiitd.ac.in"
-                                        class="text-blue-200 hover:underline">seminar@math.iiitd.ac.in</a></p>
-                            </div>
-                        </div>
-                        <div class="mt-8 pt-6 border-t border-blue-800 text-center text-sm text-blue-200">
-                            <p>© 2025 Topology and Geometry Seminar, IIIT Delhi. All rights reserved.</p>
-                        </div>
-                    </div>
-                </footer>
-            `;
             }
         }
 
@@ -635,8 +585,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadNavbar();
-            await loadFooter();
+            initializeNavbar();
             await fetchAndRenderArchive();
         });
     </script>

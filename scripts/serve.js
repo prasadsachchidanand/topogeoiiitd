@@ -15,8 +15,15 @@ http.createServer((request, response) => {
   let target = path.join(dist, pathname.replace(/^\/+/, ''));
   if (pathname.endsWith('/') || !path.extname(target)) target = path.join(target, 'index.html');
   if (!target.startsWith(dist) || !fs.existsSync(target) || fs.statSync(target).isDirectory()) {
+    // Mirror GitHub Pages, which serves dist/404.html for any missing URL.
+    const notFound = path.join(dist, '404.html');
     response.statusCode = 404;
-    response.end('Page not found');
+    if (fs.existsSync(notFound)) {
+      response.setHeader('Content-Type', types['.html']);
+      fs.createReadStream(notFound).pipe(response);
+    } else {
+      response.end('Page not found');
+    }
     return;
   }
   response.setHeader('Content-Type', types[path.extname(target)] || 'application/octet-stream');

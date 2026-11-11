@@ -22,7 +22,7 @@ function initialMarkup(html) {
 }
 
 function localTarget(value) {
-  if (!value || value.startsWith('#') || /^(?:https?:|mailto:|tel:|data:|javascript:)/.test(value)) return null;
+  if (!value || value.startsWith('#') || /^(?:https?:|webcal:|mailto:|tel:|data:|javascript:)/.test(value)) return null;
   let clean = value.split(/[?#]/)[0];
   if (basePath && clean.startsWith(basePath)) clean = clean.slice(basePath.length);
   clean = decodeURIComponent(clean.replace(/^\/+/, ''));
@@ -34,7 +34,7 @@ if (!fs.existsSync(dist)) {
   process.exit(1);
 }
 
-for (const required of ['index.html', 'schedule/index.html', 'archive/index.html', 'assets/site.css', 'data/talks.json', 'sitemap.xml', 'robots.txt', 'feed.xml', 'calendar.ics']) {
+for (const required of ['index.html', '404.html', 'schedule/index.html', 'archive/index.html', 'assets/site.css', 'assets/icons.css', 'assets/calendar.js', 'data/talks.json', 'sitemap.xml', 'robots.txt', 'feed.xml', 'calendar.ics']) {
   if (!fs.existsSync(path.join(dist, required))) errors.push(`Missing ${required}`);
 }
 
@@ -47,7 +47,9 @@ for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
   const relative = path.relative(dist, file);
   const markup = initialMarkup(html);
-  if (/__SERIES_[A-Z_]+__/.test(html)) errors.push(`${relative}: unresolved series-template placeholder.`);
+  if (/__(?:SERIES|CALENDAR)_[A-Z_]+__/.test(html)) errors.push(`${relative}: unresolved template placeholder.`);
+  if (html.includes('font-awesome')) errors.push(`${relative}: loads the Font Awesome CDN; icons come from /assets/icons.css.`);
+  if (/<html\b/i.test(html) && /\bfa-[a-z]/.test(html) && !html.includes('/assets/icons.css')) errors.push(`${relative}: uses icons but does not load /assets/icons.css.`);
   if (/<html\b/i.test(html) && !/<title[^>]*>[^<]+<\/title>/.test(html)) errors.push(`${relative}: missing page title.`);
   if (/<html\b/i.test(html) && (html.match(/<!doctype html>/gi) || []).length !== 1) errors.push(`${relative}: expected exactly one doctype.`);
   if (html.includes('cdn.tailwindcss.com')) errors.push(`${relative}: Tailwind development CDN is still present.`);

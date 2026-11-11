@@ -7,6 +7,7 @@ module.exports = {
     './schedule/**/*.html',
     './archive/**/*.html',
     './register/**/*.html',
+    './assets/**/*.js',
     './scripts/**/*.js'
   ],
   darkMode: 'class',

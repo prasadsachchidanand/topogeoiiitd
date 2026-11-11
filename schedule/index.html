@@ -12,7 +12,6 @@
     <link rel="shortcut icon" href="/assets/logo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans min-h-full flex flex-col">
     <div id="navbar-container"></div>
@@ -21,6 +20,20 @@
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Seminar Schedule</h1>
             <p class="text-xl mb-8">View all upcoming talks and add them to your calendar</p>
+            <div id="subscribe" class="scroll-mt-28">
+                <div class="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
+                    <a href="__CALENDAR_GOOGLE_URL__" target="_blank" rel="noopener noreferrer"
+                        class="inline-flex items-center px-5 py-3 rounded-lg bg-white/10 hover:bg-white/20 ring-1 ring-white/30 font-semibold transition-colors">
+                        <i class="fab fa-google mr-2" aria-hidden="true"></i>Subscribe in Google Calendar
+                    </a>
+                    <a href="__CALENDAR_WEBCAL_URL__"
+                        class="inline-flex items-center px-5 py-3 rounded-lg bg-white/10 hover:bg-white/20 ring-1 ring-white/30 font-semibold transition-colors">
+                        <i class="fas fa-calendar-plus mr-2" aria-hidden="true"></i>Subscribe in Apple Calendar / Outlook
+                    </a>
+                </div>
+                <p class="text-sm text-blue-100 mt-4">Subscribe once and new talks appear in your calendar automatically.
+                    Calendar feed: <a href="__CALENDAR_FEED_URL__" class="underline break-all">__CALENDAR_FEED_URL__</a></p>
+            </div>
         </div>
     </header>
 
@@ -38,6 +51,7 @@
 
     <div id="footer-container" class="mt-auto"></div>
 
+    <script src="/assets/calendar.js"></script>
     <script>
         // ─── Timezone Helpers ─────────────────────────────────────────────────────
         function parseISTDateTime(dateStr, timeStr) {
@@ -90,21 +104,6 @@
         }
         // ─────────────────────────────────────────────────────────────────────────
 
-        async function loadNavbar() {
-            try {
-                const response = await fetch('/components/navbar.html');
-                document.getElementById('navbar-container').innerHTML = await response.text();
-                initializeNavbar();
-            } catch (error) {
-                document.getElementById('navbar-container').innerHTML = `
-                    <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
-                        <div class="container mx-auto px-4 py-3">
-                            <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
-                        </div>
-                    </nav>`;
-            }
-        }
-
         function initializeNavbar() {
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileNav = document.getElementById('mobile-nav');
@@ -116,20 +115,6 @@
             }
         }
 
-        async function loadFooter() {
-            try {
-                const response = await fetch('/components/footer.html');
-                document.getElementById('footer-container').innerHTML = await response.text();
-            } catch (error) {
-                document.getElementById('footer-container').innerHTML = `
-                    <footer class="bg-blue-900 text-white py-8 mt-auto">
-                        <div class="container mx-auto px-4 text-center text-sm text-blue-200">
-                            <p>© 2025 Topology and Geometry Seminar, IIIT Delhi.</p>
-                        </div>
-                    </footer>`;
-            }
-        }
-
         function renderMathJax() {
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise().catch(err => console.error('MathJax error: ' + err.message));
@@ -138,114 +123,11 @@
 
         let allTalks = [];
 
-        // Generate Google Calendar URL (uses IST-anchored Date)
-        function generateGoogleCalendarURL(talk) {
-            const startDate = parseISTDateTime(talk.date, talk.time);
-            const endDate = new Date(startDate.getTime() + (Number(talk.durationMinutes) || 60) * 60 * 1000);
-
-            const fmt = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
-            const title = encodeURIComponent(`${talk.title} - ${talk.series}`);
-            const details = encodeURIComponent(
-                `Speaker: ${talk.speaker || 'TBA'}\n\n${talk.abstract || ''}\n\nZoom: ${talk.zoomLink || 'TBA'}\nID: ${talk.meetingId || 'TBA'}\nPasscode: ${talk.passcode || 'TBA'}`
-            );
-            const location = encodeURIComponent(talk.zoomLink ? `Zoom - ${talk.zoomLink}` : 'Online');
-            return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${fmt(startDate)}/${fmt(endDate)}&details=${details}&location=${location}`;
-        }
-
-        function generateICS(talk) {
-            const startDate = parseISTDateTime(talk.date, talk.time);
-            const endDate = new Date(startDate.getTime() + (Number(talk.durationMinutes) || 60) * 60 * 1000);
-
-            const fmt = d => {
-                const pad = n => String(n).padStart(2, '0');
-                // Format in IST for the TZID block
-                const ist = new Date(d.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-                return `${ist.getFullYear()}${pad(ist.getMonth() + 1)}${pad(ist.getDate())}T${pad(ist.getHours())}${pad(ist.getMinutes())}00`;
-            };
-
-            const esc = t => (t || '').replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n');
-
-            const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Topology and Geometry Seminar//IIIT Delhi//EN
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
-BEGIN:VTIMEZONE
-TZID:Asia/Kolkata
-BEGIN:STANDARD
-DTSTART:20070101T000000
-TZNAME:IST
-TZOFFSETFROM:+0530
-TZOFFSETTO:+0530
-END:STANDARD
-END:VTIMEZONE
-BEGIN:VEVENT
-UID:${talk.id || Date.now()}@topologygeometryseminar.iiitd.ac.in
-DTSTART;TZID=Asia/Kolkata:${fmt(startDate)}
-DTEND;TZID=Asia/Kolkata:${fmt(endDate)}
-SUMMARY:${esc(talk.title)} - ${esc(talk.series)}
-DESCRIPTION:Speaker: ${esc(talk.speaker || 'TBA')}\\n\\n${esc(talk.abstract || '')}\\n\\nZoom: ${esc(talk.zoomLink || 'TBA')}\\nID: ${esc(talk.meetingId || 'TBA')}\\nPasscode: ${esc(talk.passcode || 'TBA')}
-LOCATION:${esc(talk.zoomLink ? `Zoom - ${talk.zoomLink}` : 'Online')}
-STATUS:CONFIRMED
-END:VEVENT
-END:VCALENDAR`;
-
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${talk.title.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '_')}.ics`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function showCalendarOptions(talk, buttonElement) {
-            document.querySelector('.calendar-dropdown')?.remove();
-
-            const dropdown = document.createElement('div');
-            dropdown.className = 'calendar-dropdown absolute bg-white border border-gray-200 rounded-lg shadow-lg z-50 mt-2 min-w-48';
-            dropdown.innerHTML = `
-                <button class="google-btn w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center transition-colors border-b border-gray-100">
-                    <i class="fab fa-google text-red-500 mr-3"></i>Google Calendar
-                </button>
-                <button class="ics-btn w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center transition-colors">
-                    <i class="fas fa-calendar-alt text-blue-500 mr-3"></i>Apple Calendar / Outlook
-                </button>`;
-
-            const container = buttonElement.closest('.bg-white');
-            if (container) {
-                container.style.position = 'relative';
-                container.appendChild(dropdown);
-                dropdown.style.cssText = `position:absolute;top:${buttonElement.offsetTop + buttonElement.offsetHeight + 5}px;right:20px`;
-            } else {
-                document.body.appendChild(dropdown);
-                const rect = buttonElement.getBoundingClientRect();
-                dropdown.style.cssText = `position:fixed;top:${rect.bottom + 5}px;left:${rect.left}px`;
-            }
-
-            dropdown.querySelector('.google-btn').addEventListener('click', e => {
-                e.stopPropagation();
-                window.open(generateGoogleCalendarURL(talk), '_blank');
-                dropdown.remove();
-            });
-            dropdown.querySelector('.ics-btn').addEventListener('click', e => {
-                e.stopPropagation();
-                generateICS(talk);
-                dropdown.remove();
-            });
-
-            setTimeout(() => {
-                const close = e => { if (!dropdown.contains(e.target) && e.target !== buttonElement) { dropdown.remove(); document.removeEventListener('click', close); } };
-                document.addEventListener('click', close);
-            }, 100);
-        }
-
         async function fetchAndRenderSchedule() {
             try {
                 const response = await fetch('/data/talks.json');
                 allTalks = await response.json();
+                TopoCalendar.register(allTalks);
 
                 const currentDate = new Date();
                 const upcomingTalks = allTalks
@@ -323,14 +205,6 @@ END:VCALENDAR`;
                             icon.classList.toggle('fa-chevron-up');
                         });
                     });
-
-                    document.querySelectorAll('.calendar-btn').forEach(btn => {
-                        btn.addEventListener('click', function (e) {
-                            e.stopPropagation();
-                            const talk = allTalks.find(t => t.id == this.dataset.talkId);
-                            if (talk) showCalendarOptions(talk, this);
-                        });
-                    });
                 } else {
                     container.innerHTML = '<p class="text-gray-600 text-center py-8">No upcoming talks scheduled at this time.</p>';
                 }
@@ -350,8 +224,7 @@ END:VCALENDAR`;
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadNavbar();
-            await loadFooter();
+            initializeNavbar();
             await fetchAndRenderSchedule();
         });
     </script>

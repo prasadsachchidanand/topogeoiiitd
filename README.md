@@ -72,6 +72,24 @@ Each entry becomes its own button under **Post-Lecture Resources** on the series
 The old single-string form still works and is labelled *Lecture Notes*; an unlabelled list is numbered
 *Lecture Notes 1*, *Lecture Notes 2*, and so on.
 
+### Large PDFs
+
+Phone photos and scans make very large PDFs. Before adding notes over about 5 MB, shrink them with
+Ghostscript (`brew install ghostscript`) and check that the result is still easy to read:
+
+```bash
+gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dPDFSETTINGS=/ebook -sOutputFile=small.pdf original.pdf
+```
+
+## Icons, calendar, and 404 page
+
+- **Icons** use the usual Font Awesome classes, for example `<i class="fas fa-video"></i>`. The build
+  writes `assets/icons.css` with only the icons the pages use. Any free Font Awesome 6 icon works, and
+  the build stops with a clear message if an icon name is misspelled.
+- **Calendar**: `calendar.ics` lists every talk. The Schedule page offers subscription links, and each
+  upcoming talk has an *Add to Calendar* button (shared code in `assets/calendar.js`).
+- **404 page**: `404.html` is shown for any missing address on the live site and in the local preview.
+
 ## Commands
 
 ```bash

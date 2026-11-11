@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - Topology and Geometry Seminar</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo.png">
+    <link rel="apple-touch-icon" href="/assets/logo.png">
+    <link rel="shortcut icon" href="/assets/logo.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans min-h-full flex flex-col">
+    <div id="navbar-container"></div>
+
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16 pt-32">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-6xl md:text-7xl font-bold mb-2 text-blue-200" aria-hidden="true">404</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Page not found</h1>
+            <p class="text-xl">This page doesn't exist or has moved.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12 flex-grow">
+        <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mx-auto text-center">
+            <p class="text-gray-700 mb-6">Try one of these pages instead:</p>
+            <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-3">
+                <a href="/"
+                    class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors font-semibold">
+                    <i class="fas fa-home mr-2" aria-hidden="true"></i>Home
+                </a>
+                <a href="/schedule/"
+                    class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors font-semibold">
+                    <i class="fas fa-list mr-2" aria-hidden="true"></i>Upcoming talks
+                </a>
+                <a href="/archive/"
+                    class="inline-flex items-center justify-center px-5 py-3 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors font-semibold">
+                    <i class="fas fa-archive mr-2" aria-hidden="true"></i>Past talks and recordings
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container" class="mt-auto"></div>
+
+    <script>
+        function initializeNavbar() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+            if (mobileMenuBtn && mobileNav) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isExpanded = mobileNav.classList.toggle('hidden');
+                    mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeNavbar);
+    </script>
+</body>
+</html>

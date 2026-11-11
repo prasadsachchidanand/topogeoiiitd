@@ -12,7 +12,6 @@
     <link rel="shortcut icon" href="/assets/logo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .talk-card .content {
             max-width: 65%;
@@ -120,6 +119,7 @@
     <!-- Footer - stays at bottom -->
     <div id="footer-container" class="mt-auto"></div>
 
+    <script src="/assets/calendar.js"></script>
     <script>
         // Get URL parameters to determine which series to load
         function getSeriesFromPath() {
@@ -224,25 +224,6 @@
         }
         // --- End added helpers ---
 
-        // Load navbar component
-        async function loadNavbar() {
-            try {
-                const response = await fetch('/components/navbar.html');
-                const navbarHtml = await response.text();
-                document.getElementById('navbar-container').innerHTML = navbarHtml;
-                initializeNavbar();
-            } catch (error) {
-                console.error('Error loading navbar:', error);
-                document.getElementById('navbar-container').innerHTML = `
-                <nav class="bg-blue-800 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
-                    <div class="container mx-auto px-4 py-3">
-                        <h1 class="text-xl font-bold">Topology & Geometry Seminar</h1>
-                    </div>
-                </nav>
-            `;
-            }
-        }
-
         // Initialize navbar functionality
         function initializeNavbar() {
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -253,37 +234,6 @@
                     const isExpanded = mobileNav.classList.toggle('hidden');
                     mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
                 });
-            }
-        }
-
-        // load footer component
-        async function loadFooter() {
-            try {
-                const response = await fetch('/components/footer.html');
-                const footerHtml = await response.text();
-                document.getElementById('footer-container').innerHTML = footerHtml;
-            } catch (error) {
-                console.error('Error loading footer:', error);
-                document.getElementById('footer-container').innerHTML = `
-                <footer class="bg-blue-900 text-white py-8 mt-auto">
-                    <div class="container mx-auto px-4">
-                        <div class="flex flex-col md:flex-row justify-between">
-                            <div class="mb-6 md:mb-0">
-                                <h2 class="text-xl font-bold mb-2">Topology and Geometry Seminar</h2>
-                                <p>IIIT Delhi</p>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-2">Contact</h3>
-                                <p>Email: <a href="mailto:sachchidanand@iiitd.ac.in"
-                                        class="text-blue-200 hover:underline">sachchidanand@iiitd.ac.in</a></p>
-                            </div>
-                        </div>
-                        <div class="mt-8 pt-6 border-t border-blue-800 text-center text-sm text-blue-200">
-                            <p>© 2025 Topology and Geometry Seminar, IIIT Delhi. All rights reserved.</p>
-                        </div>
-                    </div>
-                </footer>
-            `;
             }
         }
 
@@ -403,7 +353,19 @@
                     speakerNameLink.classList.add('cursor-default');
                 }
 
-                // Update references from the JSON data
+                // Talks need series-level details (name, speaker, Zoom) for the "Add to Calendar" menu.
+                TopoCalendar.register(seriesTalks.map(talk => ({
+                    ...talk,
+                    series: talk.series || seriesInfo.name,
+                    speaker: talk.speaker || seriesInfo.speaker,
+                    zoomLink: talk.zoomLink || seriesInfo.zoomLink,
+                    meetingId: talk.meetingId || seriesInfo.meetingId,
+                    passcode: talk.passcode || seriesInfo.passcode
+                })));
+
+                // Update references from the JSON data. The build pre-renders the References
+                // section as finished markup without these placeholder lists, so only fill
+                // them when they are present.
                 const booksElement = document.getElementById('books-list');
                 const papersElement = document.getElementById('papers-list');
                 const notesElement = document.getElementById('notes-list');
@@ -412,51 +374,37 @@
                 const notesContainer = document.getElementById('notes-container');
                 const referencesSection = document.getElementById('references-section');
 
-                // Get references (handle both old and new structure)
-                const allReferences = seriesInfo.references || [];
+                if (booksElement && papersElement && notesElement && referencesSection) {
+                    // Get references (handle both old and new structure)
+                    const allReferences = seriesInfo.references || [];
 
-                // Remove duplicates and categorize
-                const uniqueReferences = allReferences.filter((ref, index, self) =>
-                    index === self.findIndex(r => r.citation === ref.citation)
-                );
+                    // Remove duplicates and categorize
+                    const uniqueReferences = allReferences.filter((ref, index, self) =>
+                        index === self.findIndex(r => r.citation === ref.citation)
+                    );
 
-                const books = uniqueReferences.filter(ref => ref.type === 'book');
-                const papers = uniqueReferences.filter(ref => ref.type === 'paper');
-                const scripts = uniqueReferences.filter(ref => ref.type === 'script');
-
-                // Only show sections if they have content
-                let hasAnyReferences = false;
-
-                if (books.length > 0) {
-                    booksElement.innerHTML = books.map(ref =>
-                        ref.url ? `<li><a href="${ref.url}" class="text-blue-600 hover:underline" target="_blank">${ref.citation}</a></li>`
+                    const referenceItems = refs => refs.map(ref =>
+                        ref.url ? `<li><a href="${ref.url}" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">${ref.citation}</a></li>`
                             : `<li>${ref.citation}</li>`
                     ).join('');
-                    booksContainer.classList.remove('hidden');
-                    hasAnyReferences = true;
-                }
 
-                if (papers.length > 0) {
-                    papersElement.innerHTML = papers.map(ref =>
-                        ref.url ? `<li><a href="${ref.url}" class="text-blue-600 hover:underline" target="_blank">${ref.citation}</a></li>`
-                            : `<li>${ref.citation}</li>`
-                    ).join('');
-                    papersContainer.classList.remove('hidden');
-                    hasAnyReferences = true;
-                }
+                    let hasAnyReferences = false;
+                    [
+                        ['book', booksElement, booksContainer],
+                        ['paper', papersElement, papersContainer],
+                        ['script', notesElement, notesContainer]
+                    ].forEach(([type, list, container]) => {
+                        const matching = uniqueReferences.filter(ref => ref.type === type);
+                        if (!matching.length) return;
+                        list.innerHTML = referenceItems(matching);
+                        container.classList.remove('hidden');
+                        hasAnyReferences = true;
+                    });
 
-                if (scripts.length > 0) {
-                    notesElement.innerHTML = scripts.map(ref =>
-                        ref.url ? `<li><a href="${ref.url}" class="text-blue-600 hover:underline" target="_blank">${ref.citation}</a></li>`
-                            : `<li>${ref.citation}</li>`
-                    ).join('');
-                    notesContainer.classList.remove('hidden');
-                    hasAnyReferences = true;
-                }
-
-                // Show the entire References section only if there are any references
-                if (hasAnyReferences) {
-                    referencesSection.classList.remove('hidden');
+                    // Show the entire References section only if there are any references
+                    if (hasAnyReferences) {
+                        referencesSection.classList.remove('hidden');
+                    }
                 }
 
                 // Render schedule with proper abstract formatting
@@ -496,10 +444,13 @@
                                 ${meetingId}
                             </p>
                             <p>
-                                <span class="font-medium text-gray-700">Passcode:</span> 
+                                <span class="font-medium text-gray-700">Passcode:</span>
                                 ${passcode}
                             </p>
                         </div>
+                        <button type="button" class="calendar-btn mt-3 w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none transition-colors flex items-center justify-center" data-talk-id="${talk.id}">
+                            <i class="fas fa-calendar-plus mr-2"></i>Add to Calendar
+                        </button>
                     `;
                     // --- End added block ---
 
@@ -571,8 +522,7 @@
 
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadNavbar();
-            await loadFooter();
+            initializeNavbar();
             await fetchAndRenderSeries();
             setTimeout(renderMathJax, 100);
         });
