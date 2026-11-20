@@ -51,7 +51,9 @@
       "part": "Part 2",
       "abstract": "We will introduce the notion of \\(C^\\infty\\)-rings and study Poisson structures in this setting. We will then discuss their relationship with singular foliations and, more generally, with Lie-Rinehart algebras.",
       "recording": "https://youtu.be/Ip-uCn-2PUI",
-      "notes": ""
+      "notes": [
+        { "label": "Lecture Notes", "url": "/notes/Ruben-Lecture_Notes-2.pdf" }
+      ]
     },
     {
       "id": "RL-3",
@@ -61,7 +63,9 @@
       "part": "Part 3",
       "abstract": "We will present a recent result extending the Courant correspondence to Lie–Rinehart algebras over \\(C^\\infty\\)-rings, based on joint work with Eugene Lerman.",
       "recording": "https://youtu.be/prScrKK895A",
-      "notes": ""
+      "notes": [
+        { "label": "Lecture Notes", "url": "/notes/Ruben-Lecture_Notes-3.pdf" }
+      ]
     }
   ]
 }
